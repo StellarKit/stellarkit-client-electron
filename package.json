@@ -1,5 +1,5 @@
 {
-  "name": "Stellar Client",
+  "name": "stellar-client",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
@@ -28,7 +28,7 @@
   "devDependencies": {
     "css-loader": "^0.28.7",
     "electron": "1.7.10",
-    "electron-builder": "^19.49.4",
+    "electron-builder": "^19.52.1",
     "electron-webpack": "1.11.0",
     "electron-webpack-eslint": "^1.2.0",
     "electron-webpack-vue": "^1.1.0",
@@ -39,7 +39,7 @@
     "node-sass": "^4.7.2",
     "sass-loader": "^6.0.6",
     "vue": "^2.5.13",
-    "vue-loader": "^13.6.1",
+    "vue-loader": "^13.6.2",
     "vue-router": "^3.0.1",
     "vue-template-compiler": "^2.5.13",
     "vuetify": "^0.17.6",

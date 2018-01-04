@@ -1,5 +1,5 @@
 # Stellar Client
-> A bare minimum project structure to get started developing with [`electron-webpack`](https://github.com/electron-userland/electron-webpack).
+> A project developed with [`electron-webpack`](https://github.com/electron-userland/electron-webpack).
 
 A client for Stellar that uses the StellarSDK
 
@@ -17,7 +17,8 @@ Simply clone down this reposity, install dependencies, and get started on your a
 
 The use of the [yarn](https://yarnpkg.com/) package manager is **strongly** recommended, as opposed to using `npm`.
 
-```bash
+```
+bash
 # create a directory of your choice, and copy template using curl
 mkdir new-electron-webpack-project && cd new-electron-webpack-project
 curl -fsSL https://github.com/electron-userland/electron-webpack-quick-start/archive/master.tar.gz | tar -xz --strip-components 1
@@ -33,7 +34,8 @@ yarn
 
 ### Development Scripts
 
-```bash
+```
+bash
 # run application in development mode
 yarn dev
 
