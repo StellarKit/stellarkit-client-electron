@@ -3,19 +3,20 @@
   <div v-if='!showPurchase' class='start-choice'>
     <div>What would you like to use to purchase LMB tokens</div>
     <div class='button-holder'>
-      <v-btn @click="toolbarClick('bitcoin')">Bitcoin</v-btn>
-      <v-btn @click="toolbarClick('ethereum')">Ethereum</v-btn>
+      <v-btn @click="buttonClick('bitcoin')">Bitcoin</v-btn>
+      <v-btn @click="buttonClick('ethereum')">Ethereum</v-btn>
     </div>
   </div>
 
   <div v-if='showPurchase' class="container">
-    <p class="lead">Send Ropsten <strong>testnet</strong> ETH to the following address:</p>
+    <v-btn small @click="buttonClick('back')">Back</v-btn>
+    <div v-html="sendMessage "></div>
     <div>Address = {{address}}</div>
     <p><strong>Do not send real coins!</strong></p>
     <p>Exchange rate: 1 ETH = 1 LMB token</p>
-    <p><a href="https://github.com/stellar/go/pull/81" target="_blank">Instructions</a></p>
-    <div class="progress">
-      <v-progress-linear v-model="progress"></v-progress-linear>
+    <p><a href="https://github.com/stellar/go/pull/81 " target="_blank ">Instructions</a></p>
+    <div class="progress ">
+      <v-progress-linear v-model="progress "></v-progress-linear>
     </div>
     <div>Status = {{status}}</div>
     <div>Public Key = {{publicKey}}</div>
@@ -31,6 +32,7 @@ export default {
   data() {
     return {
       showPurchase: false,
+      purchaseCoin: '',
       progress: 0,
       session: null,
       status: '',
@@ -39,8 +41,14 @@ export default {
       secretKey: ''
     }
   },
-  mounted() {
-    this.initBifrost()
+  computed: {
+    sendMessage: function () {
+      if (this.purchaseCoin === 'btc') {
+        return '<div class="lead">Send Bitcoin <strong>testnet</strong> BTC to the following address:</div>'
+      } else {
+        return '<div class="lead">Send Ropsten <strong>testnet</strong> ETH to the following address:</div>'
+      }
+    }
   },
   methods: {
     initBifrost() {
@@ -57,6 +65,10 @@ export default {
       this.session = new Bifrost.Session(params)
     },
     startBitcoin() {
+      this.showPurchase = true
+      this.purchaseCoin = 'btc'
+      this.initBifrost()
+
       this.session.startBitcoin(this.onEvent).then((result) => {
         this.setStatus('Waiting for a transaction...', 10)
         this.address = result.address
@@ -65,6 +77,10 @@ export default {
       })
     },
     startEthereum() {
+      this.showPurchase = true
+      this.purchaseCoin = 'eth'
+      this.initBifrost()
+
       this.session.startEthereum(this.onEvent).then((result) => {
         this.setStatus('Waiting for a transaction...', 10)
         this.address = result.address
@@ -102,18 +118,19 @@ export default {
           break
       }
     },
-    toolbarClick(id) {
+    buttonClick(id) {
       switch (id) {
         case 'test':
           this.test()
           break
         case 'bitcoin':
           this.startBitcoin()
-          this.showPurchase = true
           break
         case 'ethereum':
           this.startEthereum()
-          this.showPurchase = true
+          break
+        case 'back':
+          this.showPurchase = false
           break
         default:
           console.log('no button with that name')
