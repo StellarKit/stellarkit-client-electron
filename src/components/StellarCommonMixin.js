@@ -29,12 +29,16 @@
          this.consoleOutput = ''
        }
 
-       this.consoleOutput += '<pre>'
+       let newText = ''
+
        if (tag) {
-         this.consoleOutput += tag + ': '
+         newText += tag + ': '
        }
 
-       this.consoleOutput += this.su.toStr(result) + '<br></pre>'
+       newText += '<br>=========================================<br>'
+
+       newText += '<pre>' + this.su.toStr(result) + '<br></pre>'
+       this.consoleOutput = newText + this.consoleOutput
      },
      // private
      updateAccountsUI() {

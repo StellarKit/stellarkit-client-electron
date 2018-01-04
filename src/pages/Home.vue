@@ -23,8 +23,10 @@
 
   <div class='balances'>
     <h2>Accounts</h2>
-    <div v-for="item in accountsUI" :key='item.name'>
-      Name: {{item.name}}<br> XLM: {{item.XLM}}<br>LMB: {{item.LMB}}<br><br>
+    <div class='accounts'>
+      <div class='account-item' v-for="item in accountsUI" @click='clickAccount(item.publicKey)' :key='item.name'>
+        Name: {{item.name}}<br> XLM: {{item.XLM}}<br>LMB: {{item.LMB}}<br><br>
+      </div>
     </div>
   </div>
 
@@ -62,6 +64,9 @@ export default {
         .catch((error) => {
           this.debugLog(error, false, 'Error')
         })
+    },
+    clickAccount(publicKey) {
+      this.infoForPublicKey(publicKey)
     },
     clearLog() {
       this.debugLog('', true)
@@ -133,13 +138,15 @@ export default {
         })
     },
     infoForSelectedSource() {
-      this.su.accountInfo(this.selectedSource.publicKey)
+      this.infoForPublicKey(this.selectedSource.publicKey)
+    },
+    infoForPublicKey(publicKey) {
+      this.su.accountInfo(publicKey)
         .then((response) => {
-          this.debugLog(response, true)
-          this.debugLog(this.selectedSource.masterKey)
+          this.debugLog(response)
         })
         .catch((error) => {
-          this.debugLog(error, true)
+          this.debugLog(error)
         })
     },
     deleteSelectedSource() {
@@ -249,6 +256,18 @@ export default {
 }
 
 .balances {
+    .accounts {
+        display: flex;
+        justify-content: center;
+
+        .account-item {
+            margin: 5px;
+            padding: 15px;
+            border: solid 1px rgba(0,0,0,.4);
+            border-radius: 8px;
+            background: white;
+        }
+    }
     padding: 20px;
     width: 100%;
     text-align: center;
