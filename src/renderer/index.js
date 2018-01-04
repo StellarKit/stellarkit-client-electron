@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import App from '../App.vue'
 import Home from '../pages/Home.vue'
-// import Experiments from '../pages/Experiments.vue'
 import BuyToken from '../pages/BuyToken.vue'
 import Token from '../pages/Token.vue'
 import Trades from '../pages/Trades.vue'
