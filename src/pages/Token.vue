@@ -172,7 +172,7 @@ export default {
       result += '<strong>' + title + '</strong>' + ':  '
 
       if (acct) {
-        result += acct.publicKey + '  (XML: ' + acct.xlm + ')'
+        result += acct.publicKey + '  (XML: ' + acct.XLM + ')'
       } else {
         result += '(none)'
       }

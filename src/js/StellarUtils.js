@@ -83,6 +83,14 @@ export default class StellarUtils {
     return StellarSdk.Asset.native()
   }
 
+  assetFromObject(object) {
+    if (!object.asset_issuer) {
+      return StellarSdk.Asset.native()
+    }
+
+    return new StellarSdk.Asset(object.asset_code, object.asset_issuer)
+  }
+
   toStr(object) {
     if (object instanceof Error) {
       const json = JSON.stringify(object, null, '  ')

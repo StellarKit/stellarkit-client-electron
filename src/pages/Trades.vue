@@ -4,6 +4,7 @@
   <v-btn @click="offers()">offers</v-btn>
   <v-btn @click="setLowballerTrust()">Low Ball Trust</v-btn>
   <v-btn @click="makeLowballOffer()">Low Ball Offer</v-btn>
+  <v-btn @click="clearOffers()">Clear Offers</v-btn>
 
   <div class="trades-content">
 
@@ -39,7 +40,8 @@ export default {
     return {
       orderBids: {},
       orderAsks: {},
-      lowballerAcct: null
+      lowballerAcct: null,
+      distributorAcct: null
     }
   },
   mounted() {
@@ -47,6 +49,8 @@ export default {
     if (!this.lowballerAcct) {
       this.lowballerAcct = StellarAccounts.createAccount('Low Baller')
     }
+
+    this.distributorAcct = StellarAccounts.accountWithName('Distributor')
   },
   methods: {
     setLowballerTrust() {
@@ -104,13 +108,32 @@ export default {
       // })
     },
     offers() {
-      this.su.server().offers('accounts', 'GAPSFZT4VRSFUE3GMQWPPYB5Z2DXOWYBFSFS2L3OLCMKKJIIXYSX3I5W')
+      this.su.server().offers('accounts', this.distributorAcct.publicKey)
+        .call()
+        .then((response) => {
+          response.records.forEach((offer) => {
+            this.debugLog(offer)
+          })
+        })
+    },
+    clearOffers() {
+      this.su.server().offers('accounts', this.distributorAcct.publicKey)
         .call()
         .then((response) => {
           // this.debugLog(response)
 
           response.records.forEach((offer) => {
-            this.debugLog(offer)
+            const buying = this.su.assetFromObject(offer.buying)
+            const selling = this.su.assetFromObject(offer.selling)
+
+            this.su.manageOffer(this.distributorAcct, buying, selling, '0', offer.price_r, offer.id)
+              .then((result) => {
+                this.debugLog(result, false, 'Success')
+                // this.debugLog(result)
+              })
+              .catch((error) => {
+                this.debugLog(error, false, 'Error')
+              })
           })
         })
     },

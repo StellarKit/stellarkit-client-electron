@@ -27,6 +27,7 @@
 
 <script>
 import * as Bifrost from '../libs/bifrost.js'
+import StellarAccounts from '../js/StellarAccounts.js'
 
 export default {
   data() {
@@ -52,13 +53,15 @@ export default {
   },
   methods: {
     initBifrost() {
+      const issuerAcct = StellarAccounts.accountWithName('Issuer')
+
       const params = {
         network: 'test',
         horizonURL: 'http://192.168.1.82:8000',
         bifrostURL: 'http://192.168.1.82:8800',
         assetCode: 'LMB',
         price: '1',
-        issuingPublicKey: 'GBAI66I4B7IX7NGK2BUBUQK2WUH4SKXTGUNAHCZ6X35TA2ORD4SIPQ3D',
+        issuingPublicKey: issuerAcct.publicKey,
         preSaleMode: false
       }
 

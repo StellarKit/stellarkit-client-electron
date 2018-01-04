@@ -4,7 +4,6 @@
     <v-btn small @click="createAccount()">Create Account</v-btn>
     <v-btn small @click="refresh()">Refresh</v-btn>
     <v-btn small @click="horizonMetrics()">Horizon</v-btn>
-    <v-btn small @click="clearLog()">Clear Log</v-btn>
   </div>
 
   <v-select :items="accountsUI" item-text='name' v-model="selectedSource" label="Source accout" autocomplete return-object max-height="600"></v-select>
@@ -30,7 +29,7 @@
     </div>
   </div>
 
-  <stellar-common :consoleOutput='consoleOutput' :snackbarText='snackbarText' />
+  <stellar-common v-on:clear="consoleOutput = ''" :consoleOutput='consoleOutput' :snackbarText='snackbarText' />
 </div>
 </template>
 
@@ -69,9 +68,6 @@ export default {
       this.infoForPublicKey(item.publicKey)
       this.debugLog(item.masterKey)
       this.debugLog(item.name)
-    },
-    clearLog() {
-      this.debugLog('', true)
     },
     swapSourceDest() {
       const tmp = this.selectedSource
