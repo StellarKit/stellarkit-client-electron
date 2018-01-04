@@ -24,7 +24,7 @@
   <div class='balances'>
     <h2>Accounts</h2>
     <div class='accounts'>
-      <div class='account-item' v-for="item in accountsUI" @click='clickAccount(item.publicKey)' :key='item.name'>
+      <div class='account-item' v-for="item in accountsUI" @click='clickAccount(item)' :key='item.name'>
         Name: {{item.name}}<br> XLM: {{item.XLM}}<br>LMB: {{item.LMB}}<br><br>
       </div>
     </div>
@@ -65,8 +65,10 @@ export default {
           this.debugLog(error, false, 'Error')
         })
     },
-    clickAccount(publicKey) {
-      this.infoForPublicKey(publicKey)
+    clickAccount(item) {
+      this.infoForPublicKey(item.publicKey)
+      this.debugLog(item.masterKey)
+      this.debugLog(item.name)
     },
     clearLog() {
       this.debugLog('', true)

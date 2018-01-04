@@ -35,9 +35,9 @@
          newText += tag + ': '
        }
 
-       newText += '<br>=========================================<br>'
+       newText += '<br>=========================================<br><br>'
 
-       newText += '<pre>' + this.su.toStr(result) + '<br></pre>'
+       newText += '<pre>' + this.su.toStr(result) + '</pre>'
        this.consoleOutput = newText + this.consoleOutput
      },
      // private

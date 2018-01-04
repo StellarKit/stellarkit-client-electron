@@ -1,9 +1,17 @@
 <template>
-<div>
-  <div class="container">
+<div class='main-container'>
+  <div v-if='!showPurchase' class='start-choice'>
+    <div>What would you like to use to purchase LMB tokens</div>
+    <div class='button-holder'>
+      <v-btn @click="toolbarClick('bitcoin')">Bitcoin</v-btn>
+      <v-btn @click="toolbarClick('ethereum')">Ethereum</v-btn>
+    </div>
+  </div>
+
+  <div v-if='showPurchase' class="container">
     <p class="lead">Send Ropsten <strong>testnet</strong> ETH to the following address:</p>
     <div>Address = {{address}}</div>
-    <p><strong>Do not send real ETH!</strong></p>
+    <p><strong>Do not send real coins!</strong></p>
     <p>Exchange rate: 1 ETH = 1 LMB token</p>
     <p><a href="https://github.com/stellar/go/pull/81" target="_blank">Instructions</a></p>
     <div class="progress">
@@ -13,9 +21,6 @@
     <div>Public Key = {{publicKey}}</div>
     <div>Secret Key = {{secretKey}}</div>
   </div>
-
-  <v-btn @click="toolbarClick('bitcoin')">Bitcoin</v-btn>
-  <v-btn @click="toolbarClick('ethereum')">Ethereum</v-btn>
 </div>
 </template>
 
@@ -25,6 +30,7 @@ import * as Bifrost from '../libs/bifrost.js'
 export default {
   data() {
     return {
+      showPurchase: false,
       progress: 0,
       session: null,
       status: '',
@@ -35,7 +41,6 @@ export default {
   },
   mounted() {
     this.initBifrost()
-    this.startEthereum()
   },
   methods: {
     initBifrost() {
@@ -104,9 +109,11 @@ export default {
           break
         case 'bitcoin':
           this.startBitcoin()
+          this.showPurchase = true
           break
         case 'ethereum':
           this.startEthereum()
+          this.showPurchase = true
           break
         default:
           console.log('no button with that name')
@@ -118,13 +125,32 @@ export default {
 </script>
 
 <style lang='scss'>
-.container {
-    background-color: #ffffff;
-    width: 600px;
-    text-align: center;
-    padding: 50px;
-    margin-top: 50px;
-    box-shadow: 0 1px 3px rgba(0,0,0,.3);
-    border-radius: 3px;
+.main-container {
+    display: flex;
+    flex-direction: column;
+    align-items:: center;
+
+    .start-choice {
+        font-size: 1.6em;
+        flex-direction: column;
+        align-items:: center;
+        justify-content: center;
+
+        .button-holder {
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+        }
+    }
+
+    .container {
+        background-color: #ffffff;
+        width: 600px;
+        text-align: center;
+        padding: 50px;
+        margin-top: 50px;
+        box-shadow: 0 1px 3px rgba(0,0,0,.3);
+        border-radius: 3px;
+    }
 }
 </style>
