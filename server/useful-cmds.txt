@@ -1,0 +1,67 @@
+
+// give user sudo
+sudo usermod -a -G sudo steve
+
+sudo -i -u postgres
+
+sudo su - postgres
+
+// when locales are not set
+sudo dpkg-reconfigure locales
+
+// updates kernel??
+sudo apt-get install --install-recommends linux-generic-hwe-16.04
+
+sudo -u postgres psql
+
+sudo passwd stellar
+
+// ===================================================================
+// postgres
+
+
+  \du (list users)
+  \l (list dbs)
+\q (quit)
+
+
+  createuser --pwprompt userName
+  createdb dbname
+  dropdb dbname
+  dropuser username
+
+
+
+
+ALTER ROLE davide WITH PASSWORD 'hu8jmn3';
+
+ALTER ROLE davide WITH PASSWORD NULL;
+
+ALTER ROLE miriam CREATEROLE CREATEDB;
+
+// change owner of db
+ALTER DATABASE name OWNER TO new_owner;
+
+
+
+
+
+sudo -i -u postgres
+createdb core
+createdb coretestnet
+createdb horizontestnet
+createdb horizon
+
+stellar-core -conf xxx --newdb
+horizon init db
+
+
+
+
+sudo systemctl enable stellar-core
+sudo systemctl enable horizon
+
+sudo systemctl enable stellar-core-testnet
+sudo systemctl enable horizon-testnet
+
+sudo systemctl start horizon-testnet
