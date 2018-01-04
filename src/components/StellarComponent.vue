@@ -1,5 +1,6 @@
 <template>
 <div>
+  <v-btn @click='clearConsole()'>Clear</v-btn>
   <div class='output-container' v-html='consoleOutput'></div>
 
   <v-snackbar :timeout="500" :multi-line=false :vertical=true v-model="snackbarModel">
@@ -23,7 +24,9 @@ export default {
     }
   },
   methods: {
-    // kkkkkkkkkkkk
+    clearConsole() {
+      this.$emit('clear')
+    }
   }
 }
 </script>

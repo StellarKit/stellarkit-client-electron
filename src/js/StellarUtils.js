@@ -179,7 +179,7 @@ export default class StellarUtils {
     return promise
   }
 
-  manageOffer(sourceAcct, buying, selling, amount, price) {
+  manageOffer(sourceAcct, buying, selling, amount, price, offerID = 0) {
     const promise = new Promise((resolve, reject) => {
       this.server().loadAccount(sourceAcct.publicKey)
         .catch(StellarSdk.NotFoundError, (error) => {
@@ -191,7 +191,8 @@ export default class StellarUtils {
               selling: selling,
               buying: buying,
               amount: amount,
-              price: price
+              price: price,
+              offerId: offerID
             }))
             .build()
 

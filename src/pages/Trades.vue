@@ -20,7 +20,7 @@
       <div>Amount: {{item.amount}}</div>
     </div>
   </div>
-  <stellar-common :consoleOutput='consoleOutput' />
+  <stellar-common v-on:clear="consoleOutput = ''" :consoleOutput='consoleOutput' />
 
 </div>
 </template>
@@ -107,7 +107,11 @@ export default {
       this.su.server().offers('accounts', 'GAPSFZT4VRSFUE3GMQWPPYB5Z2DXOWYBFSFS2L3OLCMKKJIIXYSX3I5W')
         .call()
         .then((response) => {
-          this.debugLog(response)
+          // this.debugLog(response)
+
+          response.records.forEach((offer) => {
+            this.debugLog(offer)
+          })
         })
     },
     toolbarClick(id) {
