@@ -1,5 +1,5 @@
 {
-  "name": "electron-webpack-quick-start",
+  "name": "Stellar Client",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
@@ -9,7 +9,7 @@
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null"
   },
   "build": {
-    "appId": "com.lol.eth-client",
+    "appId": "io.stellarkit.stellar-client",
     "win": {
       "target": "portable"
     }

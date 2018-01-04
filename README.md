@@ -1,5 +1,7 @@
-# electron-webpack-quick-start
+# Stellar Client
 > A bare minimum project structure to get started developing with [`electron-webpack`](https://github.com/electron-userland/electron-webpack).
+
+A client for Stellar that uses the StellarSDK
 
 Thanks to the power of `electron-webpack` this template comes packed with...
 
@@ -44,59 +46,3 @@ yarn dist
 # `yarn compile` & create unpacked build with electron-builder
 yarn dist:dir
 ```
-
-
-// ======================================================================
-
-docker exec -it stellar /bin/bash
-
-supervisorctl
-
-sudo systemctl restart apache2
-
-// certs found here
-/etc/letsencrypt/archive/stellarkit.io/cert1.pem
-/etc/letsencrypt/archive/stellarkit.io/privkey1.pem
-
-
-// ===========================================
-// mainnet
-
-// run first time to set password on postgres
-docker run -it --rm \
-    -v "/home/steve/stellar-main:/opt/stellar" \
-    --name stellar \
-    stellar/quickstart --pubnet
-
-docker run -d --restart unless-stopped \
-    -v "/home/steve/stellar-main:/opt/stellar" \
-    -p "8000:8000" \
-    --name stellar \
-    stellar/quickstart --pubnet
-
-
-// ===========================================
-// testnet
-
-// run first time to set password on postgres
-docker run -it --rm \
-    -v "/home/steve/stellar-test:/opt/stellar" \
-    --name stellar \
-    stellar/quickstart --testnet
-
-docker run -d --restart unless-stopped \
-    -v "/home/steve/stellar-test:/opt/stellar" \
-    -p "8000:8000" \
-    --name stellar \
-    stellar/quickstart --testnet
-
-
-// ===========================================
-// add to horizon.env inside stellar-xxx/horizon/horizon.env
-
-mkdir tls
-cp /xx/public.pem ./server.crt
-cp /xx/privkey1.pe ./server.key
-
-    export TLS_CERT="/opt/stellar/tls/server.crt"
-    export TLS_KEY="/opt/stellar/tls/server.key"
