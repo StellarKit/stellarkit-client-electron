@@ -3,17 +3,28 @@ import {
   ipcRenderer
 } from 'electron'
 const generateName = require('sillyname')
-const $ = require('jquery')
 import Helper from '../js/helper.js'
-import StellarUtils from '../js/StellarUtils.js'
 
 class StellarAccounts {
   constructor() {
     this._accounts = []
 
-    this.su = new StellarUtils()
-
     this.loadAccounts()
+  }
+
+  addAccount(keyPair, balances, name = null) {
+    const acct = {
+      name: name !== null ? name : generateName(),
+      XLM: balances.XLM,
+      LMB: balances.LMB,
+      masterKey: keyPair.secret(),
+      publicKey: keyPair.publicKey()
+    }
+
+    this._accounts.push(acct)
+    this.saveAccounts()
+
+    return acct
   }
 
   ethereumAsset() {
@@ -102,42 +113,6 @@ class StellarAccounts {
 
   logResult(result, sucess = true) {
     console.log((sucess ? 'Success: ' : 'Error: ') + JSON.stringify(result))
-  }
-
-  createAccount(name = null) {
-    const newPair = StellarSdk.Keypair.random()
-
-    const acct = {
-      name: name !== null ? name : generateName(),
-      XLM: '',
-      LMB: '',
-      masterKey: newPair.secret(),
-      publicKey: newPair.publicKey()
-    }
-
-    this._accounts.push(acct)
-    this.saveAccounts()
-
-    $.get('https://horizon-testnet.stellar.org/friendbot' + '?addr=' + newPair.publicKey(), (data) => {
-      this.su.server().loadAccount(newPair.publicKey())
-        .then((account) => {
-          account.balances.forEach((balance) => {
-            if (balance.asset_type === 'native') {
-              acct.XLM = balance.balance
-            } else {
-              acct[balance.asset_code] = balance.balance
-            }
-          })
-          this.saveAccounts()
-        })
-        .catch((error) => {
-          this.su.log(error)
-        })
-    }, 'json').fail((err) => {
-      this.logResult(err, false)
-    })
-
-    return acct
   }
 }
 

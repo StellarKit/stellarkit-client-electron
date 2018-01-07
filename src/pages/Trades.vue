@@ -47,7 +47,13 @@ export default {
   mounted() {
     this.lowballerAcct = StellarAccounts.accountWithName('Low Baller')
     if (!this.lowballerAcct) {
-      this.lowballerAcct = StellarAccounts.createAccount('Low Baller')
+      this.su.createTestAccount('Low Baller')
+        .then((result) => {
+          this.lowballerAcct = result
+        })
+        .catch((error) => {
+          this.debugLog(error)
+        })
     }
 
     this.distributorAcct = StellarAccounts.accountWithName('Distributor')

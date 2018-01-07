@@ -154,17 +154,35 @@ export default {
     updateAccounts() {
       this.issuerAcct = StellarAccounts.accountWithName('Issuer')
       if (!this.issuerAcct) {
-        this.issuerAcct = StellarAccounts.createAccount('Issuer')
+        this.su.createTestAccount('Issuer')
+          .then((result) => {
+            this.issuerAcct = result
+          })
+          .catch((error) => {
+            this.debugLog(error)
+          })
       }
 
       this.distributorAcct = StellarAccounts.accountWithName('Distributor')
       if (!this.distributorAcct) {
-        this.distributorAcct = StellarAccounts.createAccount('Distributor')
+        this.su.createTestAccount('Distributor')
+          .then((result) => {
+            this.distributorAcct = result
+          })
+          .catch((error) => {
+            this.debugLog(error)
+          })
       }
 
       this.tokenBuyerAcct = StellarAccounts.accountWithName('Token buyer')
       if (!this.tokenBuyerAcct) {
-        this.tokenBuyerAcct = StellarAccounts.createAccount('Token buyer')
+        this.su.createTestAccount('Token buyer')
+          .then((result) => {
+            this.tokenBuyerAcct = result
+          })
+          .catch((error) => {
+            this.debugLog(error)
+          })
       }
     },
     titleHTML(title, acct) {

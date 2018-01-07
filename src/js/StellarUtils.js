@@ -1,43 +1,53 @@
 const StellarSdk = require('stellar-sdk')
 const $ = require('jquery')
+import StellarAccounts from './StellarAccounts.js'
 
 export default class StellarUtils {
   constructor() {
     this.network = 'local'
+    this._server = this.createServer(this.network)
 
-    const url = this.serverURL()
+    // need to talk to stellar directly for friendbot createTestAccout
+    this._stellarServer = this.createServer('testnet')
+  }
 
-    switch (this.network) {
+  createServer(network) {
+    let result
+    const url = this.serverURL(network)
+
+    switch (network) {
       case 'testnet':
         StellarSdk.Network.useTestNetwork()
-        this._server = new StellarSdk.Server(url)
+        result = new StellarSdk.Server(url)
         break
       case 'mainnet':
         StellarSdk.Network.usePublicNetwork()
-        this._server = new StellarSdk.Server(url)
+        result = new StellarSdk.Server(url)
         break
       case 'local':
         StellarSdk.Network.useTestNetwork()
 
-        this._server = new StellarSdk.Server(url, {
+        result = new StellarSdk.Server(url, {
           allowHttp: true
         })
         break
       case 'stellarkit':
         StellarSdk.Network.useTestNetwork()
-        this._server = new StellarSdk.Server(url)
+        result = new StellarSdk.Server(url)
         break
       default:
         console.log('ERROR: switch failed')
         break
     }
+
+    return result
   }
 
-  serverURL() {
-    let result = 'https://horizon-testnet.stellar.org'
+  serverURL(network) {
+    let result
     const useGlobalIP = false
 
-    switch (this.network) {
+    switch (network) {
       case 'testnet':
         result = 'https://horizon-testnet.stellar.org'
         break
@@ -63,7 +73,7 @@ export default class StellarUtils {
   }
 
   horizonMetrics() {
-    const url = this.serverURL() + '/metrics'
+    const url = this.serverURL(this.network) + '/metrics'
 
     const promise = new Promise((resolve, reject) => {
       $.get(url, (response) => {
@@ -454,6 +464,39 @@ export default class StellarUtils {
         })
     })
 
+    return promise
+  }
+
+  createTestAccount(name = null) {
+    const promise = new Promise((resolve, reject) => {
+      const keyPair = StellarSdk.Keypair.random()
+
+      const url = 'https://horizon-testnet.stellar.org/friendbot' + '?addr=' + keyPair.publicKey()
+
+      $.get(url, (data) => {
+        // user setup by friendbot won't be on our server until it syncs, so just use stellars testnet
+        this._stellarServer.loadAccount(keyPair.publicKey())
+          .then((account) => {
+            const balances = {}
+
+            account.balances.forEach((balance) => {
+              if (balance.asset_type === 'native') {
+                balances.XLM = balance.balance
+              } else {
+                balances[balance.asset_code] = balance.balance
+              }
+            })
+
+            resolve(StellarAccounts.addAccount(keyPair, balances))
+          })
+          .catch((error) => {
+            this.log(data)
+            reject(error)
+          })
+      }, 'json').fail((err) => {
+        reject(err)
+      })
+    })
     return promise
   }
 }

@@ -193,7 +193,13 @@ export default {
     createAccount() {
       this.debugLog('create account:', true)
 
-      StellarAccounts.createAccount()
+      this.su.createTestAccount()
+        .then((result) => {
+          this.lowballerAcct = result
+        })
+        .catch((error) => {
+          this.debugLog(error)
+        })
     },
     listenForPayment(index) {
       const accountID = StellarAccounts.publicKey(index)
