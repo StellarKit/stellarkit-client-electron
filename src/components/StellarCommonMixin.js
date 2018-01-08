@@ -18,7 +18,7 @@
      Helper.vue().$on('stellar-accounts-updated', this.updateAccountsUI)
    },
    methods: {
-     debugLog(result, clear = false, tag = null) {
+     debugLog(result, tag = null) {
        let newText = ''
 
        if (tag) {

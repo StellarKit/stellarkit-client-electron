@@ -1,21 +1,19 @@
 <template>
 <v-app>
+  <navivation-drawer :ping='showNavigation' />
   <div class='main-container'>
     <div class="top-bar">
       <v-tabs id="mobile-tabs-5" fixed light centered>
         <ticker-component />
 
-        <v-toolbar color="grey lighten-4" light>
-          <v-toolbar-side-icon></v-toolbar-side-icon>
+        <v-toolbar dark>
+          <v-toolbar-side-icon @click='showDrawer'></v-toolbar-side-icon>
           <v-toolbar-title>{{pageTitle()}}</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-btn icon>
-            <v-icon>search</v-icon>
-          </v-btn>
-          <v-btn icon>
             <v-icon>more_vert</v-icon>
           </v-btn>
-          <v-tabs-bar class="grey lighten-4" slot="extension">
+          <v-tabs-bar slot="extension">
             <v-tabs-slider color="primary"></v-tabs-slider>
             <v-tabs-item to='/' class="primary--text">
               <v-icon>home</v-icon>
@@ -60,6 +58,7 @@
 </template>
 
 <script>
+import NavigationDrawer from './components/NavigationDrawer.vue'
 import TickerComponent from './components/TickerComponent.vue'
 import FooterComponent from './components/FooterComponent.vue'
 import Helper from './js/helper.js'
@@ -68,10 +67,12 @@ import $ from 'jquery'
 export default {
   components: {
     'ticker-component': TickerComponent,
-    'footer-component': FooterComponent
+    'footer-component': FooterComponent,
+    'navivation-drawer': NavigationDrawer
   },
   data() {
     return {
+      showNavigation: false,
       consoleOutput: '',
       snackbarText: '',
       snackbarModel: false
@@ -81,6 +82,9 @@ export default {
     Helper.vue().$on('console', this.log)
   },
   methods: {
+    showDrawer() {
+      this.showNavigation = !this.showNavigation
+    },
     log(output) {
       this.consoleOutput += output + '<br>'
 

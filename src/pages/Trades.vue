@@ -69,14 +69,14 @@ export default {
           d: 3
         })
         .then((response) => {
-          this.debugLog(response, false, 'SUCCESS')
+          this.debugLog(response, 'SUCCESS')
         })
         .catch((error) => {
-          this.debugLog(error, false, 'ERROR')
+          this.debugLog(error, 'ERROR')
         })
     },
     orderbook() {
-      this.debugLog('Orderbook', true)
+      this.debugLog('Orderbook')
 
       const selling = this.su.lumins()
       const buying = StellarAccounts.lamboTokenAsset()
@@ -128,11 +128,11 @@ export default {
 
             this.su.manageOffer(this.distributorAcct, buying, selling, '0', offer.price_r, offer.id)
               .then((result) => {
-                this.debugLog(result, false, 'Success')
+                this.debugLog(result, 'Success')
                 // this.debugLog(result)
               })
               .catch((error) => {
-                this.debugLog(error, false, 'Error')
+                this.debugLog(error, 'Error')
               })
           })
         })

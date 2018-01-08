@@ -110,11 +110,11 @@ export default {
           this.debugLog(result)
         })
         .catch((err) => {
-          this.debugLog(err, false, 'ERROR')
+          this.debugLog(err, 'ERROR')
         })
     },
     paymentPaths() {
-      this.debugLog('Source: ' + this.tokenBuyerAcct.publicKey + '<br>Destination: ' + this.tokenBuyerAcct.publicKey + '<br>Issuer: ' + this.issuerAcct.publicKey + '<br>Distributor: ' + this.distributorAcct.publicKey, true)
+      this.debugLog('Source: ' + this.tokenBuyerAcct.publicKey + '<br>Destination: ' + this.tokenBuyerAcct.publicKey + '<br>Issuer: ' + this.issuerAcct.publicKey + '<br>Distributor: ' + this.distributorAcct.publicKey)
       this.su.server().paths(this.tokenBuyerAcct.publicKey, this.tokenBuyerAcct.publicKey, StellarAccounts.lamboTokenAsset(), '3')
         .call()
         .then((response) => {
@@ -131,17 +131,15 @@ export default {
 
       this.su.manageOffer(this.distributorAcct, this.su.lumins(), StellarAccounts.lamboTokenAsset(), '5000', price)
         .then((result) => {
-          this.debugLog(result, false, 'Success')
+          this.debugLog(result, 'Success')
           // this.debugLog(result)
         })
         .catch((error) => {
-          this.debugLog(error, false, 'Error')
+          this.debugLog(error, 'Error')
         })
     },
     manageOfferEth() {
       this.debugLog('Managing offer Ethereum:')
-
-      this.debugLog('Manage Offer', true)
 
       const price = {
         n: 225,
@@ -150,11 +148,11 @@ export default {
 
       this.su.manageOffer(this.distributorAcct, StellarAccounts.ethereumAsset(), StellarAccounts.lamboTokenAsset(), '5000', price)
         .then((result) => {
-          this.debugLog(result, false, 'Success')
+          this.debugLog(result, 'Success')
           // this.debugLog(result)
         })
         .catch((error) => {
-          this.debugLog(error, false, 'Error')
+          this.debugLog(error, 'Error')
         })
     },
     lockIssuer() {
@@ -174,10 +172,10 @@ export default {
 
       this.su.sendAsset(this.issuerAcct, this.distributorAcct.publicKey, '10000', StellarAccounts.lamboTokenAsset(), 'Created Tokens')
         .then((response) => {
-          this.debugLog(response, false, 'Success')
+          this.debugLog(response, 'Success')
         })
         .catch((error) => {
-          this.debugLog(error, false, 'Error')
+          this.debugLog(error, 'Error')
         })
     },
     setDistributorTrust() {
@@ -221,13 +219,13 @@ export default {
 
         this.su.manageOffer(this.distributorAcct, buying, selling, '0', offer.price_r, offer.id)
           .then((result) => {
-            this.debugLog(result, false, 'Success')
+            this.debugLog(result, 'Success')
             // this.debugLog(result)
 
             this.deleteOffersFromArray(offers)
           })
           .catch((error) => {
-            this.debugLog(error, false, 'Error')
+            this.debugLog(error, 'Error')
           })
       }
     },
@@ -241,7 +239,7 @@ export default {
           this.deleteOffersFromArray(response.records)
         })
         .catch((error) => {
-          this.debugLog(error, false, 'Error')
+          this.debugLog(error, 'Error')
         })
     },
     createAccounts() {

@@ -52,10 +52,10 @@ export default {
     horizonMetrics() {
       this.su.horizonMetrics()
         .then((response) => {
-          this.debugLog(response, false, 'Success')
+          this.debugLog(response, 'Success')
         })
         .catch((error) => {
-          this.debugLog(error, false, 'Error')
+          this.debugLog(error, 'Error')
         })
     },
     clickAccount(item) {
@@ -73,10 +73,10 @@ export default {
         .then((response) => {
           this.updateBalances()
 
-          this.debugLog(response, false, 'Success')
+          this.debugLog(response, 'Success')
         })
         .catch((error) => {
-          this.debugLog(error, false, 'Error')
+          this.debugLog(error, 'Error')
         })
     },
     payWithSigners() {
@@ -84,14 +84,14 @@ export default {
         .then((response) => {
           this.updateBalances()
 
-          this.debugLog(response, false, 'Success')
+          this.debugLog(response, 'Success')
         })
         .catch((error) => {
-          this.debugLog(error, false, 'Error')
+          this.debugLog(error, 'Error')
         })
     },
     setSignerForSelected() {
-      this.debugLog('set signer', true)
+      this.debugLog('set signer')
 
       this.su.makeMultiSig(this.selectedSource, this.selectedSigner.publicKey)
         .then((result) => {
@@ -106,7 +106,7 @@ export default {
         .forAccount(this.selectedSource.publicKey)
         .call()
         .then((response) => {
-          this.debugLog(response, true)
+          this.debugLog(response)
         })
     },
     paymentsForSelectedSource() {
@@ -114,7 +114,7 @@ export default {
         .forAccount(this.selectedSource.publicKey)
         .call()
         .then((response) => {
-          this.debugLog(response, true)
+          this.debugLog(response)
         })
     },
     transactionsForSelectedSource() {
@@ -145,20 +145,20 @@ export default {
       StellarAccounts.deleteAccount(this.selectedSource.publicKey)
     },
     makeSelectedPayment() {
-      this.debugLog('paying', true)
+      this.debugLog('paying')
 
       this.su.sendAsset(this.selectedSource, this.selectedDest.publicKey, '122')
         .then((response) => {
           this.updateBalances()
 
-          this.debugLog(response, false, 'Success')
+          this.debugLog(response, 'Success')
         })
         .catch((error) => {
-          this.debugLog(error, false, 'Error')
+          this.debugLog(error, 'Error')
         })
     },
     refresh() {
-      this.debugLog('refresh', true)
+      this.debugLog('refresh')
       this.updateBalances()
     },
     listenForPayments() {
@@ -170,7 +170,7 @@ export default {
       this.su.updateBalances()
     },
     createAccount() {
-      this.debugLog('create account:', true)
+      this.debugLog('create account:')
 
       this.su.createTestAccount()
         .then((result) => {

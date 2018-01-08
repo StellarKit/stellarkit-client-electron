@@ -65,9 +65,10 @@ export default {
     display: flex;
     flex: 0 0 auto;
     text-align: center;
-    color: rgba(0,0,0,.6);
+    color: rgba(255,255,255,.6);
     padding-top: 4px;
-    font-size: 1.1em;
+    font-size: 1em;
+    user-select: none;
 
     div {
         margin: 0 8px;
@@ -81,7 +82,7 @@ export default {
         }
 
         span.dim-title {
-            color: rgba(0,0,0,.2);
+            color: rgba(255,255,255,.4);
         }
     }
 }
