@@ -79,6 +79,20 @@ export default {
     Helper.vue().$on('stellar-accounts-updated', this.createAccounts)
   },
   methods: {
+    clickAccount(item) {
+      this.infoForPublicKey(item.publicKey)
+      this.debugLog(item.masterKey)
+      this.debugLog(item.name)
+    },
+    infoForPublicKey(publicKey) {
+      this.su.accountInfo(publicKey)
+        .then((response) => {
+          this.debugLog(response)
+        })
+        .catch((error) => {
+          this.debugLog(error)
+        })
+    },
     updateBalances() {
       this.su.updateBalances()
     },
