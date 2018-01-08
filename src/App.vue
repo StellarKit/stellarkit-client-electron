@@ -3,7 +3,7 @@
   <navivation-drawer :ping='showNavigation' />
   <div class='main-container'>
     <div class="top-bar">
-      <v-tabs id="mobile-tabs-5" fixed light centered>
+      <v-tabs id="mobile-tabs-5" fixed dark centered>
         <ticker-component />
 
         <v-toolbar dark>
@@ -14,7 +14,7 @@
             <v-icon>more_vert</v-icon>
           </v-btn>
           <v-tabs-bar slot="extension">
-            <v-tabs-slider color="primary"></v-tabs-slider>
+            <v-tabs-slider color="white"></v-tabs-slider>
             <v-tabs-item to='/' class="primary--text">
               <v-icon>home</v-icon>
             </v-tabs-item>
@@ -90,7 +90,7 @@ export default {
 
       this.scrollToEnd()
     },
-    scrollToEnd(delay = 0) {
+    scrollToEnd(delay = 250) {
       this.$nextTick(() => {
         $('.output-container').animate({
           scrollTop: $('.output-container')[0].scrollHeight
@@ -173,7 +173,7 @@ html {
             .output-container {
                 width: 100%;
                 font-size: 0.8em;
-                background: rgb(0,22,0);
+                background: rgb(0,40,0);
                 overflow-y: auto;
                 color: rgb(0,256,150);
                 padding: 10px;
