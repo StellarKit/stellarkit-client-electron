@@ -1,24 +1,24 @@
 <template>
 <div>
-  <div class='buttons'>
+  <div class='top-controls'>
     <v-btn small @click="createAccount()">Create Account</v-btn>
     <v-btn small @click="refresh()">Refresh</v-btn>
     <v-btn small @click="horizonMetrics()">Horizon</v-btn>
-  </div>
 
-  <v-select :items="accountsUI" item-text='name' v-model="selectedSource" label="Source accout" autocomplete return-object max-height="600"></v-select>
-  <v-select :items="accountsUI" item-text='name' v-model="selectedDest" label="Destination accout" autocomplete return-object max-height="600"></v-select>
-  <v-btn small @click='swapSourceDest()'>Swap Source/Dest</v-btn>
-  <v-select :items="accountsUI" item-text='name' v-model="selectedSigner" label="Add signer to source" autocomplete return-object max-height="600"></v-select>
-  <v-btn small @click="makeSelectedPayment()">Pay</v-btn>
-  <v-btn small @click="deleteSelectedSource()">Delete</v-btn>
-  <v-btn small @click="infoForSelectedSource()">Info</v-btn>
-  <v-btn small @click="transactionsForSelectedSource()">Transactions</v-btn>
-  <v-btn small @click="paymentsForSelectedSource()">Payments</v-btn>
-  <v-btn small @click="operationsForSelectedSource()">Operations</v-btn>
-  <v-btn small @click="setSignerForSelected()">Set Signer</v-btn>
-  <v-btn small @click="payWithSigners()">Pay with Signers</v-btn>
-  <v-btn small @click="mergeSelected()">Merge Selected</v-btn>
+    <v-select :items="accountsUI" item-text='name' v-model="selectedSource" label="Source accout" autocomplete return-object max-height="600"></v-select>
+    <v-select :items="accountsUI" item-text='name' v-model="selectedDest" label="Destination accout" autocomplete return-object max-height="600"></v-select>
+    <v-btn small @click='swapSourceDest()'>Swap Source/Dest</v-btn>
+    <v-select :items="accountsUI" item-text='name' v-model="selectedSigner" label="Add signer to source" autocomplete return-object max-height="600"></v-select>
+    <v-btn small @click="makeSelectedPayment()">Pay</v-btn>
+    <v-btn small @click="deleteSelectedSource()">Delete</v-btn>
+    <v-btn small @click="infoForSelectedSource()">Info</v-btn>
+    <v-btn small @click="transactionsForSelectedSource()">Transactions</v-btn>
+    <v-btn small @click="paymentsForSelectedSource()">Payments</v-btn>
+    <v-btn small @click="operationsForSelectedSource()">Operations</v-btn>
+    <v-btn small @click="setSignerForSelected()">Set Signer</v-btn>
+    <v-btn small @click="payWithSigners()">Pay with Signers</v-btn>
+    <v-btn small @click="mergeSelected()">Merge Selected</v-btn>
+  </div>
 
   <div class='balances'>
     <h2>Accounts</h2>
@@ -28,21 +28,15 @@
       </div>
     </div>
   </div>
-
-  <stellar-common v-on:clear="consoleOutput = ''" :consoleOutput='consoleOutput' :snackbarText='snackbarText' />
 </div>
 </template>
 
 <script>
-import StellarComponent from '../components/StellarComponent.vue'
 import StellarCommonMixin from '../components/StellarCommonMixin.js'
 import StellarAccounts from '../js/StellarAccounts.js'
 
 export default {
   mixins: [StellarCommonMixin],
-  components: {
-    'stellar-common': StellarComponent
-  },
   data() {
     return {
       selectedSource: null,
@@ -236,17 +230,12 @@ export default {
 </script>
 
 <style scoped lang='scss'>
-.output-container {
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    color: rgb(111,255,111);
-    background: black;
+.top-controls {
+    padding: 20px;
 }
 
 .balances {
-    margin: 10px 0;
-    padding: 20px;
+    padding: 10px;
     background: steelblue;
     box-shadow: 0 7px 12px -7px rgba(0,0,0,.7);
     color: white;
@@ -270,9 +259,5 @@ export default {
             box-shadow: 0 7px 12px -7px rgba(0,0,0,.7);
         }
     }
-}
-
-.buttons {
-    display: flex;
 }
 </style>

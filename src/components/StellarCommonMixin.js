@@ -5,12 +5,9 @@
  export default {
    data() {
      return {
-       consoleOutput: '',
        su: null,
        accountsUI: [],
-       tokensUI: [],
-       snackbarPing: false,
-       snackbarText: ''
+       tokensUI: []
      }
    },
    created() {
@@ -21,25 +18,16 @@
      Helper.vue().$on('stellar-accounts-updated', this.updateAccountsUI)
    },
    methods: {
-     toast(message) {
-       this.snackbarText = message
-       this.snackbarPing = !this.snackbarPing
-     },
      debugLog(result, clear = false, tag = null) {
-       if (clear) {
-         this.consoleOutput = ''
-       }
-
        let newText = ''
 
        if (tag) {
          newText += tag + ': '
        }
 
-       newText += '<br>=========================================<br><br>'
-
        newText += '<pre>' + this.su.toStr(result) + '</pre>'
-       this.consoleOutput = newText + this.consoleOutput
+
+       Helper.emit('console', newText)
      },
      // private
      updateAccountsUI() {

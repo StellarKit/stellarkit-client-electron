@@ -21,21 +21,15 @@
       <div>Amount: {{item.amount}}</div>
     </div>
   </div>
-  <stellar-common v-on:clear="consoleOutput = ''" :consoleOutput='consoleOutput' />
-
 </div>
 </template>
 
 <script>
-import StellarComponent from '../components/StellarComponent.vue'
 import StellarCommonMixin from '../components/StellarCommonMixin.js'
 import StellarAccounts from '../js/StellarAccounts.js'
 
 export default {
   mixins: [StellarCommonMixin],
-  components: {
-    'stellar-common': StellarComponent
-  },
   data() {
     return {
       orderBids: {},

@@ -51,21 +51,16 @@
   <v-btn small @click="paymentPaths()">Payment Paths</v-btn>
   <v-btn small @click="buyerInfo()">Buyer Info</v-btn>
 
-  <stellar-common v-on:clear="consoleOutput = ''" :consoleOutput='consoleOutput' :snackbarText='snackbarText' />
 </div>
 </template>
 
 <script>
-import StellarComponent from '../components/StellarComponent.vue'
 import StellarCommonMixin from '../components/StellarCommonMixin.js'
 import StellarAccounts from '../js/StellarAccounts.js'
 import Helper from '../js/helper.js'
 
 export default {
   mixins: [StellarCommonMixin],
-  components: {
-    'stellar-common': StellarComponent
-  },
   data() {
     return {
       issuerAcct: null,
@@ -312,7 +307,6 @@ export default {
 
 .token-steps {
     padding: 20px 40px;
-    margin: 10px;
     background: rgba(0,0,0,.04);
 }
 
