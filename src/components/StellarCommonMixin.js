@@ -8,6 +8,7 @@
        consoleOutput: '',
        su: null,
        accountsUI: [],
+       tokensUI: [],
        snackbarPing: false,
        snackbarText: ''
      }
@@ -43,6 +44,20 @@
      // private
      updateAccountsUI() {
        this.accountsUI = StellarAccounts.accounts()
+
+       // for tokens page
+       this.tokensUI = []
+       this.accountsUI.forEach((acct) => {
+         switch (acct.name) {
+           case 'Issuer':
+           case 'Distributor':
+           case 'Token buyer':
+             this.tokensUI.push(acct)
+             break
+           default:
+             break
+         }
+       })
      }
    }
  }

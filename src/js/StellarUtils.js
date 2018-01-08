@@ -499,4 +499,24 @@ export default class StellarUtils {
     })
     return promise
   }
+
+  updateBalances() {
+    for (let i = 0; i < StellarAccounts.accounts().length; i++) {
+      this.updateBalance(i)
+    }
+  }
+
+  updateBalance(index) {
+    this.balances(StellarAccounts.publicKey(index))
+      .then((balanceObject) => {
+        for (const key in balanceObject) {
+          StellarAccounts.updateBalance(index, key, balanceObject[key])
+        }
+      })
+      .catch((err) => {
+        StellarAccounts.updateBalance(index, 'XLM', 'ERROR')
+
+        this.debugLog(err)
+      })
+  }
 }

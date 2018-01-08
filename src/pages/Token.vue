@@ -4,9 +4,11 @@
     Start with three accounts: Issuer, Distributor and Buyer<br>
     <v-btn small @click="createAccounts()">Create Accounts</v-btn>
     <br><br>
-    <div v-html='issuerHTML'></div>
-    <div v-html='distributorHTML'></div>
-    <div v-html='tokenBuyerHTML'></div>
+    <div class='accounts'>
+      <div class='account-item' v-for="item in tokensUI" @click='clickAccount(item)' :key='item.name'>
+        {{item.name}}<br> XLM: {{item.XLM}}<br>LMB: {{item.LMB}}<br><br>
+      </div>
+    </div>
   </div>
 
   <div class='token-steps'>
@@ -32,10 +34,6 @@
         <v-btn small @click="manageOfferEth()">Manage Offer Eth</v-btn>
       </li>
       <li>
-        Distributor needs to trust the Issuer:<br>
-        <v-btn small @click="buyerInfo()">Buyer Info</v-btn>
-      </li>
-      <li>
         Buyer needs to trust the Distributor:<br>
         <v-btn small @click="setBuyerTrust()">Set Buyer Trust</v-btn>
       </li>
@@ -51,6 +49,7 @@
   <v-btn small @click="showOffers()">Show Token Offers</v-btn>
   <v-btn small @click="deleteOffers()">Delete Token Offers</v-btn>
   <v-btn small @click="paymentPaths()">Payment Paths</v-btn>
+  <v-btn small @click="buyerInfo()">Buyer Info</v-btn>
 
   <stellar-common v-on:clear="consoleOutput = ''" :consoleOutput='consoleOutput' :snackbarText='snackbarText' />
 </div>
@@ -74,27 +73,23 @@ export default {
       tokenBuyerAcct: null
     }
   },
-  computed: {
-    issuerHTML: function () {
-      return this.titleHTML('Issuer', this.issuerAcct)
-    },
-    distributorHTML: function () {
-      return this.titleHTML('Distributor', this.distributorAcct)
-    },
-    tokenBuyerHTML: function () {
-      return this.titleHTML('Buyer', this.tokenBuyerAcct)
-    }
-  },
   mounted() {
     this.createAccounts()
 
     Helper.vue().$on('stellar-accounts-updated', this.createAccounts)
   },
   methods: {
+    updateBalances() {
+      this.su.updateBalances()
+    },
     buyLamboTokens() {
+      this.debugLog('Buying tokens')
+
       this.su.buyTokens(this.tokenBuyerAcct, this.su.lumins(), StellarAccounts.lamboTokenAsset(), '1000', '2.233')
         .then((response) => {
           this.debugLog(response)
+
+          this.updateBalances()
         })
         .catch((error) => {
           this.debugLog(error)
@@ -118,7 +113,7 @@ export default {
         })
     },
     manageOffer() {
-      this.debugLog('Manage Offer', true)
+      this.debugLog('Managing Offer')
 
       const price = {
         n: 225,
@@ -135,6 +130,8 @@ export default {
         })
     },
     manageOfferEth() {
+      this.debugLog('Managing offer Ethereum:')
+
       this.debugLog('Manage Offer', true)
 
       const price = {
@@ -152,6 +149,8 @@ export default {
         })
     },
     lockIssuer() {
+      this.debugLog('Locking issuer:')
+
       this.su.lockAccount(this.issuerAcct)
         .then((result) => {
           this.debugLog('locked!')
@@ -162,6 +161,8 @@ export default {
         })
     },
     createTokens() {
+      this.debugLog('Creating tokens:')
+
       this.su.sendAsset(this.issuerAcct, this.distributorAcct.publicKey, '10000', StellarAccounts.lamboTokenAsset(), 'Created Tokens')
         .then((response) => {
           this.debugLog(response, false, 'Success')
@@ -171,8 +172,7 @@ export default {
         })
     },
     setDistributorTrust() {
-      // distributor must trust the asset of issuerAcct
-      // buyer must trust the distributor
+      this.debugLog('Setting distributor trust:')
       this.su.setTrustForAsset(this.distributorAcct, StellarAccounts.lamboTokenAsset(), '10000')
         .then((result) => {
           this.debugLog(result)
@@ -182,6 +182,8 @@ export default {
         })
     },
     setBuyerTrust() {
+      this.debugLog('Setting buyer trust:')
+
       // buyer must trust the distributor
       this.su.setTrustForAsset(this.tokenBuyerAcct, StellarAccounts.lamboTokenAsset(), '10000')
         .then((result) => {
@@ -221,6 +223,8 @@ export default {
       }
     },
     deleteOffers() {
+      this.debugLog('Deleting Offers')
+
       this.su.server().offers('accounts', this.distributorAcct.publicKey)
         .call()
         .then((response) => {
@@ -296,5 +300,24 @@ export default {
     padding: 20px 40px;
     margin: 10px;
     background: rgba(0,0,0,.04);
+}
+
+.accounts {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    text-align: center;
+
+    .account-item {
+        color: black;
+        font-weight: bold;
+        font-size: 0.85em;
+        margin: 5px;
+        padding: 15px;
+        border: solid 1px rgba(0,0,0,.4);
+        border-radius: 8px;
+        background: white;
+        box-shadow: 0 7px 12px -7px rgba(0,0,0,.7);
+    }
 }
 </style>

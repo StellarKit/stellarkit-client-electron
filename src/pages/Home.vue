@@ -24,7 +24,7 @@
     <h2>Accounts</h2>
     <div class='accounts'>
       <div class='account-item' v-for="item in accountsUI" @click='clickAccount(item)' :key='item.name'>
-        {{item.name}}<br> XLM: {{item.XLM}}<br>LMB: {{item.LMB}}<br><br>
+        {{item.name}}<br> XLM: {{item.XLM}}<br>LMB: {{item.LMB}}<br>
       </div>
     </div>
   </div>
@@ -173,22 +173,7 @@ export default {
       }
     },
     updateBalances() {
-      for (let i = 0; i < StellarAccounts.accounts().length; i++) {
-        this.updateBalance(i)
-      }
-    },
-    updateBalance(index) {
-      this.su.balances(StellarAccounts.publicKey(index))
-        .then((balanceObject) => {
-          for (const key in balanceObject) {
-            StellarAccounts.updateBalance(index, key, balanceObject[key])
-          }
-        })
-        .catch((err) => {
-          StellarAccounts.updateBalance(index, 'XLM', 'ERROR')
-
-          this.debugLog(err)
-        })
+      this.su.updateBalances()
     },
     createAccount() {
       this.debugLog('create account:', true)
