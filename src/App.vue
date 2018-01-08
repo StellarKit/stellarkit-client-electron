@@ -3,7 +3,7 @@
   <navivation-drawer :ping='showNavigation' />
   <div class='main-container'>
     <div class="top-bar">
-      <v-tabs id="mobile-tabs-5" fixed dark centered>
+      <v-tabs id="mobile-tabs-5" centered>
         <ticker-component />
 
         <v-toolbar dark>

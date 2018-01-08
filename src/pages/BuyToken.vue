@@ -155,6 +155,7 @@ export default {
         flex-direction: column;
         align-items:: center;
         justify-content: center;
+        margin: 50px;
 
         .button-holder {
             padding: 10px;
@@ -168,7 +169,7 @@ export default {
         width: 600px;
         text-align: center;
         padding: 50px;
-        margin-top: 50px;
+        margin: 20px;
         box-shadow: 0 1px 3px rgba(0,0,0,.3);
         border-radius: 3px;
     }
