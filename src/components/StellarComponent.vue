@@ -1,11 +1,11 @@
 <template>
 <div>
-  <v-btn @click='clearConsole()'>Clear</v-btn>
+  <v-btn small @click='clearConsole()'>Clear</v-btn>
   <div class='output-container' v-html='consoleOutput'></div>
 
   <v-snackbar :timeout="500" :multi-line=false :vertical=true v-model="snackbarModel">
     {{snackbarText}}
-    <v-btn dark flat @click.native="snackbarModel = false">Close</v-btn>
+    <v-btn small dark flat @click.native="snackbarModel = false">Close</v-btn>
   </v-snackbar>
 </div>
 </template>

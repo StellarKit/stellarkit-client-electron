@@ -8,7 +8,7 @@
 
   <v-select :items="accountsUI" item-text='name' v-model="selectedSource" label="Source accout" autocomplete return-object max-height="600"></v-select>
   <v-select :items="accountsUI" item-text='name' v-model="selectedDest" label="Destination accout" autocomplete return-object max-height="600"></v-select>
-  <v-btn @click='swapSourceDest()'>Swap Source/Dest</v-btn>
+  <v-btn small @click='swapSourceDest()'>Swap Source/Dest</v-btn>
   <v-select :items="accountsUI" item-text='name' v-model="selectedSigner" label="Add signer to source" autocomplete return-object max-height="600"></v-select>
   <v-btn small @click="makeSelectedPayment()">Pay</v-btn>
   <v-btn small @click="deleteSelectedSource()">Delete</v-btn>
@@ -24,7 +24,7 @@
     <h2>Accounts</h2>
     <div class='accounts'>
       <div class='account-item' v-for="item in accountsUI" @click='clickAccount(item)' :key='item.name'>
-        Name: {{item.name}}<br> XLM: {{item.XLM}}<br>LMB: {{item.LMB}}<br><br>
+        {{item.name}}<br> XLM: {{item.XLM}}<br>LMB: {{item.LMB}}<br><br>
       </div>
     </div>
   </div>
@@ -260,22 +260,31 @@ export default {
 }
 
 .balances {
+    margin: 10px 0;
+    padding: 20px;
+    background: steelblue;
+    box-shadow: 0 7px 12px -7px rgba(0,0,0,.7);
+    color: white;
+    text-align: center;
+
     .accounts {
         display: flex;
         justify-content: center;
+        flex-wrap: wrap;
+        text-align: center;
 
         .account-item {
+            color: black;
+            font-weight: bold;
+            font-size: 0.85em;
             margin: 5px;
             padding: 15px;
             border: solid 1px rgba(0,0,0,.4);
             border-radius: 8px;
             background: white;
+            box-shadow: 0 7px 12px -7px rgba(0,0,0,.7);
         }
     }
-    padding: 20px;
-    width: 100%;
-    text-align: center;
-    background: lightblue;
 }
 
 .buttons {

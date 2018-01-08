@@ -3,8 +3,8 @@
   <div v-if='!showPurchase' class='start-choice'>
     <div>What would you like to use to purchase LMB tokens</div>
     <div class='button-holder'>
-      <v-btn @click="buttonClick('bitcoin')">Bitcoin</v-btn>
-      <v-btn @click="buttonClick('ethereum')">Ethereum</v-btn>
+      <v-btn small @click="buttonClick('bitcoin')">Bitcoin</v-btn>
+      <v-btn small @click="buttonClick('ethereum')">Ethereum</v-btn>
     </div>
   </div>
 

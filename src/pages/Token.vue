@@ -1,21 +1,58 @@
 <template>
 <div>
-  <v-btn @click="setDistributorTrust()">Set Distributor Trust</v-btn>
-  <v-btn @click="createTokens()">Create Tokens</v-btn>
-  <v-btn @click="lockIssuer()">Lock Issuer</v-btn>
-  <v-btn @click="manageOffer()">Manage Offer</v-btn>
-  <v-btn @click="manageOfferEth()">Manage Offer Eth</v-btn>
-  <v-btn @click="paymentPaths()">Payment Paths</v-btn>
-  <v-btn @click="buyerInfo()">Buyer Info</v-btn>
-  <v-btn @click="setBuyerTrust()">Set Buyer Trust</v-btn>
-  <v-btn @click="buyLamboTokens()">Buy Tokens</v-btn>
-
   <div class="info-area">
+    Start with three accounts: Issuer, Distributor and Buyer<br>
+    <v-btn small @click="createAccounts()">Create Accounts</v-btn>
+    <br><br>
     <div v-html='issuerHTML'></div>
     <div v-html='distributorHTML'></div>
+    <div v-html='tokenBuyerHTML'></div>
   </div>
 
-  <stellar-common :consoleOutput='consoleOutput' />
+  <div class='token-steps'>
+    <ol>
+      <li>
+        Distributor needs to trust the Issuer:<br>
+        <v-btn small @click="setDistributorTrust()">Set Distributor Trust</v-btn>
+      </li>
+      <li>
+        Create tokens by sending assets from Issuer to Distributor:<br>
+        <v-btn small @click="createTokens()">Create Tokens</v-btn>
+      </li>
+      <li>
+        Lock Issuer so more tokens can be created:<br>
+        <v-btn small @click="lockIssuer()">Lock Issuer</v-btn>
+      </li>
+      <li>
+        Post offer to exchange to sell tokens for XLM:<br>
+        <v-btn small @click="manageOffer()">Manage Offer</v-btn>
+      </li>
+      <li>
+        Post offer to exchange to sell tokens for Ethereum:<br>
+        <v-btn small @click="manageOfferEth()">Manage Offer Eth</v-btn>
+      </li>
+      <li>
+        Distributor needs to trust the Issuer:<br>
+        <v-btn small @click="buyerInfo()">Buyer Info</v-btn>
+      </li>
+      <li>
+        Buyer needs to trust the Distributor:<br>
+        <v-btn small @click="setBuyerTrust()">Set Buyer Trust</v-btn>
+      </li>
+      <li>
+        Buy tokens:<br>
+        <v-btn small @click="buyLamboTokens()">Buy Tokens</v-btn>
+      </li>
+    </ol>
+  </div>
+
+  <div>Stuff for testing</div>
+
+  <v-btn small @click="showOffers()">Show Token Offers</v-btn>
+  <v-btn small @click="deleteOffers()">Delete Token Offers</v-btn>
+  <v-btn small @click="paymentPaths()">Payment Paths</v-btn>
+
+  <stellar-common v-on:clear="consoleOutput = ''" :consoleOutput='consoleOutput' :snackbarText='snackbarText' />
 </div>
 </template>
 
@@ -43,12 +80,15 @@ export default {
     },
     distributorHTML: function () {
       return this.titleHTML('Distributor', this.distributorAcct)
+    },
+    tokenBuyerHTML: function () {
+      return this.titleHTML('Buyer', this.tokenBuyerAcct)
     }
   },
   mounted() {
-    this.updateAccounts()
+    this.createAccounts()
 
-    Helper.vue().$on('stellar-accounts-updated', this.updateAccounts)
+    Helper.vue().$on('stellar-accounts-updated', this.createAccounts)
   },
   methods: {
     buyLamboTokens() {
@@ -151,7 +191,47 @@ export default {
           this.debugLog(error)
         })
     },
-    updateAccounts() {
+    showOffers() {
+      this.debugLog('Offers:')
+
+      this.su.server().offers('accounts', this.distributorAcct.publicKey)
+        .call()
+        .then((response) => {
+          response.records.forEach((offer) => {
+            this.debugLog(offer)
+          })
+        })
+    },
+    deleteOffersFromArray(offers) {
+      const offer = offers.pop()
+      if (offer) {
+        const buying = this.su.assetFromObject(offer.buying)
+        const selling = this.su.assetFromObject(offer.selling)
+
+        this.su.manageOffer(this.distributorAcct, buying, selling, '0', offer.price_r, offer.id)
+          .then((result) => {
+            this.debugLog(result, false, 'Success')
+            // this.debugLog(result)
+
+            this.deleteOffersFromArray(offers)
+          })
+          .catch((error) => {
+            this.debugLog(error, false, 'Error')
+          })
+      }
+    },
+    deleteOffers() {
+      this.su.server().offers('accounts', this.distributorAcct.publicKey)
+        .call()
+        .then((response) => {
+          // this.debugLog(response)
+          this.deleteOffersFromArray(response.records)
+        })
+        .catch((error) => {
+          this.debugLog(error, false, 'Error')
+        })
+    },
+    createAccounts() {
       this.issuerAcct = StellarAccounts.accountWithName('Issuer')
       if (!this.issuerAcct) {
         this.su.createTestAccount('Issuer')
@@ -190,7 +270,8 @@ export default {
       result += '<strong>' + title + '</strong>' + ':  '
 
       if (acct) {
-        result += acct.publicKey + '  (XML: ' + acct.XLM + ')'
+        result += acct.publicKey + '  --  XML: ' + acct.XLM
+        result += '  --  LMB: ' + acct.LMB
       } else {
         result += '(none)'
       }
@@ -209,5 +290,11 @@ export default {
     padding: 20px;
     background: steelblue;
     color: white;
+}
+
+.token-steps {
+    padding: 20px 40px;
+    margin: 10px;
+    background: rgba(0,0,0,.04);
 }
 </style>

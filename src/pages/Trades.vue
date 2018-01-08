@@ -1,10 +1,10 @@
 <template>
 <div>
-  <v-btn @click="orderbook()">order book</v-btn>
-  <v-btn @click="offers()">offers</v-btn>
-  <v-btn @click="setLowballerTrust()">Low Ball Trust</v-btn>
-  <v-btn @click="makeLowballOffer()">Low Ball Offer</v-btn>
-  <v-btn @click="clearOffers()">Clear Offers</v-btn>
+  <v-btn small @click="orderbook()">order book</v-btn>
+  <v-btn small @click="offers()">offers</v-btn>
+  <v-btn small @click="setLowballerTrust()">Low Ball Trust</v-btn>
+  <v-btn small @click="makeLowballOffer()">Low Ball Offer</v-btn>
+  <v-btn small @click="clearOffers()">Clear Offers</v-btn>
 
   <div class="trades-content">
 
