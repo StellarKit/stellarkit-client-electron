@@ -18,6 +18,7 @@
     <v-btn small @click="setSignerForSelected()">Set Signer</v-btn>
     <v-btn small @click="payWithSigners()">Pay with Signers</v-btn>
     <v-btn small @click="mergeSelected()">Merge Selected</v-btn>
+    <v-btn small @click="testFederation()">Test Federation</v-btn>
   </div>
 
   <div class='balances'>
@@ -34,6 +35,7 @@
 <script>
 import StellarCommonMixin from '../components/StellarCommonMixin.js'
 import StellarAccounts from '../js/StellarAccounts.js'
+const $ = require('jquery')
 
 export default {
   mixins: [StellarCommonMixin],
@@ -49,6 +51,15 @@ export default {
     // this.listenForPayments()
   },
   methods: {
+    testFederation() {
+      $.get('http://192.168.1.82:8801/federation?q=bob*stellar.org&type=name',
+        (data, status, xhr) => {
+          this.debugLog(xhr.getAllResponseHeaders)
+          this.debugLog(data, 'Success')
+        }, 'json').fail((error) => {
+        this.debugLog(error, 'Error')
+      })
+    },
     horizonMetrics() {
       this.su.horizonMetrics()
         .then((response) => {
