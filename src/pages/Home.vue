@@ -35,7 +35,7 @@
 <script>
 import StellarCommonMixin from '../components/StellarCommonMixin.js'
 import StellarAccounts from '../js/StellarAccounts.js'
-const $ = require('jquery')
+const StellarSdk = require('stellar-sdk')
 
 export default {
   mixins: [StellarCommonMixin],
@@ -52,13 +52,13 @@ export default {
   },
   methods: {
     testFederation() {
-      $.get('http://192.168.1.82:8801/federation?q=bob*stellar.org&type=name',
-        (data, status, xhr) => {
-          this.debugLog(xhr.getAllResponseHeaders)
-          this.debugLog(data, 'Success')
-        }, 'json').fail((error) => {
-        this.debugLog(error, 'Error')
-      })
+      StellarSdk.FederationServer.resolve('steve*stellarkit.io')
+        .then(federationRecord => {
+          this.debugLog(federationRecord.account_id)
+        })
+        .catch(error => {
+          this.debugLog(error)
+        })
     },
     horizonMetrics() {
       this.su.horizonMetrics()
