@@ -1,10 +1,8 @@
 <template>
 <div>
   <v-btn small @click="orderbook()">order book</v-btn>
-  <v-btn small @click="offers()">offers</v-btn>
   <v-btn small @click="setLowballerTrust()">Low Ball Trust</v-btn>
   <v-btn small @click="makeLowballOffer()">Low Ball Offer</v-btn>
-  <v-btn small @click="clearOffers()">Clear Offers</v-btn>
 
   <div class="trades-content">
 
@@ -106,45 +104,6 @@ export default {
       //     this.debugLog('listen err: ' + JSON.stringify(error))
       //   }
       // })
-    },
-    offers() {
-      this.su.server().offers('accounts', this.distributorAcct.publicKey)
-        .call()
-        .then((response) => {
-          response.records.forEach((offer) => {
-            this.debugLog(offer)
-          })
-        })
-    },
-    clearOffers() {
-      this.su.server().offers('accounts', this.distributorAcct.publicKey)
-        .call()
-        .then((response) => {
-          // this.debugLog(response)
-
-          response.records.forEach((offer) => {
-            const buying = this.su.assetFromObject(offer.buying)
-            const selling = this.su.assetFromObject(offer.selling)
-
-            this.su.manageOffer(this.distributorAcct, buying, selling, '0', offer.price_r, offer.id)
-              .then((result) => {
-                this.debugLog(result, 'Success')
-                // this.debugLog(result)
-              })
-              .catch((error) => {
-                this.debugLog(error, 'Error')
-              })
-          })
-        })
-    },
-    toolbarClick(id) {
-      switch (id) {
-        case 'test':
-          this.test()
-          break
-        default:
-          break
-      }
     }
   }
 }

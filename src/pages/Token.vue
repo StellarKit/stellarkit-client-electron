@@ -6,7 +6,10 @@
     <br><br>
     <div class='accounts'>
       <div class='account-item' v-for="item in tokensUI" @click='clickAccount(item)' :key='item.name'>
-        {{item.name}}<br> XLM: {{item.XLM}}<br>LMB: {{item.LMB}}<br><br>
+        <v-tooltip open-delay='200' bottom>
+          <div slot="activator"> {{item.name}}<br> XLM: {{item.XLM}}<br>LMB: {{item.LMB}}<br><br> </div>
+          <span>{{item.publicKey}}</span>
+        </v-tooltip>
       </div>
     </div>
   </div>
