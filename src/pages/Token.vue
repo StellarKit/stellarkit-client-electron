@@ -145,8 +145,8 @@ export default {
       this.debugLog('Managing offer Ethereum:')
 
       const price = {
-        n: 225,
-        d: 1
+        n: 1,
+        d: 10
       }
 
       this.su.manageOffer(this.distributorAcct, StellarAccounts.ethereumAsset(), StellarAccounts.lamboTokenAsset(), '5000', price)
@@ -240,9 +240,11 @@ export default {
         .then((response) => {
           // this.debugLog(response)
           this.deleteOffersFromArray(response.records)
+          return true
         })
         .catch((error) => {
           this.debugLog(error, 'Error')
+          return false
         })
     },
     createAccounts() {
