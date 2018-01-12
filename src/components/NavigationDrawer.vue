@@ -20,12 +20,18 @@
       </v-list-tile-content>
     </v-list-tile>
   </v-list>
+  <donate-dialog :ping='showDonatePing' />
 </v-navigation-drawer>
 </template>
 
 <script>
+import DonateDialog from './DonateDialog.vue'
+
 export default {
   props: ['ping'],
+  components: {
+    'donate-dialog': DonateDialog
+  },
   watch: {
     ping: function () {
       this.drawer = true
@@ -34,8 +40,10 @@ export default {
   },
   data() {
     return {
+      showDonatePing: false,
       drawer: false,
       items: [{
+          id: 'donate',
           title: 'Donate',
           icon: 'dashboard'
         },
@@ -52,6 +60,13 @@ export default {
   },
   methods: {
     clickItem(item) {
+      switch (item.id) {
+        case 'donate':
+          this.showDonatePing = !this.showDonatePing
+          break
+        default:
+          break
+      }
       this.drawer = false
     }
   }

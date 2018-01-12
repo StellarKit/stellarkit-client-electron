@@ -57,7 +57,7 @@ export default {
 .ticker-box {
     position: absolute;
     z-index: 1;
-    top: 0;
+    top: 10px;
     left: 0;
     right: 0;
     justify-content: center;
@@ -65,17 +65,18 @@ export default {
     display: flex;
     flex: 0 0 auto;
     text-align: center;
-    color: rgba(255,255,255,.6);
+    color: rgba(255,255,255,.8);
     padding-top: 4px;
     font-size: 1em;
     user-select: none;
+    pointer-events: none;
 
     div {
         margin: 0 8px;
         font-weight: bold;
 
         &.percent-up {
-            color: green;
+            color: rgb(100,255,100);
         }
         &.percent-down {
             color: red;

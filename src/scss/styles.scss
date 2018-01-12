@@ -1,0 +1,11 @@
+// standard dialog mixin
+@mixin standard-dialog-contents {
+  width: 100%;
+  flex: 0 1 auto;
+  box-shadow: 0 2px 12px rgba(0,0,0,.3);
+  background: white;
+  display: flex;
+  flex-direction: column;
+  border-radius: 6px;
+  overflow: hidden;
+}

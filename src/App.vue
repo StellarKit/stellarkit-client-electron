@@ -3,28 +3,28 @@
   <navivation-drawer :ping='showNavigation' />
   <div class='main-container'>
     <div class="top-bar">
-      <v-tabs id="mobile-tabs-5" centered>
+      <v-tabs centered>
         <ticker-component />
 
-        <v-toolbar dark>
+        <v-toolbar dark class='top-toolbar'>
           <v-toolbar-side-icon @click='showDrawer'></v-toolbar-side-icon>
           <v-toolbar-title>{{pageTitle()}}</v-toolbar-title>
           <v-spacer></v-spacer>
-          <v-btn icon>
-            <v-icon>more_vert</v-icon>
+          <v-btn icon @click="showGitHub">
+            <v-icon>fa-github</v-icon>
           </v-btn>
           <v-tabs-bar slot="extension">
             <v-tabs-slider color="white"></v-tabs-slider>
-            <v-tabs-item to='/' class="primary--text">
+            <v-tabs-item to='/' class="white--text">
               <v-icon>&#xE88A;</v-icon>
             </v-tabs-item>
-            <v-tabs-item to='/buytoken' class=" primary--text ">
+            <v-tabs-item to='/buytoken' class=" white--text ">
               <v-icon>&#xE851;</v-icon>
             </v-tabs-item>
-            <v-tabs-item to='/trades' class="primary--text ">
+            <v-tabs-item to='/trades' class="white--text ">
               <v-icon>&#xE8C9;</v-icon>
             </v-tabs-item>
-            <v-tabs-item to='/token' class="primary--text ">
+            <v-tabs-item to='/token' class="white--text ">
               <v-icon>&#xE263;</v-icon>
             </v-tabs-item>
           </v-tabs-bar>
@@ -63,6 +63,7 @@ import TickerComponent from './components/TickerComponent.vue'
 import FooterComponent from './components/FooterComponent.vue'
 import Helper from './js/helper.js'
 import $ from 'jquery'
+const shell = require('electron').shell
 
 export default {
   components: {
@@ -82,6 +83,9 @@ export default {
     Helper.vue().$on('console', this.log)
   },
   methods: {
+    showGitHub() {
+      shell.openExternal('https://github.com/StellarKit')
+    },
     showDrawer() {
       this.showNavigation = !this.showNavigation
     },
@@ -113,6 +117,7 @@ export default {
 
 <style>
 @import url(https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons);
+@import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css);
 
 @import '../node_modules/vuetify/dist/vuetify.min.css'
 </style>
@@ -139,7 +144,11 @@ html {
 
     .top-bar {
         width: 100%;
-        box-shadow: 0 1px 12px rgba(0,0,0,.2);
+        box-shadow: 0 1px 12px rgba(0,0,0,.5);
+
+        .top-toolbar {
+            background: linear-gradient(to bottom, rgb(55,55,55) , rgb(22,22,22));
+        }
     }
 
     .app-content {
@@ -159,7 +168,7 @@ html {
             display: flex;
             flex: 1 1 300px;
             background: red;
-            border-top: solid 2px green;
+            border-top: solid 2px black;
 
             .console-bar {
                 display: flex;
@@ -173,7 +182,7 @@ html {
             .output-container {
                 width: 100%;
                 font-size: 0.8em;
-                background: rgb(0,40,0);
+                background: rgb(0,20,0);
                 overflow-y: auto;
                 color: rgb(0,256,150);
                 padding: 10px;
