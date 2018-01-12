@@ -487,7 +487,7 @@ export default class StellarUtils {
               }
             })
 
-            resolve(StellarAccounts.addAccount(keyPair, balances))
+            resolve(StellarAccounts.addAccount(keyPair, balances, name))
           })
           .catch((error) => {
             this.log(data)

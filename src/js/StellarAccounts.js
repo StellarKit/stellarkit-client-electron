@@ -28,7 +28,7 @@ class StellarAccounts {
   }
 
   ethereumAsset() {
-    return new StellarSdk.Asset('ETH', this.accountWithName('Distributor').publicKey)
+    return new StellarSdk.Asset('ETH', this.accountWithName('Issuer').publicKey)
   }
 
   lamboTokenAsset() {

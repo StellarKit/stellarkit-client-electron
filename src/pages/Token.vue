@@ -19,6 +19,7 @@
       <li>
         Distributor needs to trust the Issuer:<br>
         <v-btn small @click="setDistributorTrust()">Set Distributor Trust</v-btn>
+        <v-btn small @click="setDistributorTrustEth()">Set Distributor Trust Eth</v-btn>
       </li>
       <li>
         Create tokens by sending assets from Issuer to Distributor:<br>
@@ -60,7 +61,6 @@
 <script>
 import StellarCommonMixin from '../components/StellarCommonMixin.js'
 import StellarAccounts from '../js/StellarAccounts.js'
-import Helper from '../js/helper.js'
 
 export default {
   mixins: [StellarCommonMixin],
@@ -73,8 +73,6 @@ export default {
   },
   mounted() {
     this.createAccounts()
-
-    Helper.vue().$on('stellar-accounts-updated', this.createAccounts)
   },
   methods: {
     clickAccount(item) {
@@ -191,6 +189,16 @@ export default {
           this.debugLog(error)
         })
     },
+    setDistributorTrustEth() {
+      this.debugLog('Setting distributor trust eth:')
+      this.su.setTrustForAsset(this.distributorAcct, StellarAccounts.ethereumAsset(), '10000')
+        .then((result) => {
+          this.debugLog(result)
+        })
+        .catch((error) => {
+          this.debugLog(error)
+        })
+    },
     setBuyerTrust() {
       this.debugLog('Setting buyer trust:')
 
@@ -248,6 +256,8 @@ export default {
         })
     },
     createAccounts() {
+      this.debugLog('Create Accounts')
+
       this.issuerAcct = StellarAccounts.accountWithName('Issuer')
       if (!this.issuerAcct) {
         this.su.createTestAccount('Issuer')
