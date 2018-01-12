@@ -16,16 +16,16 @@
           <v-tabs-bar slot="extension">
             <v-tabs-slider color="white"></v-tabs-slider>
             <v-tabs-item to='/' class="primary--text">
-              <v-icon>home</v-icon>
+              <v-icon>&#xE88A;</v-icon>
             </v-tabs-item>
-            <v-tabs-item to='/buytoken' class="primary--text">
-              <v-icon>account_box</v-icon>
+            <v-tabs-item to='/buytoken' class=" primary--text ">
+              <v-icon>&#xE851;</v-icon>
             </v-tabs-item>
-            <v-tabs-item to='/trades' class="primary--text">
-              <v-icon>shop</v-icon>
+            <v-tabs-item to='/trades' class="primary--text ">
+              <v-icon>&#xE8C9;</v-icon>
             </v-tabs-item>
-            <v-tabs-item to='/token' class="primary--text">
-              <v-icon>monetization_on</v-icon>
+            <v-tabs-item to='/token' class="primary--text ">
+              <v-icon>&#xE263;</v-icon>
             </v-tabs-item>
           </v-tabs-bar>
         </v-toolbar>
@@ -52,7 +52,7 @@
 
   <v-snackbar :timeout="500" :multi-line=false :vertical=true v-model="snackbarModel">
     {{snackbarText}}
-    <v-btn small dark flat @click.native="snackbarModel = false">Close</v-btn>
+    <v-btn small dark flat @click.native="snackbarModel=false">Close</v-btn>
   </v-snackbar>
 </v-app>
 </template>

@@ -48,8 +48,6 @@
     </ol>
   </div>
 
-  <div>Stuff for testing</div>
-
   <v-btn small @click="showOffers()">Show Token Offers</v-btn>
   <v-btn small @click="deleteOffers()">Delete Token Offers</v-btn>
   <v-btn small @click="paymentPaths()">Payment Paths</v-btn>
