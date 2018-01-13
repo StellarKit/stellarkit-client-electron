@@ -4,7 +4,7 @@ import StellarAccounts from './StellarAccounts.js'
 
 export default class StellarUtils {
   constructor() {
-    this.network = 'local'
+    this.network = 'testnet'
     this._server = this.createServer(this.network)
 
     // need to talk to stellar directly for friendbot createTestAccout
