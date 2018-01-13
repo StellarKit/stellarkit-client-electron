@@ -1,4 +1,15 @@
 # Stellar Client
+
+A destop app that wraps much of the js-stellar-sdk
+
+To build and run:
+```
+yarn install
+yarn dev
+```
+
+## More Info
+
 > A project developed with [`electron-webpack`](https://github.com/electron-userland/electron-webpack).
 
 A client for Stellar that uses the StellarSDK
