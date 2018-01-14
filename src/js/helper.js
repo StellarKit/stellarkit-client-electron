@@ -1,4 +1,7 @@
  import Vue from 'vue'
+ import {
+   ipcRenderer
+ } from 'electron'
 
  export default class Helper {
    static vue() {
@@ -20,5 +23,26 @@
      }
 
      return inString.length
+   }
+
+   static get(key) {
+     let result = ipcRenderer.sendSync('get', key)
+
+     // some defaults
+     if (result === null) {
+       switch (key) {
+         case 'server':
+           result = 'testnet'
+           break
+         default:
+           break
+       }
+     }
+
+     return result
+   }
+
+   static set(key, value) {
+     ipcRenderer.send('set', key, value)
    }
  }

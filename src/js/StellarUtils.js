@@ -1,75 +1,11 @@
 const StellarSdk = require('stellar-sdk')
 const $ = require('jquery')
 import StellarAccounts from './StellarAccounts.js'
+import StellarServer from './StellarServer.js'
 
 export default class StellarUtils {
   constructor() {
-    this.network = 'testnet'
-    this._server = this.createServer(this.network)
-
-    // need to talk to stellar directly for friendbot createTestAccout
-    this._stellarServer = this.createServer('testnet')
-  }
-
-  createServer(network) {
-    let result
-    const url = this.serverURL(network)
-
-    switch (network) {
-      case 'testnet':
-        StellarSdk.Network.useTestNetwork()
-        result = new StellarSdk.Server(url)
-        break
-      case 'mainnet':
-        StellarSdk.Network.usePublicNetwork()
-        result = new StellarSdk.Server(url)
-        break
-      case 'local':
-        StellarSdk.Network.useTestNetwork()
-
-        result = new StellarSdk.Server(url, {
-          allowHttp: true
-        })
-        break
-      case 'stellarkit':
-        StellarSdk.Network.useTestNetwork()
-        result = new StellarSdk.Server(url)
-        break
-      default:
-        console.log('ERROR: switch failed')
-        break
-    }
-
-    return result
-  }
-
-  serverURL(network) {
-    let result
-    const useGlobalIP = false
-
-    switch (network) {
-      case 'testnet':
-        result = 'https://horizon-testnet.stellar.org'
-        break
-      case 'mainnet':
-        result = 'https://horizon.stellar.org'
-        break
-      case 'local':
-        if (useGlobalIP) {
-          result = 'http://104.11.210.243:8000'
-        } else {
-          result = 'http://192.168.1.82:8000'
-        }
-        break
-      case 'stellarkit':
-        result = 'https://stellarkit.io:8000'
-        break
-      default:
-        console.log('ERROR: switch failed')
-        break
-    }
-
-    return result
+    this.s = new StellarServer()
   }
 
   horizonMetrics() {
@@ -86,7 +22,11 @@ export default class StellarUtils {
   }
 
   server() {
-    return this._server
+    return this.s.server()
+  }
+
+  friendBotServer() {
+    return this.s.friendBotServer()
   }
 
   lumins() {
@@ -475,7 +415,7 @@ export default class StellarUtils {
 
       $.get(url, (data) => {
         // user setup by friendbot won't be on our server until it syncs, so just use stellars testnet
-        this._stellarServer.loadAccount(keyPair.publicKey())
+        this.friendBotServer().loadAccount(keyPair.publicKey())
           .then((account) => {
             const balances = {}
 
@@ -516,7 +456,7 @@ export default class StellarUtils {
       .catch((err) => {
         StellarAccounts.updateBalance(index, 'XLM', 'ERROR')
 
-        this.debugLog(err)
+        this.log(err)
       })
   }
 }

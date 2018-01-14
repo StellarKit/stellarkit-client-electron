@@ -32,6 +32,7 @@
       </v-tabs>
     </div>
 
+    <network-menu />
     <div class='app-content'>
       <div class='router-container '>
         <keep-alive>
@@ -61,6 +62,7 @@
 import NavigationDrawer from './components/NavigationDrawer.vue'
 import TickerComponent from './components/TickerComponent.vue'
 import FooterComponent from './components/FooterComponent.vue'
+import NetworkMenu from './components/NetworkMenu.vue'
 import Helper from './js/helper.js'
 import $ from 'jquery'
 const shell = require('electron').shell
@@ -69,7 +71,8 @@ export default {
   components: {
     'ticker-component': TickerComponent,
     'footer-component': FooterComponent,
-    'navivation-drawer': NavigationDrawer
+    'navivation-drawer': NavigationDrawer,
+    'network-menu': NetworkMenu
   },
   data() {
     return {

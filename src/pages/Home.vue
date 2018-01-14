@@ -5,9 +5,12 @@
     <v-btn small @click="refresh()">Refresh</v-btn>
     <v-btn small @click="horizonMetrics()">Horizon</v-btn>
 
-    <v-select :items="accountsUI" item-text='name' v-model="selectedSource" label="Source accout" autocomplete return-object max-height="600"></v-select>
-    <v-select :items="accountsUI" item-text='name' v-model="selectedDest" label="Destination accout" autocomplete return-object max-height="600"></v-select>
-    <v-btn small @click='swapSourceDest()'>Swap Source/Dest</v-btn>
+    <div class='address-box'>
+      <v-select :items="accountsUI" item-text='name' v-model="selectedSource" label="Source accout" autocomplete return-object max-height="600"></v-select>
+      <v-select :items="accountsUI" item-text='name' v-model="selectedDest" label="Destination accout" autocomplete return-object max-height="600"></v-select>
+      <v-btn small @click='swapSourceDest()'>Swap</v-btn>
+    </div>
+
     <v-select :items="accountsUI" item-text='name' v-model="selectedSigner" label="Add signer to source" autocomplete return-object max-height="600"></v-select>
     <v-btn small @click="makeSelectedPayment()">Pay</v-btn>
     <v-btn small @click="deleteSelectedSource()">Delete</v-btn>
@@ -23,11 +26,7 @@
 
   <div class='balances'>
     <h2>Accounts</h2>
-    <div class='accounts'>
-      <div class='account-item' v-for="item in accountsUI" @click='clickAccount(item)' :key='item.name'>
-        {{item.name}}<br> XLM: {{item.XLM}}<br>LMB: {{item.LMB}}<br>
-      </div>
-    </div>
+    <account-list :items="accountsUI" v-on:click-item="clickAccount" />
   </div>
 </div>
 </template>
@@ -36,9 +35,13 @@
 import StellarCommonMixin from '../components/StellarCommonMixin.js'
 import StellarAccounts from '../js/StellarAccounts.js'
 const StellarSdk = require('stellar-sdk')
+import AccountList from '../components/AccountList.vue'
 
 export default {
   mixins: [StellarCommonMixin],
+  components: {
+    'account-list': AccountList
+  },
   data() {
     return {
       selectedSource: null,
@@ -245,30 +248,19 @@ export default {
     padding: 20px;
 }
 
+.address-box {
+    display: flex;
+    align-items: center;
+    div.input-group {
+        margin-right: 16px;
+    }
+}
+
 .balances {
     padding: 10px;
     background: steelblue;
     box-shadow: 0 7px 12px -7px rgba(0,0,0,.7);
     color: white;
     text-align: center;
-
-    .accounts {
-        display: flex;
-        justify-content: center;
-        flex-wrap: wrap;
-        text-align: center;
-
-        .account-item {
-            color: black;
-            font-weight: bold;
-            font-size: 0.85em;
-            margin: 5px;
-            padding: 15px;
-            border: solid 1px rgba(0,0,0,.4);
-            border-radius: 8px;
-            background: white;
-            box-shadow: 0 7px 12px -7px rgba(0,0,0,.7);
-        }
-    }
 }
 </style>

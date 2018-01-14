@@ -4,14 +4,7 @@
     Start with three accounts: Issuer, Distributor and Buyer<br>
     <v-btn small @click="createAccounts()">Create Accounts</v-btn>
     <br><br>
-    <div class='accounts'>
-      <div class='account-item' v-for="item in tokensUI" @click='clickAccount(item)' :key='item.name'>
-        <v-tooltip open-delay='200' bottom>
-          <div slot="activator"> {{item.name}}<br> XLM: {{item.XLM}}<br>LMB: {{item.LMB}}<br><br> </div>
-          <span>{{item.publicKey}}</span>
-        </v-tooltip>
-      </div>
-    </div>
+    <account-list :items="tokensUI" v-on:click-item="clickAccount" />
   </div>
 
   <div class='token-steps'>
@@ -58,6 +51,7 @@
 
 <script>
 import StellarCommonMixin from '../components/StellarCommonMixin.js'
+import AccountList from '../components/AccountList.vue'
 import StellarAccounts from '../js/StellarAccounts.js'
 
 export default {
@@ -69,11 +63,15 @@ export default {
       tokenBuyerAcct: null
     }
   },
+  components: {
+    'account-list': AccountList
+  },
   mounted() {
     this.createAccounts()
   },
   methods: {
     clickAccount(item) {
+      console.log(item)
       this.infoForPublicKey(item.publicKey)
       this.debugLog(item.masterKey)
       this.debugLog(item.name)
@@ -319,24 +317,5 @@ export default {
 .token-steps {
     padding: 20px 40px;
     background: rgba(0,0,0,.04);
-}
-
-.accounts {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    text-align: center;
-
-    .account-item {
-        color: black;
-        font-weight: bold;
-        font-size: 0.85em;
-        margin: 5px;
-        padding: 15px;
-        border: solid 1px rgba(0,0,0,.4);
-        border-radius: 8px;
-        background: white;
-        box-shadow: 0 7px 12px -7px rgba(0,0,0,.7);
-    }
 }
 </style>

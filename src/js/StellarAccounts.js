@@ -1,7 +1,4 @@
 const StellarSdk = require('stellar-sdk')
-import {
-  ipcRenderer
-} from 'electron'
 const generateName = require('sillyname')
 import Helper from '../js/helper.js'
 
@@ -95,8 +92,7 @@ class StellarAccounts {
   }
 
   loadAccounts() {
-    ipcRenderer.send('get', 'accounts', this._accounts)
-    const accounts = ipcRenderer.sendSync('get', 'accounts')
+    const accounts = Helper.get('accounts')
 
     if (accounts.length > 0) {
       this._accounts = accounts
@@ -106,7 +102,7 @@ class StellarAccounts {
   }
 
   saveAccounts() {
-    ipcRenderer.send('set', 'accounts', this._accounts)
+    Helper.set('accounts', this._accounts)
 
     Helper.emit('stellar-accounts-updated')
   }
