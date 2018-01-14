@@ -9,7 +9,7 @@ export default class StellarUtils {
   }
 
   horizonMetrics() {
-    const url = this.serverURL(this.network) + '/metrics'
+    const url = this.s.serverURL(this.network) + '/metrics'
 
     const promise = new Promise((resolve, reject) => {
       $.get(url, (response) => {
