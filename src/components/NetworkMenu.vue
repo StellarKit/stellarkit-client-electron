@@ -45,7 +45,7 @@ export default {
         },
         {
           id: 'local',
-          title: 'Testnet - Stellar',
+          title: 'Testnet - Local',
           icon: 'cloud_circle'
         }
       ]
