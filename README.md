@@ -8,7 +8,13 @@ yarn install
 yarn dev
 ```
 
-## More Info
+### Donations
+If you like this code, a donation would be appreciated:
+```
+GCYQSB3UQDSISB5LKAL2OEVLAYJNIR7LFVYDNKRMLWQKDCBX4PU3Z6JP
+```
+
+### More Info
 
 > A project developed with [`electron-webpack`](https://github.com/electron-userland/electron-webpack).
 
