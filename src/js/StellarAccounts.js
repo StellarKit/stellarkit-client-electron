@@ -94,7 +94,7 @@ class StellarAccounts {
   loadAccounts() {
     const accounts = Helper.get('accounts')
 
-    if (accounts.length > 0) {
+    if (accounts && accounts.length > 0) {
       this._accounts = accounts
     } else {
       console.log('no accounts')
