@@ -7,6 +7,7 @@
     <v-text-field label="XLM" v-model.trim="value1" @keyup.enter="enterKeyAction()" id='autofocusTextField' required></v-text-field>
     <v-text-field label="Secret Key" v-model.trim="value2" @keyup.enter="enterKeyAction()"></v-text-field>
     <v-btn @click='donate'>Sign in with Ledger Nano</v-btn>
+    Browser support must be OFF. Check your settings if it doesn't connect.
 
     <div class='button-holder'>
       <v-btn round color='secondary' @click="visible = false">
