@@ -2,27 +2,51 @@
 <v-dialog lazy v-model='visible' scrollable @keydown.esc="visible = false" max-width="600">
   <div class='main-container'>
     <div class='input-title'>
+      <v-icon dark large class='back-button' @click="dialogMode = 'start'" v-if="dialogMode !== 'start'">chevron_left</v-icon>
       Your XLM donation is appreciated.
     </div>
-    <v-text-field label="XLM" v-model.trim="value1" @keyup.enter="enterKeyAction()" id='autofocusTextField' required></v-text-field>
-    <v-text-field label="Secret Key" v-model.trim="value2" @keyup.enter="enterKeyAction()"></v-text-field>
-    <v-btn @click='donate'>Sign in with Ledger Nano</v-btn>
-    Browser support must be OFF. Check your settings if it doesn't connect.
 
-    <div class='button-holder'>
-      <v-btn round color='secondary' @click="visible = false">
-        Cancel
-      </v-btn>
-      <v-btn round color='primary' @click="enterKeyAction()">
-        Donate
-      </v-btn>
+    <div class='donate-content'>
+      <div v-if="dialogMode === 'start'" class='donate-start'>
+        <div class='title-start'>Choose Method</div>
+        <div>
+          <v-btn @click="buttonClick('useNano')">Use Ledger Nano</v-btn>
+        </div>
+        <div>
+
+          <v-btn @click="buttonClick('useKey')">Use secret key</v-btn>
+        </div>
+      </div>
+
+      <div v-else-if="dialogMode === 'useNano'" class='donate-nano'>
+        <v-text-field label="Amount" v-model.trim="value1" @keyup.enter="enterKeyAction()" autofocus></v-text-field>
+
+        <div class='sign-button-area'>
+          <v-btn @click="buttonClick('useNano')">Sign using Ledger Nano</v-btn>
+          <div>Make sure 'Browser Support' is disabled</div>
+        </div>
+      </div>
+      <div v-else-if="dialogMode === 'useKey'" class='donate-nano'>
+        <v-text-field label="Amount" v-model.trim="value1" @keyup.enter="enterKeyAction()" autofocus></v-text-field>
+        <v-text-field label="Secret Key" v-model.trim="value2" @keyup.enter="enterKeyAction()"></v-text-field>
+      </div>
+
+      <div v-if="dialogMode !== 'start'">
+        <div class='button-holder'>
+          <v-btn round color='secondary' @click="visible = false">
+            Cancel
+          </v-btn>
+          <v-btn round color='primary' @click="enterKeyAction()">
+            Send XLM
+          </v-btn>
+        </div>
+      </div>
     </div>
   </div>
 </v-dialog>
 </template>
 
 <script>
-import $ from 'jquery'
 import Helper from '../js/helper.js'
 const StellarLedger = require('stellar-ledger-api')
 const bip32Path = "44'/148'/0'"
@@ -33,14 +57,12 @@ export default {
   watch: {
     ping: function () {
       this.visible = true
-      this.$nextTick(() => {
-        $('#autofocusTextField').focus()
-      })
     }
   },
   data() {
     return {
       visible: false,
+      dialogMode: 'start',
       ledgerStatus: '',
       value1: '',
       value2: '',
@@ -52,6 +74,19 @@ export default {
     }
   },
   methods: {
+    buttonClick(id) {
+      switch (id) {
+        case 'useNano':
+          this.dialogMode = 'useNano'
+          break
+        case 'useKey':
+          this.dialogMode = 'useKey'
+          break
+        default:
+          console.log('not handled: ' + id)
+          break
+      }
+    },
     enterKeyAction() {
       if (Helper.strlen(this.value1)) {
         this.visible = false
@@ -177,10 +212,45 @@ export default {
     padding: 20px;
 
     .input-title {
+        position: relative;
+        background: steelblue;
+        color: white;
+        text-align: center;
+        padding: 10px;
         font-size: 1.2em;
+
+        .back-button {
+            position: absolute;
+            top: 5px;
+            left: 0;
+        }
+    }
+
+    .donate-content {
+        margin-top: 20px;
+
+        .donate-start {
+            .title-start {
+                font-size: 1.2em;
+                margin-bottom: 8px;
+            }
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .donate-nano {
+            .sign-button-area {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+        }
     }
 
     .button-holder {
+        margin-top: 20px;
         display: flex;
         justify-content: flex-end;
     }
