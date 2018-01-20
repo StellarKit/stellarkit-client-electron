@@ -74,18 +74,21 @@ export default {
         })
     },
     donate() {
-      new StellarLedger.Api(new StellarLedger.comm(Number.MAX_VALUE)).connect(
-        () => {
-          console.log('connected')
-          this.getPublicKey()
-        },
-        (err) => {
-          console.error(err)
-        }
-      )
+      StellarLedger.comm_node.create_async().then((comm) => {
+        console.log(comm)
+        new StellarLedger.Api(comm).getPublicKey_async("44'/148'/0'")
+          .then((result) => {
+            console.log('got here')
+            this.srcPublicKey = result['publicKey']
+            console.log(this.srcPublicKey)
+
+            this.status = 'Connected'
+            this.connected = true
+          })
+      })
     },
     getPublicKey() {
-      StellarLedger.comm.create_async().then((comm) => {
+      StellarLedger.comm_node.create_async().then((comm) => {
         const api = new StellarLedger.Api(comm)
 
         return api.getPublicKey_async(bip32Path)
@@ -140,7 +143,7 @@ export default {
       return promise
     },
     signTransaction(transaction) {
-      StellarLedger.comm.create_async().then((comm) => {
+      StellarLedger.comm_node.create_async().then((comm) => {
         const api = new StellarLedger.Api(comm)
 
         return api.signTx_async(bip32Path, transaction).then((result) => {
