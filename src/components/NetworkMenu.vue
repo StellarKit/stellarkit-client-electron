@@ -51,7 +51,7 @@ export default {
       ]
     }
   },
-  mounted() {
+  created() {
     this.server = new StellarServer()
   },
   methods: {

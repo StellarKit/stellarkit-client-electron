@@ -25,11 +25,15 @@
      return inString.length
    }
 
+   static keyForKey(key) {
+     return 'pref-' + key
+   }
+
    static get(key) {
-     let result = ipcRenderer.sendSync('get', key)
+     let result = ipcRenderer.sendSync('get', this.keyForKey(key))
 
      // some defaults
-     if (result === null) {
+     if (!result) {
        switch (key) {
          case 'server':
            result = 'testnet'
@@ -43,6 +47,6 @@
    }
 
    static set(key, value) {
-     ipcRenderer.send('set', key, value)
+     ipcRenderer.send('set', this.keyForKey(key), value)
    }
  }

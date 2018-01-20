@@ -1,5 +1,5 @@
 <template>
-<v-dialog lazy v-model='visible' scrollable @keydown.esc="visible = false" max-width="600">
+<!-- <v-dialog lazy v-model='visible' scrollable @keydown.esc="visible = false" max-width="600">
   <div class='main-container'>
     <div class='input-title'>
       Your XLM donation is appreciated.
@@ -17,7 +17,7 @@
       </v-btn>
     </div>
   </div>
-</v-dialog>
+</v-dialog> -->
 </template>
 
 <script>
