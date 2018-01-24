@@ -19,16 +19,19 @@
       </div>
 
       <div v-else-if="dialogMode === 'useNano'" class='donate-nano'>
-        <v-text-field label="Amount" v-model.trim="value1" @keyup.enter="enterKeyAction()" autofocus></v-text-field>
+        <v-text-field label="Amount" type='number' v-model.trim="xlm" @keyup.enter="buttonClick('sendAsset')" autofocus></v-text-field>
 
         <div class='sign-button-area'>
-          <v-btn @click="buttonClick('useNano')">Sign using Ledger Nano</v-btn>
-          <div>Make sure 'Browser Support' is disabled</div>
+          <v-btn @click="buttonClick('sendAsset')" :disabled="!connected">Sign using Ledger Nano</v-btn>
+          <div v-if="!connected">Make sure 'Browser Support' is disabled</div>
+          <div>{{status}}</div>
         </div>
       </div>
       <div v-else-if="dialogMode === 'useKey'" class='donate-nano'>
-        <v-text-field label="Amount" v-model.trim="value1" @keyup.enter="enterKeyAction()" autofocus></v-text-field>
-        <v-text-field label="Secret Key" v-model.trim="value2" @keyup.enter="enterKeyAction()"></v-text-field>
+        <v-text-field label="Amount" v-model.trim="value1" @keyup.enter="buttonClick('sendAssetSecretKey')" autofocus></v-text-field>
+        <v-text-field label="Secret Key" v-model.trim="value2" @keyup.enter="buttonClick('sendAssetSecretKey')"></v-text-field>
+
+        <v-btn @click="buttonClick('sendAssetSecretKey')">Send XLM</v-btn>
       </div>
 
       <div v-if="dialogMode !== 'start'">
@@ -51,9 +54,11 @@ import Helper from '../js/helper.js'
 const StellarLedger = require('stellar-ledger-api')
 const bip32Path = "44'/148'/0'"
 const StellarSdk = require('stellar-sdk')
+import StellarCommonMixin from './StellarCommonMixin.js'
 
 export default {
   props: ['ping'],
+  mixins: [StellarCommonMixin],
   watch: {
     ping: function () {
       this.visible = true
@@ -63,14 +68,11 @@ export default {
     return {
       visible: false,
       dialogMode: 'start',
-      ledgerStatus: '',
+      status: '',
       value1: '',
       value2: '',
-      srcPublicKey: '',
-      destPublicKey: 'GCYQSB3UQDSISB5LKAL2OEVLAYJNIR7LFVYDNKRMLWQKDCBX4PU3Z6JP',
       connected: true,
-      xlm: 0,
-      status: ''
+      xlm: 1
     }
   },
   methods: {
@@ -78,9 +80,20 @@ export default {
       switch (id) {
         case 'useNano':
           this.dialogMode = 'useNano'
+
+          this.connectLedger()
           break
         case 'useKey':
           this.dialogMode = 'useKey'
+          break
+        case 'sendAsset':
+          {
+            const stringAmount = String(this.xlm)
+
+            this.sendAsset('GCYQSB3UQDSISB5LKAL2OEVLAYJNIR7LFVYDNKRMLWQKDCBX4PU3Z6JP', stringAmount)
+          }
+          break
+        case 'sendAssetSecretKey':
           break
         default:
           console.log('not handled: ' + id)
@@ -93,111 +106,118 @@ export default {
         this.$emit('close', true, this.value1, this.value2)
       }
     },
-    sendXLM() {
-      this.status = 'sending ' + this.xlm + ' XLM'
-      console.log('sending')
-
-      const stringAmount = this.xlm
-      this.xlm = 0
-
-      this.su.sendAsset(this.srcPublicKey, this.destPublicKey, stringAmount)
-        .then((response) => {
-          this.status = 'XML sent.  Thank You!'
-        })
-        .catch((error) => {
-          this.status = 'Error sending XLM'
-          console.log(error)
-        })
-    },
-    donate() {
+    connectLedger() {
+      this.connected = false
       StellarLedger.comm_node.create_async().then((comm) => {
-        console.log(comm)
-        new StellarLedger.Api(comm).getPublicKey_async("44'/148'/0'")
-          .then((result) => {
-            console.log('got here')
-            this.srcPublicKey = result['publicKey']
-            console.log(this.srcPublicKey)
-
-            this.status = 'Connected'
-            this.connected = true
-          })
+        new StellarLedger.Api(comm).connect(() => {
+          this.connected = true
+        }, (error) => {
+          this.status = 'Error: ' + error
+        })
       })
     },
     getPublicKey() {
-      StellarLedger.comm_node.create_async().then((comm) => {
-        const api = new StellarLedger.Api(comm)
-
-        return api.getPublicKey_async(bip32Path)
-          .then((result) => {
-            this.srcPublicKey = result['publicKey']
-            console.log(this.srcPublicKey)
-
-            this.status = 'Connected'
-            this.connected = true
-          }).catch((err) => {
-            console.error(err)
-          })
-      })
-    },
-    sendAsset(sourceAcct, destKey, amount) {
       const promise = new Promise((resolve, reject) => {
-        this.server().loadAccount(destKey)
-          .catch(StellarSdk.NotFoundError, (error) => {
-            reject(error)
-          })
-          .then(() => {
-            return this.server().loadAccount(sourceAcct.publicKey)
-          })
-          .then((sourceAccount) => {
-            const builder = new StellarSdk.TransactionBuilder(sourceAccount)
-              .addOperation(StellarSdk.Operation.payment({
-                destination: destKey,
-                asset: StellarSdk.Asset.native(),
-                amount: amount
-              }))
+        StellarLedger.comm_node.create_async().then((comm) => {
+          new StellarLedger.Api(comm).getPublicKey_async(bip32Path)
+            .then((result) => {
+              resolve(result['publicKey'])
+            })
+            .catch((error) => {
+              reject(error)
+            })
+        })
+      })
 
-            const transaction = builder.build()
+      return promise
+    },
+    loadAccount(destKey) {
+      const promise = new Promise((resolve, reject) => {
+        this.su.server().loadAccount(destKey)
+          .then((destAccount) => {
+            this.getPublicKey()
+              .then((sourcePublicKey) => {
+                this.su.server().loadAccount(sourcePublicKey)
+                  .then((sourceAccount) => {
+                    resolve(sourceAccount)
+                  })
+                  .catch((error) => {
+                    console.log('load failed')
 
-            this.signTransaction(transaction)
-              .then(() => {
-                this.status = 'Submitting transaction...'
-
-                return this.server().submitTransaction(transaction)
+                    this.status = 'Failed to load source account: ' + error
+                    reject(error)
+                  })
               })
-              .catch(() => {
-                this.status = 'Error signing transaction'
+              .catch((error) => {
+                this.status = 'Failed to get source public key: ' + error
+                reject(error)
               })
-          })
-          .then((response) => {
-            resolve(response)
           })
           .catch((error) => {
+            this.status = 'Failed to load destination account: ' + error
             reject(error)
           })
       })
 
       return promise
     },
-    signTransaction(transaction) {
-      StellarLedger.comm_node.create_async().then((comm) => {
-        const api = new StellarLedger.Api(comm)
+    sendAsset(destKey, amount) {
+      this.loadAccount(destKey)
+        .then((sourceAccount) => {
+          const builder = new StellarSdk.TransactionBuilder(sourceAccount)
+            .addOperation(StellarSdk.Operation.payment({
+              destination: destKey,
+              asset: StellarSdk.Asset.native(),
+              amount: amount
+            }))
 
-        return api.signTx_async(bip32Path, transaction).then((result) => {
-          const signature = result['signature']
-          this.addSignatureToTransaction(signature, transaction)
-        }).catch((err) => {
-          console.error(err)
+          const transaction = builder.build()
+
+          this.status = 'Confirm on Nano...'
+
+          this.signTransaction(sourceAccount.accountId(), transaction)
+            .then((signed) => {
+              this.status = 'Submitting transaction...'
+
+              return this.su.server().submitTransaction(signed)
+            })
+            .then((response) => {
+              console.log(response)
+              this.status = 'Send successful!'
+            })
+            .catch((error) => {
+              this.status = 'Error signing transaction: ' + error
+            })
+        })
+        .catch((error) => {
+          this.status = 'Error loading account: ' + error
+        })
+    },
+    signTransaction(sourceKey, transaction) {
+      const promise = new Promise((resolve, reject) => {
+        StellarLedger.comm_node.create_async().then((comm) => {
+          new StellarLedger.Api(comm).signTx_async(bip32Path, transaction)
+            .then((result) => {
+              const signature = result['signature']
+
+              const keyPair = StellarSdk.Keypair.fromPublicKey(sourceKey)
+              const hint = keyPair.signatureHint()
+              const decorated = new StellarSdk.xdr.DecoratedSignature({
+                hint: hint,
+                signature: signature
+              })
+
+              transaction.signatures.push(decorated)
+
+              resolve(transaction)
+            })
+            .catch((err) => {
+              console.log(err)
+              reject(err)
+            })
         })
       })
-    },
-    addSignatureToTransaction(publicKey, signature, transaction) {
-      const keyPair = StellarSdk.Keypair.fromPublicKey(publicKey)
-      const hint = keyPair.signatureHint()
-      const decorated = new StellarSdk.xdr.DecoratedSignature({
-        hint: hint,
-        signature: signature
-      })
-      transaction.signatures.push(decorated)
+      return promise
     }
   }
 }
