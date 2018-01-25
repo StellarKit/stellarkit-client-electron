@@ -13,34 +13,37 @@
           <v-btn @click="buttonClick('useNano')">Use Ledger Nano</v-btn>
         </div>
         <div>
-
           <v-btn @click="buttonClick('useKey')">Use secret key</v-btn>
+        </div>
+
+        <div class='own-wallet'>
+          Or use your favorite wallet:<br>To: <span class='xlm-address'>GCYQSB3UQDSISB5LKAL2OEVLAYJNIR7LFVYDNKRMLWQKDCBX4PU3Z6JP</span>
         </div>
       </div>
 
       <div v-else-if="dialogMode === 'useNano'" class='donate-nano'>
-        <v-text-field label="Amount" type='number' v-model.trim="xlm" @keyup.enter="buttonClick('sendAsset')" autofocus></v-text-field>
+        <v-text-field label="Lumens" type='number' v-model.trim="xlm" @keyup.enter="buttonClick('sendWithNano')" autofocus></v-text-field>
 
         <div class='sign-button-area'>
-          <v-btn @click="buttonClick('sendAsset')" :disabled="!connected">Sign using Ledger Nano</v-btn>
+          <v-btn @click="buttonClick('sendWithNano')" :disabled="!connected">Send with Ledger Nano</v-btn>
           <div v-if="!connected">Make sure 'Browser Support' is disabled</div>
           <div>{{status}}</div>
         </div>
       </div>
-      <div v-else-if="dialogMode === 'useKey'" class='donate-nano'>
-        <v-text-field label="Amount" v-model.trim="value1" @keyup.enter="buttonClick('sendAssetSecretKey')" autofocus></v-text-field>
-        <v-text-field label="Secret Key" v-model.trim="value2" @keyup.enter="buttonClick('sendAssetSecretKey')"></v-text-field>
+      <div v-else-if="dialogMode === 'useKey'" class='donate-secret'>
+        <div class='sign-button-area'>
+          <v-text-field label="Amount" type='number' v-model.trim="xlm" autofocus></v-text-field>
+          <v-text-field label="Secret Key" v-model.trim="secretKey" @keyup.enter="buttonClick('sendWithSecret')" hint="Starts with an 'S'" :append-icon="showSecret ? 'visibility_off' : 'visibility'" :append-icon-cb="() => (showSecret = !showSecret)" :type="showSecret ? 'text' : 'password'"></v-text-field>
 
-        <v-btn @click="buttonClick('sendAssetSecretKey')">Send XLM</v-btn>
+          <v-btn @click="buttonClick('sendWithSecret')" :disabled="disableSendLumens">Send Lumens</v-btn>
+          <div>{{status}}</div>
+        </div>
       </div>
 
-      <div v-if="dialogMode !== 'start'">
+      <div>
         <div class='button-holder'>
-          <v-btn round color='secondary' @click="visible = false">
-            Cancel
-          </v-btn>
-          <v-btn round color='primary' @click="enterKeyAction()">
-            Send XLM
+          <v-btn round color='primary' @click="visible = false">
+            Close
           </v-btn>
         </div>
       </div>
@@ -54,14 +57,20 @@ import Helper from '../js/helper.js'
 const StellarLedger = require('stellar-ledger-api')
 const bip32Path = "44'/148'/0'"
 const StellarSdk = require('stellar-sdk')
-import StellarCommonMixin from './StellarCommonMixin.js'
 
 export default {
   props: ['ping'],
-  mixins: [StellarCommonMixin],
   watch: {
     ping: function () {
       this.visible = true
+
+      // reset if reopened
+      this.dialogMode = 'start'
+      this.status = ''
+      this.secretKey = ''
+      this.connected = false
+      this.xlm = 40
+      this.showSecret = false
     }
   },
   data() {
@@ -69,59 +78,62 @@ export default {
       visible: false,
       dialogMode: 'start',
       status: '',
-      value1: '',
-      value2: '',
+      secretKey: '',
       connected: true,
-      xlm: 1
+      xlm: 40,
+      showSecret: false,
+      server: null,
+      destinationKey: 'GCYQSB3UQDSISB5LKAL2OEVLAYJNIR7LFVYDNKRMLWQKDCBX4PU3Z6JP' // desktop
+      // destinationKey: 'GBJC6AF4I5FUTYMG4CXC3V2NYMIQANBRB4UQYY3M2RRZCXCNLFR7TN7J' // nano
     }
+  },
+  computed: {
+    disableSendLumens: function () {
+      return Helper.strlen(this.secretKey) < 10 || this.xlm < 1
+    }
+  },
+  created() {
+    StellarSdk.Network.usePublicNetwork()
+    this.server = new StellarSdk.Server('https://horizon.stellar.org')
   },
   methods: {
     buttonClick(id) {
       switch (id) {
         case 'useNano':
           this.dialogMode = 'useNano'
+          this.status = ''
 
           this.connectLedger()
           break
         case 'useKey':
           this.dialogMode = 'useKey'
+          this.status = ''
           break
-        case 'sendAsset':
-          {
-            const stringAmount = String(this.xlm)
-
-            this.sendAsset('GCYQSB3UQDSISB5LKAL2OEVLAYJNIR7LFVYDNKRMLWQKDCBX4PU3Z6JP', stringAmount)
-          }
+        case 'sendWithNano':
+          this.sendWithNano()
           break
-        case 'sendAssetSecretKey':
+        case 'sendWithSecret':
+          this.sendWithSecret()
           break
         default:
           console.log('not handled: ' + id)
           break
       }
     },
-    enterKeyAction() {
-      if (Helper.strlen(this.value1)) {
-        this.visible = false
-        this.$emit('close', true, this.value1, this.value2)
-      }
-    },
     connectLedger() {
       this.connected = false
 
-      // Number.MAX_VALUE and Number.MAX_SAFE_INTEGER just fail instantly with 'timeout'
-      // const timeout = ((1000 * 60) * 60) * 24
-
+      // Number.MAX_VALUE
       StellarLedger.comm_node.create_async()
         .then((comm) => {
           new StellarLedger.Api(comm).connect(() => {
             this.connected = true
           }, (error) => {
-            this.status = 'Error: ' + error
+            this.status = 'Error: ' + JSON.stringify(error)
           })
         })
     },
-    getPublicKey() {
+    getPublicKeyFromNano() {
       const promise = new Promise((resolve, reject) => {
         StellarLedger.comm_node.create_async().then((comm) => {
           new StellarLedger.Api(comm).getPublicKey_async(bip32Path)
@@ -136,91 +148,127 @@ export default {
 
       return promise
     },
-    loadAccount(destKey) {
+    loadAccount(signWithNano) {
       const promise = new Promise((resolve, reject) => {
-        this.su.server().loadAccount(destKey)
-          .then((destAccount) => {
-            this.getPublicKey()
-              .then((sourcePublicKey) => {
-                this.su.server().loadAccount(sourcePublicKey)
-                  .then((sourceAccount) => {
-                    resolve(sourceAccount)
-                  })
-                  .catch((error) => {
-                    console.log('load failed')
-
-                    this.status = 'Failed to load source account: ' + error
-                    reject(error)
-                  })
-              })
-              .catch((error) => {
-                this.status = 'Failed to get source public key: ' + error
-                reject(error)
-              })
-          })
+        this.server.loadAccount(this.destinationKey)
           .catch((error) => {
             this.status = 'Failed to load destination account: ' + error
             reject(error)
+          })
+          .then((destAccount) => {
+            if (signWithNano) {
+              this.getPublicKeyFromNano()
+                .catch((error) => {
+                  this.status = 'Failed to get source public key: ' + error
+                  reject(error)
+                })
+                .then((sourcePublicKey) => {
+                  this.server.loadAccount(sourcePublicKey)
+                    .then((sourceAccount) => {
+                      resolve(sourceAccount)
+                    })
+                    .catch((error) => {
+                      this.status = 'Failed to load source account: ' + error
+                      reject(error)
+                    })
+                })
+            } else {
+              const keyPair = StellarSdk.Keypair.fromSecret(this.secretKey)
+
+              this.server.loadAccount(keyPair.publicKey())
+                .then((sourceAccount) => {
+                  resolve(sourceAccount)
+                })
+                .catch((error) => {
+                  this.status = 'Failed to load source account: ' + error
+                  reject(error)
+                })
+            }
           })
       })
 
       return promise
     },
-    sendAsset(destKey, amount) {
-      this.loadAccount(destKey)
+    sendWithNano() {
+      this.sendPayment(true)
+    },
+    sendWithSecret() {
+      this.sendPayment(false)
+    },
+    sendPayment(signWithNano) {
+      if (this.xlm < 1) {
+        this.status = 'Lumens must be greater than 0'
+        return
+      }
+      if (!signWithNano && Helper.strlen(this.secretKey) < 1) {
+        this.status = 'Please enter your secret key'
+        return
+      }
+
+      this.loadAccount(signWithNano)
+        .catch((error) => {
+          this.status = 'Error loading account: ' + error
+        })
         .then((sourceAccount) => {
           const builder = new StellarSdk.TransactionBuilder(sourceAccount)
             .addOperation(StellarSdk.Operation.payment({
-              destination: destKey,
+              destination: this.destinationKey,
               asset: StellarSdk.Asset.native(),
-              amount: amount
+              amount: String(this.xlm)
             }))
 
           const transaction = builder.build()
 
-          this.status = 'Confirm on Nano...'
-
-          this.signTransaction(sourceAccount.accountId(), transaction)
-            .then((signed) => {
+          this.signTransaction(sourceAccount.accountId(), transaction, signWithNano)
+            .then((signedTransaction) => {
               this.status = 'Submitting transaction...'
 
-              return this.su.server().submitTransaction(signed)
+              return this.server.submitTransaction(signedTransaction)
             })
             .then((response) => {
               console.log(response)
-              this.status = 'Send successful!'
+              this.status = 'Payment Successful! Thank you!'
+
+              // clear secret key
+              this.secretKey = ''
             })
             .catch((error) => {
               this.status = 'Error signing transaction: ' + error
             })
         })
-        .catch((error) => {
-          this.status = 'Error loading account: ' + error
-        })
     },
-    signTransaction(sourceKey, transaction) {
+    signTransaction(sourceKey, transaction, signWithNano) {
       const promise = new Promise((resolve, reject) => {
-        StellarLedger.comm_node.create_async().then((comm) => {
-          new StellarLedger.Api(comm).signTx_async(bip32Path, transaction)
-            .then((result) => {
-              const signature = result['signature']
+        if (signWithNano) {
+          StellarLedger.comm_node.create_async().then((comm) => {
+            this.status = 'Confirm transaction on Nano...'
 
-              const keyPair = StellarSdk.Keypair.fromPublicKey(sourceKey)
-              const hint = keyPair.signatureHint()
-              const decorated = new StellarSdk.xdr.DecoratedSignature({
-                hint: hint,
-                signature: signature
+            new StellarLedger.Api(comm).signTx_async(bip32Path, transaction)
+              .then((result) => {
+                const signature = result['signature']
+
+                const keyPair = StellarSdk.Keypair.fromPublicKey(sourceKey)
+                const hint = keyPair.signatureHint()
+                const decorated = new StellarSdk.xdr.DecoratedSignature({
+                  hint: hint,
+                  signature: signature
+                })
+
+                transaction.signatures.push(decorated)
+
+                resolve(transaction)
               })
+              .catch((err) => {
+                console.log(err)
+                reject(err)
+              })
+          })
+        } else {
+          const sourceKeys = StellarSdk.Keypair.fromSecret(this.secretKey)
 
-              transaction.signatures.push(decorated)
-
-              resolve(transaction)
-            })
-            .catch((err) => {
-              console.log(err)
-              reject(err)
-            })
-        })
+          transaction.sign(sourceKeys)
+          resolve(transaction)
+        }
       })
       return promise
     }
@@ -254,6 +302,16 @@ export default {
     .donate-content {
         margin-top: 20px;
 
+        .own-wallet {
+            margin-top: 20px;
+            text-align: center;
+
+            .xlm-address {
+                font-size: 0.9em;
+                font-weight: bold;
+            }
+        }
+
         .donate-start {
             .title-start {
                 font-size: 1.2em;
@@ -266,6 +324,13 @@ export default {
         }
 
         .donate-nano {
+            .sign-button-area {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+        .donate-secret {
             .sign-button-area {
                 display: flex;
                 flex-direction: column;
