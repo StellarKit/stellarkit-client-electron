@@ -35,7 +35,6 @@ export default {
   watch: {
     ping: function () {
       this.drawer = true
-      console.log('ping')
     }
   },
   data() {

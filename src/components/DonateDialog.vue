@@ -108,13 +108,18 @@ export default {
     },
     connectLedger() {
       this.connected = false
-      StellarLedger.comm_node.create_async().then((comm) => {
-        new StellarLedger.Api(comm).connect(() => {
-          this.connected = true
-        }, (error) => {
-          this.status = 'Error: ' + error
+
+      // Number.MAX_VALUE and Number.MAX_SAFE_INTEGER just fail instantly with 'timeout'
+      // const timeout = ((1000 * 60) * 60) * 24
+
+      StellarLedger.comm_node.create_async()
+        .then((comm) => {
+          new StellarLedger.Api(comm).connect(() => {
+            this.connected = true
+          }, (error) => {
+            this.status = 'Error: ' + error
+          })
         })
-      })
     },
     getPublicKey() {
       const promise = new Promise((resolve, reject) => {
