@@ -47,9 +47,12 @@ html {
 <style scoped lang='scss'>
 .window-wrapper {
     position: relative;
-    margin: 30px;
-    box-shadow: 0 0 30px rgba(0,0,0,.2), 0 22px 20px -19px rgba(0,0,0,.4);
-    border-radius: 8px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+    box-shadow: 0 0 4px rgba(0,0,0,.25), 0 20px 10px -19px rgba(0,0,0,.4);
+    border-radius: 16px;
     overflow: hidden;
     border: solid 2px rgb(255,255,255);
 }

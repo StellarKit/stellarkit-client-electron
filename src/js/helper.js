@@ -53,4 +53,8 @@
    static setWindowSize(width, height, center = false) {
      ipcRenderer.send('resizeWindow', width, height, center)
    }
+
+   static quitApp() {
+     ipcRenderer.send('quit')
+   }
  }

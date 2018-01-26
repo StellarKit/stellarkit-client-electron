@@ -69,6 +69,10 @@ class MainApp {
       this.settings.set(key, newVal)
     })
 
+    ipcMain.on('quit', (event) => {
+      app.quit()
+    })
+
     // async, no event.returnValue needed
     ipcMain.on('resizeWindow', (event, width, height, center) => {
       // let rect = this.mainWindow.getBounds()
