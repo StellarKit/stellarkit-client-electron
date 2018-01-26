@@ -32,6 +32,16 @@ class MainApp {
     setupContextMenu({})
     this.setupIPC()
 
+    // make rocket launch at startup
+    if (isRocket) {
+      const settings = app.getLoginItemSettings()
+      if (!settings.openAtLogin) {
+        app.setLoginItemSettings({
+          openAtLogin: true
+        })
+      }
+    }
+
     this.mainWindow = this.createMainWindow()
 
     // Quit application when all windows are closed

@@ -52,8 +52,8 @@ html {
     flex-direction: column;
     margin: 10px;
     box-shadow: 0 0 4px rgba(0,0,0,.25), 0 20px 10px -19px rgba(0,0,0,.4);
-    border-radius: 16px;
+    border-radius: 8px;
     overflow: hidden;
-    border: solid 2px rgb(255,255,255);
+    border: solid 1px rgba(255,255,255, .7);
 }
 </style>

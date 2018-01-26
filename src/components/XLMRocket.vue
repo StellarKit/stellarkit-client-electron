@@ -29,6 +29,12 @@
     <v-btn small round @click.native='buttonClick("balances")'>
       <v-icon>account_balance</v-icon> Send
     </v-btn>
+    <v-btn small round @click.native='buttonClick("donate")'>
+      <v-icon>account_balance</v-icon>Donate
+    </v-btn>
+    <v-btn small round @click.native='buttonClick("coin-market")'>
+      <v-icon>account_balance</v-icon>Coin Market
+    </v-btn>
     <v-btn small round @click.native='buttonClick("quit")'>
       <v-icon>account_balance</v-icon> Quit
     </v-btn>
@@ -39,17 +45,27 @@
 
 <script>
 import Helper from '../js/helper.js'
-import TickerComponent from './TickerComponent.vue'
+import PriceTicker from './PriceTicker.vue'
+const shell = require('electron').shell
 
 export default {
   components: {
-    'ticker-component': TickerComponent
+    'ticker-component': PriceTicker
   },
   data() {
     return {
       showMenu: false,
-      dialogMode: 'main',
+      dialogMode: 'ticker',
       status: '',
+      accounts: [{
+          name: 'Wallet',
+          key: 'GCYQSB3UQDSISB5LKAL2OEVLAYJNIR7LFVYDNKRMLWQKDCBX4PU3Z6JP'
+        },
+        {
+          name: 'Nano',
+          key: 'GBJC6AF4I5FUTYMG4CXC3V2NYMIQANBRB4UQYY3M2RRZCXCNLFR7TN7J'
+        }
+      ],
       balances: [{
         title: '4221.98332',
         cmd: 'balance'
@@ -90,14 +106,18 @@ export default {
           this.dialogMode = 'balances'
           break
         case 'ticker':
-          Helper.setWindowSize(400, 60, false)
+          Helper.setWindowSize(160, 80, false)
           this.dialogMode = 'ticker'
           break
         case 'balances':
           Helper.setWindowSize(400, 200, false)
           this.dialogMode = 'main'
           break
+        case 'donate':
+          shell.openExternal('https://stellarkit.io/#/donate')
+          break
         case 'coin-market':
+          shell.openExternal('https://coinmarketcap.com/')
           break
         default:
           console.log('buttonClick not handled: ' + id)
@@ -110,19 +130,19 @@ export default {
 <style lang="scss" scoped>
 @import '../scss/styles.scss';
 
+$alpha: 0.8;
+
 .rocket-main {
     flex: 1;
     display: flex;
     -webkit-app-region: drag;
-    background: yellow;
 
     .rocket-sidebar {
         display: flex;
 
         flex: 0 0 auto;
         flex-direction: column;
-        background: rgb(55,55,55);
-        padding: 5px;
+        background: rgba(55,55,55, $alpha);
 
         button {
             margin: 0;
@@ -131,9 +151,11 @@ export default {
     }
     .rocket-content {
         flex: 1 1 auto;
-        background: linear-gradient(to bottom, rgb(40,40,40), rgb(0,0,0), rgb(40,40,40));
+        background: rgba(0,0,0, $alpha);
         color: rgb(80,255, 80);
-        padding: 12px 8px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
 
         .rocket-list {
             display: flex;
