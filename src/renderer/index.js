@@ -6,6 +6,9 @@ import BuyToken from '../pages/BuyToken.vue'
 import Token from '../pages/Token.vue'
 import Trades from '../pages/Trades.vue'
 import $ from 'jquery'
+import {
+  ipcRenderer
+} from 'electron'
 
 import Vuetify from 'vuetify'
 Vue.use(Vuetify)
@@ -42,20 +45,19 @@ const router = new VueRouter({
   ]
 })
 
-const full = true
-
-if (full) {
+const rocket = ipcRenderer.sendSync('appMode') === 'rocket'
+if (rocket) {
   if ($('#app').length > 0) {
     new Vue(Vue.util.extend({
       el: '#app',
       router
-    }, App))
+    }, RocketApp))
   }
 } else {
   if ($('#app').length > 0) {
     new Vue(Vue.util.extend({
       el: '#app',
       router
-    }, RocketApp))
+    }, App))
   }
 }

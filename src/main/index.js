@@ -33,6 +33,11 @@ class MainApp {
 
     this.mainWindow = this.createMainWindow()
 
+    // called on startup to trigger which code gets loaded
+    ipcMain.on('appMode', (event) => {
+      event.returnValue = isRocket ? 'rocket' : 'client'
+    })
+
     ipcMain.on('get', (event, key) => {
       const result = this.settings.get(key)
 
