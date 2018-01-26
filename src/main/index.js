@@ -9,9 +9,25 @@ const setupContextMenu = require('electron-context-menu')
 const Settings = require('./settings')
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
+const isRocket = process.env.APP === 'rocket'
 
 class MainApp {
   constructor() {
+    this.prefix = 'main_'
+    this.defaultHeight = 750
+    this.defaultWidth = 700
+    this.hasFrame = true
+    this.transparent = false
+    this.resizable = true
+    if (isRocket) {
+      this.prefix = 'rocket_'
+      this.defaultHeight = 350
+      this.defaultWidth = 300
+      this.hasFrame = false
+      this.transparent = true
+      this.resizable = false
+    }
+
     this.setupSettings()
     setupContextMenu({})
 
@@ -71,10 +87,10 @@ class MainApp {
   }
 
   createMainWindow() {
-    const width = this.settings.get('main_win_width')
-    const height = this.settings.get('main_win_height')
-    let x = this.settings.get('main_win_x')
-    let y = this.settings.get('main_win_y')
+    const width = this.settings.get(this.prefKey('win_width'))
+    const height = this.settings.get(this.prefKey('win_height'))
+    let x = this.settings.get(this.prefKey('win_x'))
+    let y = this.settings.get(this.prefKey('win_y'))
 
     if (!this.windowOnScreen(x, y)) {
       x = null
@@ -88,12 +104,18 @@ class MainApp {
       show: true,
       width: width,
       height: height,
-      frame: true,
+      frame: this.hasFrame,
+      transparent: this.transparent,
+      resizable: this.resizable,
       webPreferences: {
         overlayScrollbars: true,
         overlayFullscreenVideo: true
       }
     })
+
+    if (isRocket) {
+      window.setAlwaysOnTop(true)
+    }
 
     // no ugly menus on this window, hit alt to toggle
     window.setAutoHideMenuBar(true)
@@ -109,13 +131,13 @@ class MainApp {
     // }
 
     window.on('resize', () => {
-      this.settings.set('main_win_width', window.getSize()[0])
-      this.settings.set('main_win_height', window.getSize()[1])
+      this.settings.set(this.prefKey('win_width'), window.getSize()[0])
+      this.settings.set(this.prefKey('win_height'), window.getSize()[1])
     })
 
     window.on('move', () => {
-      this.settings.set('main_win_x', window.getBounds().x)
-      this.settings.set('main_win_y', window.getBounds().y)
+      this.settings.set(this.prefKey('win_x'), window.getBounds().x)
+      this.settings.set(this.prefKey('win_y'), window.getBounds().y)
     })
 
     window.loadURL(url)
@@ -134,13 +156,17 @@ class MainApp {
     return window
   }
 
+  prefKey(key) {
+    return this.prefix + key
+  }
+
   setupSettings() {
     this.settings = new Settings('stellar-settings')
-    if (!this.settings.get('main_win_width')) {
-      this.settings.set('main_win_width', 700)
+    if (!this.settings.get(this.prefKey('win_width'))) {
+      this.settings.set(this.prefKey('win_width'), this.defaultWidth)
     }
-    if (!this.settings.get('main_win_height')) {
-      this.settings.set('main_win_height', 750)
+    if (!this.settings.get(this.prefKey('win_height'))) {
+      this.settings.set(this.prefKey('win_height'), this.defaultHeight)
     }
   }
 }

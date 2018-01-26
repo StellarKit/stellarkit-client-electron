@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import App from '../App.vue'
+import RocketApp from '../RocketApp.vue'
 import Home from '../pages/Home.vue'
 import BuyToken from '../pages/BuyToken.vue'
 import Token from '../pages/Token.vue'
@@ -41,9 +42,20 @@ const router = new VueRouter({
   ]
 })
 
-if ($('#app').length > 0) {
-  new Vue(Vue.util.extend({
-    el: '#app',
-    router
-  }, App))
+const full = true
+
+if (full) {
+  if ($('#app').length > 0) {
+    new Vue(Vue.util.extend({
+      el: '#app',
+      router
+    }, App))
+  }
+} else {
+  if ($('#app').length > 0) {
+    new Vue(Vue.util.extend({
+      el: '#app',
+      router
+    }, RocketApp))
+  }
 }

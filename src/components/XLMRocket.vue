@@ -1,9 +1,9 @@
 <template>
 <div class='rocket-main'>
   <div class='rocket-sidebar'>
-    <v-menu open-on-hover bottom offset-y>
+    <v-menu bottom offset-y>
       <v-btn @click.native='buttonClick("menu")' icon dark slot="activator">
-        <v-icon>menu</v-icon>
+        <v-icon small>menu</v-icon>
       </v-btn>
       <v-list>
         <v-list-tile v-for="item in menuItems" :key="item.title" @click="buttonClick(item.cmd)">
@@ -12,10 +12,10 @@
       </v-list>
     </v-menu>
     <v-btn @click.native='buttonClick("send")' icon dark>
-      <v-icon>monetization_on</v-icon>
+      <v-icon small>monetization_on</v-icon>
     </v-btn>
     <v-btn @click.native='buttonClick("balances")' icon dark>
-      <v-icon>account_balance</v-icon>
+      <v-icon small>account_balance</v-icon>
     </v-btn>
   </div>
 
@@ -38,22 +38,15 @@
 // import Helper from '../js/helper.js'
 
 export default {
-  props: ['ping'],
-  watch: {
-    ping: function () {
-      this.visible = true
-    }
-  },
   data() {
     return {
-      visible: true,
       dialogMode: 'main',
       status: '',
       balances: [{
         title: '4221.98332',
         cmd: 'balance'
       }, {
-        title: '4221.98332',
+        title: '4221.98382',
         cmd: 'balance'
       }, {
         title: '221.98332',
@@ -97,25 +90,27 @@ export default {
 @import '../scss/styles.scss';
 
 .rocket-main {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    padding: 6px;
     display: flex;
     -webkit-app-region: drag;
-    padding: 30px;
 
     .rocket-sidebar {
-        // -webkit-app-region: no-drag;
         display: flex;
 
         flex: 0 0 auto;
         flex-direction: column;
-        background: red;
+        background: rgb(55,55,55);
+        padding: 5px;
+
+        button {
+            margin: 0;
+            -webkit-app-region: no-drag;
+        }
     }
     .rocket-content {
         flex: 1 1 auto;
-        background: green;
+        background: linear-gradient(to bottom, rgb(40,40,40), rgb(0,0,0), rgb(40,40,40));
+        color: rgb(80,255, 80);
+        padding: 12px 8px;
 
         .rocket-list {
             display: flex;
