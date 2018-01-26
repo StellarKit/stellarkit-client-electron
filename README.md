@@ -9,9 +9,10 @@ yarn dev
 ```
 
 ### Donations
-If you like this code, a donation would be appreciated:
+If you like this code, a [`donation`](https://stellarkit.io/#/donate) would be appreciated.
+
 ```
-GCYQSB3UQDSISB5LKAL2OEVLAYJNIR7LFVYDNKRMLWQKDCBX4PU3Z6JP
+XLM: GCYQSB3UQDSISB5LKAL2OEVLAYJNIR7LFVYDNKRMLWQKDCBX4PU3Z6JP
 ```
 
 ### More Info
