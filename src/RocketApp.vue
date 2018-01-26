@@ -36,7 +36,6 @@ html {
     width: 100%;
 
     background: transparent;
-    pointer-events: none;
 }
 
 #app {

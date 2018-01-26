@@ -30,9 +30,29 @@ class MainApp {
 
     this.setupSettings()
     setupContextMenu({})
+    this.setupIPC()
 
     this.mainWindow = this.createMainWindow()
 
+    // Quit application when all windows are closed
+    app.on('window-all-closed', () => {
+      // On macOS it is common for applications to stay open
+      // until the user explicitly quits
+      if (process.platform !== 'darwin') {
+        app.quit()
+      }
+    })
+
+    app.on('activate', () => {
+      // On macOS it is common to re-create a window
+      // even after all windows have been closed
+      if (this.mainWindow === null) {
+        this.mainWindow = this.createMainWindow()
+      }
+    })
+  }
+
+  setupIPC() {
     // called on startup to trigger which code gets loaded
     ipcMain.on('appMode', (event) => {
       event.returnValue = isRocket ? 'rocket' : 'client'
@@ -49,20 +69,18 @@ class MainApp {
       this.settings.set(key, newVal)
     })
 
-    // Quit application when all windows are closed
-    app.on('window-all-closed', () => {
-      // On macOS it is common for applications to stay open
-      // until the user explicitly quits
-      if (process.platform !== 'darwin') {
-        app.quit()
-      }
-    })
+    // async, no event.returnValue needed
+    ipcMain.on('resizeWindow', (event, width, height, center) => {
+      // let rect = this.mainWindow.getBounds()
+      //
+      // rect.width = width
+      // rect.height = height
+      //
+      // this.mainWindow.setBounds(rect)
+      this.mainWindow.setSize(width, height)
 
-    app.on('activate', () => {
-      // On macOS it is common to re-create a window
-      // even after all windows have been closed
-      if (this.mainWindow === null) {
-        this.mainWindow = this.createMainWindow()
+      if (center) {
+        this.mainWindow.center()
       }
     })
   }

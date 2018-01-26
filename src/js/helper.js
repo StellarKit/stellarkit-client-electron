@@ -49,4 +49,8 @@
    static set(key, value) {
      ipcRenderer.send('set', this.keyForKey(key), value)
    }
+
+   static setWindowSize(width, height, center = false) {
+     ipcRenderer.send('resizeWindow', width, height, center)
+   }
  }

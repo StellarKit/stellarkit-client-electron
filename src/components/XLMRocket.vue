@@ -35,7 +35,7 @@
 </template>
 
 <script>
-// import Helper from '../js/helper.js'
+import Helper from '../js/helper.js'
 
 export default {
   data() {
@@ -73,8 +73,10 @@ export default {
         case 'close':
           break
         case 'send':
+          Helper.setWindowSize(400, 400, true)
           break
         case 'balances':
+          Helper.setWindowSize(400, 200, true)
           break
         case 'coin-market':
           break
