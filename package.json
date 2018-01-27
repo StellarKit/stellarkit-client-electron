@@ -6,7 +6,9 @@
     "dev": "electron-webpack dev",
     "devr": "cross-env APP=rocket electron-webpack dev",
     "compile": "electron-webpack",
+    "compiler": "cross-env APP=rocket electron-webpack",
     "dist": "yarn compile && electron-builder",
+    "distr": "yarn compiler && electron-builder",
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null",
     "postinstall": "electron-builder install-app-deps"
   },
@@ -25,7 +27,7 @@
     "request-promise-native": "^1.0.5",
     "sillyname": "^0.1.0",
     "source-map-support": "^0.5.3",
-    "stellar-ledger-api": "^2.0.3",
+    "stellar-ledger-api": "^2.0.4",
     "stellar-sdk": "^0.8.0"
   },
   "devDependencies": {
@@ -49,5 +51,8 @@
     "vuetify": "^0.17.6",
     "webpack": "^3.10.0",
     "webpack-build-notifier": "^0.1.22"
+  },
+  "resolutions": {
+    "webpack-sources": "1.0.1"
   }
 }

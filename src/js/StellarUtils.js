@@ -8,25 +8,8 @@ export default class StellarUtils {
     this.s = new StellarServer()
   }
 
-  horizonMetrics() {
-    const url = this.s.serverURL(this.network) + '/metrics'
-
-    const promise = new Promise((resolve, reject) => {
-      $.get(url, (response) => {
-        resolve(response)
-      }, 'json').fail((error) => {
-        reject(error)
-      })
-    })
-    return promise
-  }
-
   server() {
     return this.s.server()
-  }
-
-  isTestnet() {
-    return this.s.isTestnet()
   }
 
   friendBotServer() {
@@ -71,6 +54,10 @@ export default class StellarUtils {
 
   api() {
     return this.s.serverAPI()
+  }
+
+  horizonMetrics() {
+    return this.api().horizonMetrics()
   }
 
   accountInfo(publicKey) {
