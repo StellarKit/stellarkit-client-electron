@@ -1,94 +1,66 @@
-const StellarSdk = require('stellar-sdk')
-import Helper from '../js/helper.js'
+ import Helper from '../js/helper.js'
+ import StellarAPIServer from './StellarAPIServer.js'
+ import StellarAPI from './StellarAPI.js'
 
-export default class StellarServer {
-  constructor() {
-    // need to talk to stellar directly for friendbot createTestAccout
-    this._friendBotServer = this._createServer('testnet')
-  }
+ export default class StellarServer {
+   server() {
+     this._setupServer()
+     return this._stellarAPIServer.server()
+   }
 
-  server() {
-    this._setupServer()
-    return this._server
-  }
+   serverAPI() {
+     this._setupServer()
+     return this._serverAPI
+   }
 
-  friendBotServer() {
-    return this._friendBotServer
-  }
+   friendBotServer() {
+     if (!this._friendBotServer) {
+       this._friendBotServer = this._createStellarAPIServer('testnet')
+     }
 
-  serverURL() {
-    this._setupServer()
+     return this._friendBotServer.server()
+   }
 
-    return this._serverURL(this.serverKey)
-  }
+   serverURL() {
+     this._setupServer()
 
-  _setupServer() {
-    const serverKey = Helper.get('server')
+     return this._stellarAPIServer.serverURL()
+   }
 
-    if (this.serverKey !== serverKey) {
-      this._server = this._createServer(serverKey)
-      this.serverKey = serverKey
-    }
-  }
+   _setupServer() {
+     const serverKey = Helper.get('server')
 
-  _createServer(network) {
-    let result
-    const url = this._serverURL(network)
+     if (this._serverKey !== serverKey) {
+       this._stellarAPIServer = this._createStellarAPIServer(serverKey)
+       this._serverKey = serverKey
 
-    switch (network) {
-      case 'testnet':
-        StellarSdk.Network.useTestNetwork()
-        result = new StellarSdk.Server(url)
-        break
-      case 'mainnet':
-        StellarSdk.Network.usePublicNetwork()
-        result = new StellarSdk.Server(url)
-        break
-      case 'local':
-        StellarSdk.Network.useTestNetwork()
+       this._serverAPI = new StellarAPI(this._stellarAPIServer)
+     }
+   }
 
-        result = new StellarSdk.Server(url, {
-          allowHttp: true
-        })
-        break
-      case 'stellarkit':
-        StellarSdk.Network.useTestNetwork()
-        result = new StellarSdk.Server(url)
-        break
-      default:
-        console.log('ERROR: switch failed')
-        break
-    }
+   _createStellarAPIServer(network) {
+     let result
 
-    return result
-  }
+     switch (network) {
+       case 'testnet':
+         result = new StellarAPIServer('https://horizon-testnet.stellar.org', true)
+         break
+       case 'mainnet':
+         result = new StellarAPIServer('https://horizon.stellar.org', false)
+         break
+       case 'local':
+         result = new StellarAPIServer('http://192.168.1.82:8000', true, {
+           allowHttp: true
+         })
+         break
+       case 'stellarkit':
+         result = new StellarAPIServer('https://stellarkit.io:8000', true)
+         break
+       default:
+         console.log('ERROR: switch failed')
+         break
+     }
 
-  _serverURL(network) {
-    let result
-    const useGlobalIP = false
-
-    switch (network) {
-      case 'testnet':
-        result = 'https://horizon-testnet.stellar.org'
-        break
-      case 'mainnet':
-        result = 'https://horizon.stellar.org'
-        break
-      case 'local':
-        if (useGlobalIP) {
-          result = 'http://104.11.210.243:8000'
-        } else {
-          result = 'http://192.168.1.82:8000'
-        }
-        break
-      case 'stellarkit':
-        result = 'https://stellarkit.io:8000'
-        break
-      default:
-        console.log('ERROR: switch failed')
-        break
-    }
-
-    return result
-  }
-}
+     return result
+   }
+ }

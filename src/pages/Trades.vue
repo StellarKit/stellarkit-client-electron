@@ -12,7 +12,7 @@
 
   <div class="operations-content">
     <div class='operations-title'>Operations</div>
-    <div class='operations-item' v-for="item in operations" key=item.id>
+    <div class='operations-item' v-for="item in operations" :key=item.id>
       <div class='item-name'>
         {{item.name}}:
       </div>
