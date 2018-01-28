@@ -9,38 +9,15 @@ const setupContextMenu = require('electron-context-menu')
 const Settings = require('./settings')
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
-const isRocket = process.env.APP === 'rocket'
 
 class MainApp {
   constructor() {
-    this.prefix = 'main_'
     this.defaultHeight = 750
     this.defaultWidth = 700
-    this.hasFrame = true
-    this.transparent = false
-    this.resizable = true
-    if (isRocket) {
-      this.prefix = 'rocket_'
-      this.defaultHeight = 350
-      this.defaultWidth = 300
-      this.hasFrame = false
-      this.transparent = true
-      this.resizable = false
-    }
 
     this.setupSettings()
     setupContextMenu({})
     this.setupIPC()
-
-    // make rocket launch at startup
-    if (isRocket) {
-      const settings = app.getLoginItemSettings()
-      if (!settings.openAtLogin) {
-        app.setLoginItemSettings({
-          openAtLogin: true
-        })
-      }
-    }
 
     this.mainWindow = this.createMainWindow()
 
@@ -63,11 +40,6 @@ class MainApp {
   }
 
   setupIPC() {
-    // called on startup to trigger which code gets loaded
-    ipcMain.on('appMode', (event) => {
-      event.returnValue = isRocket ? 'rocket' : 'client'
-    })
-
     ipcMain.on('get', (event, key) => {
       const result = this.settings.get(key)
 
@@ -141,18 +113,14 @@ class MainApp {
       show: true,
       width: width,
       height: height,
-      frame: this.hasFrame,
-      transparent: this.transparent,
-      resizable: this.resizable,
+      frame: true,
+      transparent: false,
+      resizable: true,
       webPreferences: {
         overlayScrollbars: true,
         overlayFullscreenVideo: true
       }
     })
-
-    if (isRocket) {
-      window.setAlwaysOnTop(true)
-    }
 
     // no ugly menus on this window, hit alt to toggle
     window.setAutoHideMenuBar(true)
@@ -194,7 +162,7 @@ class MainApp {
   }
 
   prefKey(key) {
-    return this.prefix + key
+    return 'sc_' + key
   }
 
   setupSettings() {

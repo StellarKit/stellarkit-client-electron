@@ -4,11 +4,8 @@
   "license": "MIT",
   "scripts": {
     "dev": "electron-webpack dev",
-    "devr": "cross-env APP=rocket electron-webpack dev",
     "compile": "electron-webpack",
-    "compiler": "cross-env APP=rocket electron-webpack",
     "dist": "yarn compile && electron-builder",
-    "distr": "yarn compiler && electron-builder",
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null",
     "postinstall": "electron-builder install-app-deps"
   },
