@@ -2732,12 +2732,11 @@ eslint-plugin-html@^4.0.2:
   dependencies:
     htmlparser2 "^3.8.2"
 
-eslint-plugin-vue@beta:
-  version "3.14.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-vue/-/eslint-plugin-vue-3.14.0.tgz#8d2462b7dcf840a353b7eb5a92e6394581d5d697"
+eslint-plugin-vue@4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-vue/-/eslint-plugin-vue-4.2.0.tgz#25fade387bf9a97377cf0e5cd17ef0d60ac9da57"
   dependencies:
-    requireindex "^1.1.0"
-    vue-eslint-parser "^2.0.1-beta.1"
+    vue-eslint-parser "^2.0.1"
 
 eslint-scope@^3.7.1, eslint-scope@~3.7.1:
   version "3.7.1"
@@ -6184,10 +6183,6 @@ require-uncached@^1.0.3:
     caller-path "^0.1.0"
     resolve-from "^1.0.0"
 
-requireindex@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/requireindex/-/requireindex-1.1.0.tgz#e5404b81557ef75db6e49c5a72004893fe03e162"
-
 requires-port@1.0.x, requires-port@1.x.x, requires-port@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/requires-port/-/requires-port-1.0.0.tgz#925d2601d39ac485e091cf0da5c6e694dc3dcaff"
@@ -6712,6 +6707,12 @@ stellar-base@^0.7.6:
     tweetnacl "^0.14.5"
   optionalDependencies:
     ed25519 "0.0.4"
+
+"stellar-js-utils@file:../stellar-js-utils":
+  version "1.0.0"
+  dependencies:
+    jquery "^3.3.1"
+    stellar-sdk "^0.8.0"
 
 stellar-ledger-api@^2.0.4:
   version "2.0.4"
@@ -7346,7 +7347,7 @@ vue-class-component@^6.1.2:
   version "6.1.2"
   resolved "https://registry.yarnpkg.com/vue-class-component/-/vue-class-component-6.1.2.tgz#87ac0265b0db71a3f49f10d90e4f69f9be9c2fbd"
 
-vue-eslint-parser@^2.0.1-beta.1:
+vue-eslint-parser@^2.0.1:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/vue-eslint-parser/-/vue-eslint-parser-2.0.2.tgz#8d603545e9d7c134699075bd1772af1ffd86b744"
   dependencies:

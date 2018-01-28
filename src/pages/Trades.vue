@@ -216,7 +216,7 @@ export default {
     },
     setLowballerTrust() {
       // buyer must trust the distributor
-      this.su.setTrustForAsset(this.lowballerAcct, StellarAccounts.lamboTokenAsset(), '10000')
+      this.su.setTrustForAsset(this.lowballerAcct.masterKey, StellarAccounts.lamboTokenAsset(), '10000')
         .then((result) => {
           this.debugLog(result)
         })
@@ -225,7 +225,7 @@ export default {
         })
     },
     makeLowballOffer() {
-      this.su.manageOffer(this.lowballerAcct, StellarAccounts.lamboTokenAsset(), this.su.lumins(), '2', {
+      this.su.manageOffer(this.lowballerAcct.masterKey, StellarAccounts.lamboTokenAsset(), this.su.lumins(), '2', {
           n: 44,
           d: 3
         })

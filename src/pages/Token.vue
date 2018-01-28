@@ -126,7 +126,7 @@ export default {
         d: 1
       }
 
-      this.su.manageOffer(this.distributorAcct, this.su.lumins(), StellarAccounts.lamboTokenAsset(), '5000', price)
+      this.su.manageOffer(this.distributorAcct.masterKey, this.su.lumins(), StellarAccounts.lamboTokenAsset(), '5000', price)
         .then((result) => {
           this.debugLog(result, 'Success')
           // this.debugLog(result)
@@ -143,7 +143,7 @@ export default {
         d: 10
       }
 
-      this.su.manageOffer(this.distributorAcct, StellarAccounts.ethereumAsset(), StellarAccounts.lamboTokenAsset(), '5000', price)
+      this.su.manageOffer(this.distributorAcct.masterKey, StellarAccounts.ethereumAsset(), StellarAccounts.lamboTokenAsset(), '5000', price)
         .then((result) => {
           this.debugLog(result, 'Success')
           // this.debugLog(result)
@@ -155,7 +155,7 @@ export default {
     lockIssuer() {
       this.debugLog('Locking issuer:')
 
-      this.su.lockAccount(this.issuerAcct)
+      this.su.lockAccount(this.issuerAcct.masterKey)
         .then((result) => {
           this.debugLog('locked!')
           // this.debugLog(result)
@@ -167,7 +167,7 @@ export default {
     createTokens() {
       this.debugLog('Creating tokens:')
 
-      this.su.sendAsset(this.issuerAcct, this.distributorAcct.publicKey, '10000', StellarAccounts.lamboTokenAsset(), 'Created Tokens')
+      this.su.sendAsset(this.issuerAcct.masterKey, this.distributorAcct.publicKey, '10000', StellarAccounts.lamboTokenAsset(), 'Created Tokens')
         .then((response) => {
           this.debugLog(response, 'Success')
         })
@@ -177,7 +177,8 @@ export default {
     },
     setDistributorTrust() {
       this.debugLog('Setting distributor trust:')
-      this.su.setTrustForAsset(this.distributorAcct, StellarAccounts.lamboTokenAsset(), '10000')
+
+      this.su.setTrustForAsset(this.distributorAcct.masterKey, StellarAccounts.lamboTokenAsset(), '10000')
         .then((result) => {
           this.debugLog(result)
         })
@@ -187,7 +188,7 @@ export default {
     },
     setDistributorTrustEth() {
       this.debugLog('Setting distributor trust eth:')
-      this.su.setTrustForAsset(this.distributorAcct, StellarAccounts.ethereumAsset(), '10000')
+      this.su.setTrustForAsset(this.distributorAcct.masterKey, StellarAccounts.ethereumAsset(), '10000')
         .then((result) => {
           this.debugLog(result)
         })
@@ -199,7 +200,7 @@ export default {
       this.debugLog('Setting buyer trust:')
 
       // buyer must trust the distributor
-      this.su.setTrustForAsset(this.tokenBuyerAcct, StellarAccounts.lamboTokenAsset(), '10000')
+      this.su.setTrustForAsset(this.tokenBuyerAcct.masterKey, StellarAccounts.lamboTokenAsset(), '10000')
         .then((result) => {
           this.debugLog(result)
         })
@@ -224,7 +225,7 @@ export default {
         const buying = this.su.assetFromObject(offer.buying)
         const selling = this.su.assetFromObject(offer.selling)
 
-        this.su.manageOffer(this.distributorAcct, buying, selling, '0', offer.price_r, offer.id)
+        this.su.manageOffer(this.distributorAcct.masterKey, buying, selling, '0', offer.price_r, offer.id)
           .then((result) => {
             this.debugLog(result, 'Success')
             // this.debugLog(result)

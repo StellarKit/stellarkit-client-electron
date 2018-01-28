@@ -68,44 +68,40 @@ export default class StellarUtils {
     return this.api().balances(publicKey)
   }
 
-  mergeAccount(sourceAcct, destKey) {
-    return this.api().mergeAccount(sourceAcct, destKey)
+  mergeAccount(sourceSecret, destKey) {
+    return this.api().mergeAccount(sourceSecret, destKey)
   }
 
-  manageOffer(sourceAcct, buying, selling, amount, price, offerID = 0) {
-    return this.api().manageOffer(sourceAcct, buying, selling, amount, price, offerID)
+  manageOffer(sourceSecret, buying, selling, amount, price, offerID = 0) {
+    return this.api().manageOffer(sourceSecret, buying, selling, amount, price, offerID)
   }
 
-  setTrustForAsset(buyerAcct, asset, amount) {
-    return this.api().setTrustForAsset(buyerAcct, asset, amount)
+  setTrustForAsset(sourceSecret, asset, amount) {
+    return this.api().setTrustForAsset(sourceSecret, asset, amount)
   }
 
-  setDomain(acct, domain) {
-    return this.api().setDomain(acct, domain)
+  setDomain(sourceSecret, domain) {
+    return this.api().setDomain(sourceSecret, domain)
   }
 
-  makeMultiSig(sourceAcct, publicKey) {
-    return this.api().makeMultiSig(sourceAcct, publicKey)
+  makeMultiSig(sourceSecret, publicKey) {
+    return this.api().makeMultiSig(sourceSecret, publicKey)
   }
 
-  sendAsset(sourceAcct, destKey, amount, asset = null, memo = null, additionalSigners = null) {
-    return this.api().sendAsset(sourceAcct, destKey, amount, asset, memo, additionalSigners)
+  sendAsset(sourceSecret, destKey, amount, asset = null, memo = null, additionalSigners = null) {
+    return this.api().sendAsset(sourceSecret, destKey, amount, asset, memo, additionalSigners)
   }
 
-  hasAssetTrustline(account, asset) {
-    return this.api().hasAssetTrustline(account, asset)
+  buyTokens(sourceSecret, sendAsset, destAsset, sendMax, destAmount) {
+    return this.api().buyTokens(sourceSecret, sendAsset, destAsset, sendMax, destAmount)
   }
 
-  buyTokens(buyerAcct, sendAsset, destAsset, sendMax, destAmount) {
-    return this.api().buyTokens(buyerAcct, sendAsset, destAsset, sendMax, destAmount)
+  lockAccount(sourceSecret) {
+    return this.api().lockAccount(sourceSecret)
   }
 
-  lockAccount(account) {
-    return this.api().lockAccount(account)
-  }
-
-  setOptions(sourceAcct, options) {
-    return this.api().setOptions(sourceAcct, options)
+  setOptions(sourceSecret, options) {
+    return this.api().setOptions(sourceSecret, options)
   }
 
   createTestAccount(name = null) {

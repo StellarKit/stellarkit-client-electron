@@ -6,7 +6,7 @@ module.exports = {
   /* your base configuration of choice */
   extends: [
     'eslint:recommended',
-    // 'plugin:vue/recommended' // or 'plugin:vue/base'
+    'plugin:vue/base' // or 'plugin:vue/recommended'
   ],
 
   parser: 'babel-eslint',

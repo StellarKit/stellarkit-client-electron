@@ -83,7 +83,7 @@ export default {
       this.selectedDest = tmp
     },
     mergeSelected() {
-      this.su.mergeAccount(this.selectedSource, this.selectedDest.publicKey)
+      this.su.mergeAccount(this.selectedSource.masterKey, this.selectedDest.publicKey)
         .then((response) => {
           this.updateBalances()
 
@@ -94,7 +94,7 @@ export default {
         })
     },
     payWithSigners() {
-      this.su.sendAsset(this.selectedSource, this.selectedDest.publicKey, '122', null, null, [this.selectedSigner.masterKey])
+      this.su.sendAsset(this.selectedSource.masterKey, this.selectedDest.publicKey, '122', null, null, [this.selectedSigner.masterKey])
         .then((response) => {
           this.updateBalances()
 
@@ -107,7 +107,7 @@ export default {
     setSignerForSelected() {
       this.debugLog('set signer')
 
-      this.su.makeMultiSig(this.selectedSource, this.selectedSigner.publicKey)
+      this.su.makeMultiSig(this.selectedSource.masterKey, this.selectedSigner.publicKey)
         .then((result) => {
           this.debugLog('signed!')
         })
@@ -161,7 +161,7 @@ export default {
     makeSelectedPayment() {
       this.debugLog('paying')
 
-      this.su.sendAsset(this.selectedSource, this.selectedDest.publicKey, '122')
+      this.su.sendAsset(this.selectedSource.masterKey, this.selectedDest.publicKey, '122')
         .then((response) => {
           this.updateBalances()
 

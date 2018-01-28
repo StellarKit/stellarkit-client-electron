@@ -1,6 +1,8 @@
  import Helper from '../js/helper.js'
- import StellarAPIServer from './StellarAPIServer.js'
- import StellarAPI from './StellarAPI.js'
+ import {
+   StellarAPIServer,
+   StellarAPI
+ } from 'stellar-js-utils'
 
  export default class StellarServer {
    server() {
