@@ -21,7 +21,7 @@
     <v-btn small @click="setSignerForSelected()">Set Signer</v-btn>
     <v-btn small @click="payWithSigners()">Pay with Signers</v-btn>
     <v-btn small @click="mergeSelected()">Merge Selected</v-btn>
-    <v-btn small @click="testFederation()">Test Federation</v-btn>
+    <v-btn small @click="testFederation()">Federation Lookup</v-btn>
   </div>
 
   <div class='balances'>
