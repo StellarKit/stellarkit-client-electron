@@ -28,22 +28,26 @@
     <h2>Accounts</h2>
     <account-list :items="accountsUI" v-on:click-item="clickAccount" />
   </div>
+
+  <enter-string-dialog :ping='enterStringPing' />
 </div>
 </template>
 
 <script>
 import StellarCommonMixin from '../components/StellarCommonMixin.js'
 import StellarAccounts from '../js/StellarAccounts.js'
-const StellarSdk = require('stellar-sdk')
 import AccountList from '../components/AccountList.vue'
+import EnterStringDialog from '../components/EnterStringDialog.vue'
 
 export default {
   mixins: [StellarCommonMixin],
   components: {
-    'account-list': AccountList
+    'account-list': AccountList,
+    'enter-string-dialog': EnterStringDialog
   },
   data() {
     return {
+      enterStringPing: false,
       selectedSource: null,
       selectedDest: null,
       selectedSigner: null
@@ -55,13 +59,7 @@ export default {
   },
   methods: {
     testFederation() {
-      StellarSdk.FederationServer.resolve('steve*stellarkit.io')
-        .then(federationRecord => {
-          this.debugLog(federationRecord.account_id)
-        })
-        .catch(error => {
-          this.debugLog(error)
-        })
+      this.enterStringPing = !this.enterStringPing
     },
     horizonMetrics() {
       this.su.horizonMetrics()
