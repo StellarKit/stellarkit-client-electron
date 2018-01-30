@@ -137,23 +137,28 @@ export default class StellarUtils {
     return promise
   }
 
-  updateBalances() {
+  updateBalances(callback = null) {
     for (let i = 0; i < StellarAccounts.accounts().length; i++) {
-      this.updateBalance(i)
+      const publicKey = StellarAccounts.publicKey(i)
+
+      this.balances(publicKey)
+        .then((balanceObject) => {
+          for (const key in balanceObject) {
+            StellarAccounts.updateBalance(i, key, balanceObject[key])
+          }
+
+          if (callback) {
+            callback('Success: ' + publicKey)
+          }
+        })
+        .catch((err) => {
+          StellarAccounts.updateBalance(i, 'XLM', 'ERROR')
+
+          if (callback) {
+            callback('Error: ' + publicKey)
+            callback(err)
+          }
+        })
     }
-  }
-
-  updateBalance(index) {
-    this.balances(StellarAccounts.publicKey(index))
-      .then((balanceObject) => {
-        for (const key in balanceObject) {
-          StellarAccounts.updateBalance(index, key, balanceObject[key])
-        }
-      })
-      .catch((err) => {
-        StellarAccounts.updateBalance(index, 'XLM', 'ERROR')
-
-        this.log(err)
-      })
   }
 }

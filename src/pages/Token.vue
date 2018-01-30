@@ -85,9 +85,6 @@ export default {
           this.debugLog(error)
         })
     },
-    updateBalances() {
-      this.su.updateBalances()
-    },
     buyLamboTokens() {
       this.debugLog('Buying tokens')
 
@@ -95,7 +92,7 @@ export default {
         .then((response) => {
           this.debugLog(response)
 
-          this.updateBalances()
+          this.su.updateBalances()
         })
         .catch((error) => {
           this.debugLog(error)

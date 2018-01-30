@@ -54,7 +54,7 @@ export default {
     }
   },
   mounted() {
-    this.updateBalances()
+    this.su.updateBalances()
     // this.listenForPayments()
   },
   methods: {
@@ -83,7 +83,7 @@ export default {
     mergeSelected() {
       this.su.mergeAccount(this.selectedSource.masterKey, this.selectedDest.publicKey)
         .then((response) => {
-          this.updateBalances()
+          this.su.updateBalances()
 
           this.debugLog(response, 'Success')
         })
@@ -94,7 +94,7 @@ export default {
     payWithSigners() {
       this.su.sendAsset(this.selectedSource.masterKey, this.selectedDest.publicKey, '122', null, null, [this.selectedSigner.masterKey])
         .then((response) => {
-          this.updateBalances()
+          this.su.updateBalances()
 
           this.debugLog(response, 'Success')
         })
@@ -161,7 +161,7 @@ export default {
 
       this.su.sendAsset(this.selectedSource.masterKey, this.selectedDest.publicKey, '122')
         .then((response) => {
-          this.updateBalances()
+          this.su.updateBalances()
 
           this.debugLog(response, 'Success')
         })
@@ -171,15 +171,12 @@ export default {
     },
     refresh() {
       this.debugLog('refresh')
-      this.updateBalances()
+      this.su.updateBalances(this.debugLog)
     },
     listenForPayments() {
       for (let i = 0; i < StellarAccounts.accounts().length; i++) {
         this.listenForPayment(i)
       }
-    },
-    updateBalances() {
-      this.su.updateBalances()
     },
     createAccount() {
       this.debugLog('create account:')
