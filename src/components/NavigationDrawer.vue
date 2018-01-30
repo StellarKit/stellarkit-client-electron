@@ -25,7 +25,9 @@
 </template>
 
 <script>
-import DonateDialog from './DonateDialog.vue'
+import {
+  DonateDialog
+} from 'stellar-js-utils'
 
 export default {
   props: ['ping'],

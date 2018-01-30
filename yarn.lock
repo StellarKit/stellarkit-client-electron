@@ -83,8 +83,8 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-7.0.52.tgz#8990d3350375542b0c21a83cd0331e6a8fc86716"
 
 "@types/webpack-env@^1.13.2":
-  version "1.13.3"
-  resolved "https://registry.yarnpkg.com/@types/webpack-env/-/webpack-env-1.13.3.tgz#0ecbe70f87341767793774d3683b51aa3246434c"
+  version "1.13.4"
+  resolved "https://registry.yarnpkg.com/@types/webpack-env/-/webpack-env-1.13.4.tgz#ca3578299323f4fbec770bb32ed581198f0a8ed9"
 
 abbrev@1:
   version "1.1.1"
@@ -1425,8 +1425,8 @@ caniuse-api@^1.5.2:
     lodash.uniq "^4.5.0"
 
 caniuse-db@^1.0.30000529, caniuse-db@^1.0.30000634, caniuse-db@^1.0.30000639:
-  version "1.0.30000798"
-  resolved "https://registry.yarnpkg.com/caniuse-db/-/caniuse-db-1.0.30000798.tgz#92f26f77f89cc2a4d60487f41e0b3d2a6c3fe341"
+  version "1.0.30000799"
+  resolved "https://registry.yarnpkg.com/caniuse-db/-/caniuse-db-1.0.30000799.tgz#0904953de93f3f492647e58c1a1bda7a73a0cb0b"
 
 caniuse-lite@^1.0.30000792:
   version "1.0.30000792"
@@ -2356,9 +2356,9 @@ ejs@^2.5.7:
   version "2.5.7"
   resolved "https://registry.yarnpkg.com/ejs/-/ejs-2.5.7.tgz#cc872c168880ae3c7189762fd5ffc00896c9518a"
 
-electron-builder-lib@19.55.2:
-  version "19.55.2"
-  resolved "https://registry.yarnpkg.com/electron-builder-lib/-/electron-builder-lib-19.55.2.tgz#9808495613cd947a0d1abf83b962c16da6402f9c"
+electron-builder-lib@19.55.3:
+  version "19.55.3"
+  resolved "https://registry.yarnpkg.com/electron-builder-lib/-/electron-builder-lib-19.55.3.tgz#06fd10374c3c2315eade512c408f857baa5921e5"
   dependencies:
     "7zip-bin" "^2.4.1"
     asar-integrity "0.2.4"
@@ -2387,14 +2387,14 @@ electron-builder-lib@19.55.2:
     temp-file "^3.1.1"
 
 electron-builder@^19.55.2:
-  version "19.55.2"
-  resolved "https://registry.yarnpkg.com/electron-builder/-/electron-builder-19.55.2.tgz#af709037a97e85fe55cf87e87255bf96333750a3"
+  version "19.55.3"
+  resolved "https://registry.yarnpkg.com/electron-builder/-/electron-builder-19.55.3.tgz#01d3070af8a2eb97d91e6d029f28104b4bf8a068"
   dependencies:
     bluebird-lst "^1.0.5"
     builder-util "4.2.1"
     builder-util-runtime "4.0.3"
     chalk "^2.3.0"
-    electron-builder-lib "19.55.2"
+    electron-builder-lib "19.55.3"
     electron-download-tf "4.3.4"
     fs-extra-p "^4.5.0"
     is-ci "^1.1.0"
@@ -2402,7 +2402,7 @@ electron-builder@^19.55.2:
     read-config-file "2.1.1"
     sanitize-filename "^1.6.1"
     update-notifier "^2.3.0"
-    yargs "^10.1.1"
+    yargs "^11.0.0"
 
 electron-context-menu@^0.9.1:
   version "0.9.1"
@@ -2506,13 +2506,13 @@ electron-webpack-js@~1.1.0:
     babel-preset-env "^1.6.1"
 
 electron-webpack-vue@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/electron-webpack-vue/-/electron-webpack-vue-1.2.0.tgz#15e757aadfd5e5c83f8bf11b8b2002745c4ab0a3"
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/electron-webpack-vue/-/electron-webpack-vue-1.3.0.tgz#5f15c5d6f7fa783069ac104bcc6f9cf92ace76fd"
   dependencies:
     vue-class-component "^6.1.2"
     vue-html-loader "^1.2.4"
     vue-loader "^13.7.0"
-    vue-style-loader "^3.0.3"
+    vue-style-loader "^3.1.1"
     vue-template-compiler "^2.5.13"
 
 electron-webpack@1.11.0:
@@ -3391,8 +3391,8 @@ global-dirs@^0.1.0:
     ini "^1.3.4"
 
 globals@^11.0.1, globals@^11.1.0:
-  version "11.2.0"
-  resolved "https://registry.yarnpkg.com/globals/-/globals-11.2.0.tgz#aa2ece052a787563ba70a3dcd9dc2eb8a9a0488c"
+  version "11.3.0"
+  resolved "https://registry.yarnpkg.com/globals/-/globals-11.3.0.tgz#e04fdb7b9796d8adac9c8f64c14837b2313378b0"
 
 globals@^9.18.0:
   version "9.18.0"
@@ -4816,9 +4816,9 @@ no-case@^2.2.0:
   dependencies:
     lower-case "^1.1.1"
 
-node-forge@0.6.33:
-  version "0.6.33"
-  resolved "https://registry.yarnpkg.com/node-forge/-/node-forge-0.6.33.tgz#463811879f573d45155ad6a9f43dc296e8e85ebc"
+node-forge@0.7.1:
+  version "0.7.1"
+  resolved "https://registry.yarnpkg.com/node-forge/-/node-forge-0.7.1.tgz#9da611ea08982f4b94206b3beb4cc9665f20c300"
 
 node-gyp@^3.3.1:
   version "3.6.2"
@@ -6314,10 +6314,10 @@ select-hose@^2.0.0:
   resolved "https://registry.yarnpkg.com/select-hose/-/select-hose-2.0.0.tgz#625d8658f865af43ec962bfc376a37359a4994ca"
 
 selfsigned@^1.9.1:
-  version "1.10.1"
-  resolved "https://registry.yarnpkg.com/selfsigned/-/selfsigned-1.10.1.tgz#bf8cb7b83256c4551e31347c6311778db99eec52"
+  version "1.10.2"
+  resolved "https://registry.yarnpkg.com/selfsigned/-/selfsigned-1.10.2.tgz#b4449580d99929b65b10a48389301a6592088758"
   dependencies:
-    node-forge "0.6.33"
+    node-forge "0.7.1"
 
 semver-diff@^2.0.0:
   version "2.1.0"
@@ -6710,9 +6710,10 @@ stellar-base@^0.7.6:
 
 "stellar-js-utils@git://github.com/StellarKit/stellar-js-utils":
   version "1.0.1"
-  resolved "git://github.com/StellarKit/stellar-js-utils#26df218dfda8cde4985e226506cc8b9640251f1c"
+  resolved "git://github.com/StellarKit/stellar-js-utils#374df08a246c6f5189bd7674a91fd8f1ca32d2cb"
   dependencies:
     jquery "^3.3.1"
+    stellar-ledger-api "^2.0.4"
     stellar-sdk "^0.8.0"
 
 stellar-ledger-api@^2.0.4:
@@ -7395,7 +7396,7 @@ vue-router@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-3.0.1.tgz#d9b05ad9c7420ba0f626d6500d693e60092cc1e9"
 
-vue-style-loader@^3.0.0, vue-style-loader@^3.0.3:
+vue-style-loader@^3.0.0, vue-style-loader@^3.1.1:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/vue-style-loader/-/vue-style-loader-3.1.1.tgz#74fdef91a81d38bc0125746a1b5505e62d69e32c"
   dependencies:
@@ -7669,6 +7670,12 @@ yargs-parser@^8.1.0:
   dependencies:
     camelcase "^4.1.0"
 
+yargs-parser@^9.0.2:
+  version "9.0.2"
+  resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-9.0.2.tgz#9ccf6a43460fe4ed40a9bb68f48d43b8a68cc077"
+  dependencies:
+    camelcase "^4.1.0"
+
 yargs@6.6.0:
   version "6.6.0"
   resolved "https://registry.yarnpkg.com/yargs/-/yargs-6.6.0.tgz#782ec21ef403345f830a808ca3d513af56065208"
@@ -7687,7 +7694,7 @@ yargs@6.6.0:
     y18n "^3.2.1"
     yargs-parser "^4.2.0"
 
-yargs@^10.0.3, yargs@^10.1.1:
+yargs@^10.0.3:
   version "10.1.2"
   resolved "https://registry.yarnpkg.com/yargs/-/yargs-10.1.2.tgz#454d074c2b16a51a43e2fb7807e4f9de69ccb5c5"
   dependencies:
@@ -7703,6 +7710,23 @@ yargs@^10.0.3, yargs@^10.1.1:
     which-module "^2.0.0"
     y18n "^3.2.1"
     yargs-parser "^8.1.0"
+
+yargs@^11.0.0:
+  version "11.0.0"
+  resolved "https://registry.yarnpkg.com/yargs/-/yargs-11.0.0.tgz#c052931006c5eee74610e5fc0354bedfd08a201b"
+  dependencies:
+    cliui "^4.0.0"
+    decamelize "^1.1.1"
+    find-up "^2.1.0"
+    get-caller-file "^1.0.1"
+    os-locale "^2.0.0"
+    require-directory "^2.1.1"
+    require-main-filename "^1.0.1"
+    set-blocking "^2.0.0"
+    string-width "^2.0.0"
+    which-module "^2.0.0"
+    y18n "^3.2.1"
+    yargs-parser "^9.0.2"
 
 yargs@^3.19.0:
   version "3.32.0"

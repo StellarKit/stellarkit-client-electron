@@ -27,7 +27,9 @@
 <script>
 import Helper from '../js/helper.js'
 import $ from 'jquery'
-import DialogTitleBar from './DialogTitleBar.vue'
+import {
+  DialogTitleBar
+} from 'stellar-js-utils'
 const StellarSdk = require('stellar-sdk')
 
 export default {
