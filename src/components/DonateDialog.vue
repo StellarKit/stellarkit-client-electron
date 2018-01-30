@@ -59,7 +59,7 @@ const bip32Path = "44'/148'/0'"
 const StellarSdk = require('stellar-sdk')
 
 export default {
-  props: ['ping'],
+  props: ['ping', 'nodeEnv'],
   watch: {
     ping: function () {
       this.visible = true
@@ -120,11 +120,46 @@ export default {
           break
       }
     },
+    createComm(timeout = 0) {
+      if (this.nodeEnv) {
+        return StellarLedger.comm_node.create_async(timeout)
+      }
+      return StellarLedger.comm.create_async(timeout)
+    },
     connectLedger() {
       this.connected = false
 
-      // Number.MAX_VALUE
-      StellarLedger.comm_node.create_async()
+      if (this.nodeEnv) {
+        this.connectLedgerNode()
+      } else {
+        this.connectLedgerBrowser()
+      }
+    },
+    connectLedgerNode() {
+      // for node we have to do our own loop to connect
+      const doConnect = () => {
+        try {
+          this.createComm()
+            .then((comm) => {
+              new StellarLedger.Api(comm).connect(() => {
+                this.connected = true
+              }, (error) => {
+                console.log(JSON.stringify(error))
+              })
+            })
+        } catch (error) {
+          console.log(JSON.stringify(error))
+        }
+
+        if (!this.connected) {
+          setTimeout(doConnect, 1000)
+        }
+      }
+
+      doConnect()
+    },
+    connectLedgerBrowser() {
+      this.createComm(Number.MAX_VALUE)
         .then((comm) => {
           new StellarLedger.Api(comm).connect(() => {
             this.connected = true
@@ -226,7 +261,6 @@ export default {
               return this.server.submitTransaction(signedTransaction)
             })
             .then((response) => {
-              console.log(response)
               this.status = 'Payment Successful! Thank you!'
 
               // clear secret key
