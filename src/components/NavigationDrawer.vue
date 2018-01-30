@@ -20,7 +20,7 @@
       </v-list-tile-content>
     </v-list-tile>
   </v-list>
-  <donate-dialog :ping='showDonatePing' nodeEnv=true />
+  <donate-dialog :ping='showDonatePing' :nodeEnv=true />
 </v-navigation-drawer>
 </template>
 
