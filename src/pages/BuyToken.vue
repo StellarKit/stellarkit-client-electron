@@ -2,7 +2,7 @@
 <div class='main-container'>
   <v-btn small @click="showDialogPing = !showDialogPing">Buy Token</v-btn>
 
-  <buy-token-dialog :ping='showDialogPing' :params='params' />
+  <buy-token-dialog :ping='showDialogPing' :params='params' :allowHTTP=true />
 </div>
 </template>
 
