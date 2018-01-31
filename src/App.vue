@@ -14,27 +14,27 @@
             <v-icon>fa-github</v-icon>
           </v-btn>
           <v-tabs-bar slot="extension">
-            <v-tabs-slider color="white"></v-tabs-slider>
-            <v-tooltip open-delay='200' bottom>
-              <v-tabs-item slot='activator' to='/' class="white--text">
+            <!-- <v-tabs-slider color="white"></v-tabs-slider> -->
+            <v-tooltip open-delay='800' bottom>
+              <v-tabs-item slot='activator' to='/' exact class="white--text">
                 <v-icon>&#xE88A;</v-icon>
               </v-tabs-item>
               <span>Make Payments</span>
             </v-tooltip>
-            <v-tooltip open-delay='200' bottom>
-              <v-tabs-item slot='activator' to='/buytoken' class="white--text">
+            <v-tooltip open-delay='800' bottom>
+              <v-tabs-item slot='activator' to='/buytoken' exact class="white--text">
                 <v-icon>&#xE851;</v-icon>
               </v-tabs-item>
               <span>Buy token with Bifrost</span>
             </v-tooltip>
-            <v-tooltip open-delay='200' bottom>
-              <v-tabs-item slot='activator' to='/trades' class="white--text">
+            <v-tooltip open-delay='800' bottom>
+              <v-tabs-item slot='activator' to='/trades' exact class="white--text">
                 <v-icon>&#xE8C9;</v-icon>
               </v-tabs-item>
               <span>Live Trades</span>
             </v-tooltip>
-            <v-tooltip open-delay='200' bottom>
-              <v-tabs-item slot='activator' to='/token' class="white--text">
+            <v-tooltip open-delay='800' bottom>
+              <v-tabs-item slot='activator' to='/token' exact class="white--text">
                 <v-icon>&#xE263;</v-icon>
               </v-tabs-item>
               <span>Create Token</span>
