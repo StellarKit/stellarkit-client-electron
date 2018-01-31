@@ -88,7 +88,7 @@ export default {
     buyLamboTokens() {
       this.debugLog('Buying tokens')
 
-      this.su.buyTokens(this.tokenBuyerAcct, this.su.lumins(), StellarAccounts.lamboTokenAsset(), '1000', '2.233')
+      this.su.buyTokens(this.tokenBuyerAcct.masterKey, this.su.lumins(), StellarAccounts.lamboTokenAsset(), '1000', '2.233')
         .then((response) => {
           this.debugLog(response)
 
