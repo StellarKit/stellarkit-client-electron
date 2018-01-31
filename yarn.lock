@@ -6766,7 +6766,7 @@ stellar-base@^0.7.6:
 
 "stellar-js-utils@git://github.com/StellarKit/stellar-js-utils":
   version "1.0.1"
-  resolved "git://github.com/StellarKit/stellar-js-utils#e29005186565fb9286b56200319dfb95c071296e"
+  resolved "git://github.com/StellarKit/stellar-js-utils#6e6aa19722b808b8d0d0371899f80b5901815788"
   dependencies:
     axios "^0.17.1"
     jquery "^3.3.1"
