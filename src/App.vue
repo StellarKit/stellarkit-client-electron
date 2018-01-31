@@ -16,26 +16,38 @@
           <v-tabs-bar slot="extension">
             <!-- <v-tabs-slider color="white"></v-tabs-slider> -->
             <v-tooltip open-delay='800' bottom>
-              <v-tabs-item slot='activator' to='/' exact class="white--text">
-                <v-icon>&#xE88A;</v-icon>
+              <v-tabs-item slot='activator' to='/' exact class="custom-tab-item">
+                <div class='custom-tab-content'>
+                  <v-icon>&#xE88A;</v-icon>
+                  <div class='bottom-bar' />
+                </div>
               </v-tabs-item>
               <span>Make Payments</span>
             </v-tooltip>
             <v-tooltip open-delay='800' bottom>
-              <v-tabs-item slot='activator' to='/buytoken' exact class="white--text">
-                <v-icon>&#xE851;</v-icon>
+              <v-tabs-item slot='activator' to='/buytoken' exact class="custom-tab-item">
+                <div class='custom-tab-content'>
+                  <v-icon>&#xE851;</v-icon>
+                  <div class='bottom-bar' />
+                </div>
               </v-tabs-item>
               <span>Buy token with Bifrost</span>
             </v-tooltip>
             <v-tooltip open-delay='800' bottom>
-              <v-tabs-item slot='activator' to='/trades' exact class="white--text">
-                <v-icon>&#xE8C9;</v-icon>
+              <v-tabs-item slot='activator' to='/trades' exact class="custom-tab-item">
+                <div class='custom-tab-content'>
+                  <v-icon>&#xE8C9;</v-icon>
+                  <div class='bottom-bar' />
+                </div>
               </v-tabs-item>
               <span>Live Trades</span>
             </v-tooltip>
             <v-tooltip open-delay='800' bottom>
-              <v-tabs-item slot='activator' to='/token' exact class="white--text">
-                <v-icon>&#xE263;</v-icon>
+              <v-tabs-item slot='activator' to='/token' exact class="custom-tab-item">
+                <div class='custom-tab-content'>
+                  <v-icon>&#xE263;</v-icon>
+                  <div class='bottom-bar' />
+                </div>
               </v-tabs-item>
               <span>Create Token</span>
             </v-tooltip>
@@ -163,6 +175,29 @@ html {
 
         .top-toolbar {
             background: linear-gradient(to bottom, rgb(55,55,55) , rgb(22,22,22));
+        }
+
+        li.custom-tab-item {
+            color: white;
+
+            a.tabs__item {
+                .custom-tab-content {
+                    display: flex;
+                    flex-direction: column;
+
+                    .bottom-bar {
+                        opacity: 0;
+                        height: 2px;
+                        width: 100%;
+                        background: white;
+                    }
+                }
+                &.tabs__item--active {
+                    .bottom-bar {
+                        opacity: 1;
+                    }
+                }
+            }
         }
     }
 
