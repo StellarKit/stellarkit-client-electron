@@ -21,8 +21,8 @@ export default {
   components: {
     'buy-token-dialog': BuyTokenDialog
   },
-  methods: {
-    params() {
+  computed: {
+    params: function () {
       const issuerAcct = StellarAccounts.accountWithName('Issuer')
 
       const params = {
@@ -36,6 +36,11 @@ export default {
       }
 
       return params
+    }
+  },
+  methods: {
+    hello() {
+      // nothing
     }
   }
 }

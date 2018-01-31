@@ -22,6 +22,10 @@
     "7zip-bin-mac" "~1.0.1"
     "7zip-bin-win" "~2.1.1"
 
+"7zip-bin@~3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/7zip-bin/-/7zip-bin-3.0.0.tgz#17416dc542f41511b26a9667b92847d75ef150fe"
+
 "7zip@0.0.6":
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/7zip/-/7zip-0.0.6.tgz#9cafb171af82329490353b4816f03347aa150a30"
@@ -1383,10 +1387,10 @@ builder-util@4.2.1:
     tunnel-agent "^0.6.0"
 
 builder-util@^4.2.1:
-  version "4.2.2"
-  resolved "https://registry.yarnpkg.com/builder-util/-/builder-util-4.2.2.tgz#366b2bc32324bfe5565a7e4f13f86238fef5e92b"
+  version "4.2.3"
+  resolved "https://registry.yarnpkg.com/builder-util/-/builder-util-4.2.3.tgz#ff9da2da206c4280a524d4332c63a3609d360d8a"
   dependencies:
-    "7zip-bin" "^2.4.1"
+    "7zip-bin" "~3.0.0"
     bluebird-lst "^1.0.5"
     builder-util-runtime "^4.0.4"
     chalk "^2.3.0"
@@ -6762,7 +6766,7 @@ stellar-base@^0.7.6:
 
 "stellar-js-utils@git://github.com/StellarKit/stellar-js-utils":
   version "1.0.1"
-  resolved "git://github.com/StellarKit/stellar-js-utils#9c3ad7cb6edc715753300495f14c52a7ee3a7bc5"
+  resolved "git://github.com/StellarKit/stellar-js-utils#e29005186565fb9286b56200319dfb95c071296e"
   dependencies:
     axios "^0.17.1"
     jquery "^3.3.1"
@@ -7446,8 +7450,8 @@ vue-loader@^13.7.0:
     vue-template-es2015-compiler "^1.6.0"
 
 vue-loader@^14.0.1:
-  version "14.0.2"
-  resolved "https://registry.yarnpkg.com/vue-loader/-/vue-loader-14.0.2.tgz#8812e1915ab35b9dd84b241ff4f98d5b0386fa9d"
+  version "14.0.3"
+  resolved "https://registry.yarnpkg.com/vue-loader/-/vue-loader-14.0.3.tgz#26df42fb2a40e21e9799eb1adc15fff763b99bd2"
   dependencies:
     consolidate "^0.14.0"
     hash-sum "^1.0.2"
