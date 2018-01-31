@@ -15,18 +15,30 @@
           </v-btn>
           <v-tabs-bar slot="extension">
             <v-tabs-slider color="white"></v-tabs-slider>
-            <v-tabs-item to='/' class="white--text">
-              <v-icon>&#xE88A;</v-icon>
-            </v-tabs-item>
-            <v-tabs-item to='/buytoken' class=" white--text ">
-              <v-icon>&#xE851;</v-icon>
-            </v-tabs-item>
-            <v-tabs-item to='/trades' class="white--text ">
-              <v-icon>&#xE8C9;</v-icon>
-            </v-tabs-item>
-            <v-tabs-item to='/token' class="white--text ">
-              <v-icon>&#xE263;</v-icon>
-            </v-tabs-item>
+            <v-tooltip open-delay='200' bottom>
+              <v-tabs-item slot='activator' to='/' class="white--text">
+                <v-icon>&#xE88A;</v-icon>
+              </v-tabs-item>
+              <span>Make Payments</span>
+            </v-tooltip>
+            <v-tooltip open-delay='200' bottom>
+              <v-tabs-item slot='activator' to='/buytoken' class="white--text">
+                <v-icon>&#xE851;</v-icon>
+              </v-tabs-item>
+              <span>Buy token with Bifrost</span>
+            </v-tooltip>
+            <v-tooltip open-delay='200' bottom>
+              <v-tabs-item slot='activator' to='/trades' class="white--text">
+                <v-icon>&#xE8C9;</v-icon>
+              </v-tabs-item>
+              <span>Live Trades</span>
+            </v-tooltip>
+            <v-tooltip open-delay='200' bottom>
+              <v-tabs-item slot='activator' to='/token' class="white--text">
+                <v-icon>&#xE263;</v-icon>
+              </v-tabs-item>
+              <span>Create Token</span>
+            </v-tooltip>
           </v-tabs-bar>
         </v-toolbar>
       </v-tabs>
