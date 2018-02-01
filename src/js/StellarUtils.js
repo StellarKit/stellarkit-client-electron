@@ -105,7 +105,7 @@ export default class StellarUtils {
   }
 
   createTestAccount(name = null) {
-    const promise = new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       const keyPair = StellarSdk.Keypair.random()
 
       const url = 'https://horizon-testnet.stellar.org/friendbot' + '?addr=' + keyPair.publicKey()
@@ -134,7 +134,6 @@ export default class StellarUtils {
         reject(err)
       })
     })
-    return promise
   }
 
   updateBalances(callback = null) {
