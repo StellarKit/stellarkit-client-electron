@@ -11,15 +11,16 @@
     <ol>
       <li>
         Distributor needs to trust the Issuer:<br>
-        <v-btn small @click="setDistributorTrust()">Set Distributor Trust</v-btn>
-        <v-btn small @click="setDistributorTrustEth()">Set Distributor Trust Eth</v-btn>
+        <v-btn small @click="setDistributorTrustToken()">Set Distributor Trust Token</v-btn>
+        <v-btn small @click="setDistributorTrustETC()">Set Distributor Trust ETC</v-btn>
+        <v-btn small @click="setDistributorTrustBTC()">Set Distributor Trust BTC</v-btn>
       </li>
       <li>
         Create tokens by sending assets from Issuer to Distributor:<br>
         <v-btn small @click="createTokens()">Create Tokens</v-btn>
       </li>
       <li>
-        Lock Issuer so more tokens can be created:<br>
+        Lock Issuer so more tokens can be created:<br> Don't lock if using Bifrost, the current code fails when locked:<br>
         <v-btn small @click="lockIssuer()">Lock Issuer</v-btn>
       </li>
       <li>
@@ -172,10 +173,10 @@ export default {
           this.debugLog(error, 'Error')
         })
     },
-    setDistributorTrust() {
+    setDistributorTrust(asset) {
       this.debugLog('Setting distributor trust:')
 
-      this.su.setTrustForAsset(this.distributorAcct.masterKey, StellarAccounts.lamboTokenAsset(), '10000')
+      this.su.setTrustForAsset(this.distributorAcct.masterKey, asset, '10000')
         .then((result) => {
           this.debugLog(result)
         })
@@ -183,15 +184,14 @@ export default {
           this.debugLog(error)
         })
     },
-    setDistributorTrustEth() {
-      this.debugLog('Setting distributor trust eth:')
-      this.su.setTrustForAsset(this.distributorAcct.masterKey, StellarAccounts.ethereumAsset(), '10000')
-        .then((result) => {
-          this.debugLog(result)
-        })
-        .catch((error) => {
-          this.debugLog(error)
-        })
+    setDistributorTrustToken() {
+      this.setDistributorTrust(StellarAccounts.lamboTokenAsset())
+    },
+    setDistributorTrustETH() {
+      this.setDistributorTrust(StellarAccounts.ethereumAsset())
+    },
+    setDistributorTrustBTC() {
+      this.setDistributorTrust(StellarAccounts.btcAsset())
     },
     setBuyerTrust() {
       this.debugLog('Setting buyer trust:')

@@ -28,6 +28,10 @@ class StellarAccounts {
     return new StellarSdk.Asset('ETH', this.accountWithName('Issuer').publicKey)
   }
 
+  btcAsset() {
+    return new StellarSdk.Asset('BTC', this.accountWithName('Issuer').publicKey)
+  }
+
   lamboTokenAsset() {
     return new StellarSdk.Asset('LMB', this.accountWithName('Issuer').publicKey)
   }
