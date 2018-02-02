@@ -94,7 +94,7 @@ export default {
       const sourceSecret = this.sourcePrivateKey()
 
       if (sourceSecret) {
-        this.su.setFlags(sourceSecret, StellarSdk.AuthRevocableFlag)
+        this.su.setFlags(sourceSecret, StellarSdk.AuthRequiredFlag)
           .then((response) => {
             this.debugLog(response, 'Success')
           })
