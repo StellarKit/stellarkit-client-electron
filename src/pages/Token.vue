@@ -84,14 +84,14 @@ export default {
       this.debugLog(keypair.publicKey())
       this.debugLog(keypair.secret())
 
-      this.su.createAccount(this.distributorAcct.masterKey, keypair.publicKey(), '3')
+      this.su.createAccount(this.distributorAcct.secret, keypair.publicKey(), '3')
         .then((newAccount) => {
           this.debugLog(newAccount)
           this.su.changeTrust(keypair.secret(), StellarAccounts.lamboTokenAsset(), '10000')
             .then((result) => {
               this.debugLog(result)
 
-              this.su.sendAsset(this.distributorAcct.masterKey, keypair.publicKey(), '12', StellarAccounts.lamboTokenAsset())
+              this.su.sendAsset(this.distributorAcct.secret, keypair.publicKey(), '12', StellarAccounts.lamboTokenAsset())
                 .then((response) => {
                   const balances = {}
 
@@ -114,7 +114,7 @@ export default {
     clickAccount(item) {
       console.log(item)
       this.infoForPublicKey(item.publicKey)
-      this.debugLog(item.masterKey)
+      this.debugLog(item.secret)
       this.debugLog(item.name)
     },
     infoForPublicKey(publicKey) {
@@ -129,7 +129,7 @@ export default {
     buyLamboTokens() {
       this.debugLog('Buying tokens')
 
-      this.su.buyTokens(this.tokenBuyerAcct.masterKey, this.su.lumins(), StellarAccounts.lamboTokenAsset(), '1000', '2.22')
+      this.su.buyTokens(this.tokenBuyerAcct.secret, this.su.lumins(), StellarAccounts.lamboTokenAsset(), '1000', '2.22')
         .then((response) => {
           this.debugLog(response)
 
@@ -164,7 +164,7 @@ export default {
         d: 1
       }
 
-      this.su.manageOffer(this.distributorAcct.masterKey, this.su.lumins(), StellarAccounts.lamboTokenAsset(), '5000', price)
+      this.su.manageOffer(this.distributorAcct.secret, this.su.lumins(), StellarAccounts.lamboTokenAsset(), '5000', price)
         .then((result) => {
           this.debugLog(result, 'Success')
           // this.debugLog(result)
@@ -181,7 +181,7 @@ export default {
         d: 10
       }
 
-      this.su.manageOffer(this.distributorAcct.masterKey, StellarAccounts.ethereumAsset(), StellarAccounts.lamboTokenAsset(), '5000', price)
+      this.su.manageOffer(this.distributorAcct.secret, StellarAccounts.ethereumAsset(), StellarAccounts.lamboTokenAsset(), '5000', price)
         .then((result) => {
           this.debugLog(result, 'Success')
           // this.debugLog(result)
@@ -193,7 +193,7 @@ export default {
     lockIssuer() {
       this.debugLog('Locking issuer:')
 
-      this.su.lockAccount(this.issuerAcct.masterKey)
+      this.su.lockAccount(this.issuerAcct.secret)
         .then((result) => {
           this.debugLog('locked!')
           // this.debugLog(result)
@@ -205,7 +205,7 @@ export default {
     createTokens() {
       this.debugLog('Creating tokens:')
 
-      this.su.sendAsset(this.issuerAcct.masterKey, this.distributorAcct.publicKey, '10000', StellarAccounts.lamboTokenAsset(), 'Created Tokens')
+      this.su.sendAsset(this.issuerAcct.secret, this.distributorAcct.publicKey, '10000', StellarAccounts.lamboTokenAsset(), 'Created Tokens')
         .then((response) => {
           this.debugLog(response, 'Success')
         })
@@ -216,7 +216,7 @@ export default {
     setDistributorTrust(asset) {
       this.debugLog('Setting distributor trust:')
 
-      this.su.changeTrust(this.distributorAcct.masterKey, asset, '10000')
+      this.su.changeTrust(this.distributorAcct.secret, asset, '10000')
         .then((result) => {
           this.debugLog(result)
         })
@@ -237,7 +237,7 @@ export default {
       this.debugLog('Setting buyer trust:')
 
       // buyer must trust the distributor
-      this.su.changeTrust(this.tokenBuyerAcct.masterKey, StellarAccounts.lamboTokenAsset(), '10000')
+      this.su.changeTrust(this.tokenBuyerAcct.secret, StellarAccounts.lamboTokenAsset(), '10000')
         .then((result) => {
           this.debugLog(result)
         })
@@ -262,7 +262,7 @@ export default {
         const buying = this.su.assetFromObject(offer.buying)
         const selling = this.su.assetFromObject(offer.selling)
 
-        this.su.manageOffer(this.distributorAcct.masterKey, buying, selling, '0', offer.price_r, offer.id)
+        this.su.manageOffer(this.distributorAcct.secret, buying, selling, '0', offer.price_r, offer.id)
           .then((result) => {
             this.debugLog(result, 'Success')
             // this.debugLog(result)

@@ -14,7 +14,7 @@ class StellarAccounts {
       name: name !== null ? name : generateName(),
       XLM: balances.XLM,
       LMB: balances.LMB,
-      masterKey: keyPair.secret(),
+      secret: keyPair.secret(),
       publicKey: keyPair.publicKey()
     }
 
@@ -78,10 +78,10 @@ class StellarAccounts {
     this.saveAccounts()
   }
 
-  masterKey(index) {
+  secret(index) {
     const acct = this._accounts[index]
 
-    return acct.masterKey
+    return acct.secret
   }
 
   publicKey(index) {
@@ -92,7 +92,7 @@ class StellarAccounts {
 
   keyPair(index) {
     const acct = this._accounts[index]
-    return StellarSdk.Keypair.fromSecret(acct.masterKey)
+    return StellarSdk.Keypair.fromSecret(acct.secret)
   }
 
   loadAccounts() {

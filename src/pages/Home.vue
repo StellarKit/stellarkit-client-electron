@@ -73,7 +73,7 @@ export default {
       this.enterStringPing = !this.enterStringPing
     },
     sourcePrivateKey() {
-      const result = this.selectedSource ? this.selectedSource.masterKey : null
+      const result = this.selectedSource ? this.selectedSource.secret : null
 
       if (Helper.strlen(result) > 0) {
         return result
@@ -156,7 +156,7 @@ export default {
       this.debugLog('account info...')
 
       this.infoForPublicKey(item.publicKey)
-      this.debugLog(item.masterKey)
+      this.debugLog(item.secret)
       this.debugLog(item.name)
     },
     swapSourceDest() {
@@ -167,7 +167,7 @@ export default {
     mergeSelected() {
       this.debugLog('merging')
 
-      this.su.mergeAccount(this.selectedSource.masterKey, this.selectedDest.publicKey)
+      this.su.mergeAccount(this.selectedSource.secret, this.selectedDest.publicKey)
         .then((response) => {
           this.su.updateBalances()
 
@@ -180,7 +180,7 @@ export default {
     payWithSigners() {
       this.debugLog('path with signers')
 
-      this.su.sendAsset(this.selectedSource.masterKey, this.selectedDest.publicKey, '122', null, null, [this.selectedSigner.masterKey])
+      this.su.sendAsset(this.selectedSource.secret, this.selectedDest.publicKey, '122', null, null, [this.selectedSigner.secret])
         .then((response) => {
           this.su.updateBalances()
 
@@ -193,7 +193,7 @@ export default {
     setSignerForSelected() {
       this.debugLog('set signer')
 
-      this.su.makeMultiSig(this.selectedSource.masterKey, this.selectedSigner.publicKey)
+      this.su.makeMultiSig(this.selectedSource.secret, this.selectedSigner.publicKey)
         .then((result) => {
           this.debugLog('signed!')
         })
@@ -247,7 +247,7 @@ export default {
     makeSelectedPayment() {
       this.debugLog('paying')
 
-      this.su.sendAsset(this.selectedSource.masterKey, this.selectedDest.publicKey, '122')
+      this.su.sendAsset(this.selectedSource.secret, this.selectedDest.publicKey, '122')
         .then((response) => {
           this.su.updateBalances()
 
