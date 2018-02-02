@@ -8,44 +8,74 @@
     <account-list :items="tokensUI" v-on:click-item="clickAccount" v-on:delete-item="deleteAccount" />
   </div>
 
-  <div class='token-steps'>
-    <ol>
-      <li>
-        Click each button in order, but wait for each to complete
-      </li>
-      <li>
-        Distributor needs to trust the Issuer:<br>
-        <v-btn small @click="setDistributorTrustToken()">Set Distributor Trust Token</v-btn>
-        Bifost Only->
-        <v-btn small @click="setDistributorTrustETH()">Set Distributor Trust ETC</v-btn>
-        <v-btn small @click="setDistributorTrustBTC()">Set Distributor Trust BTC</v-btn>
-      </li>
-      <li>
-        Create tokens by sending assets from Issuer to Distributor:<br>
-        <v-btn small @click="createTokens()">Create Tokens</v-btn>
-      </li>
-      <li>
-        Lock Issuer so more tokens can be created:<br> Don't lock if using Bifrost, the current code fails when locked:<br>
-        <v-btn small :disabled='true' @click="lockIssuer()">Lock Issuer</v-btn> Disabled for now
-      </li>
-      <li>
-        Post offer to exchange to sell tokens for XLM:<br>
-        <v-btn small @click="manageOffer()">Manage Offer</v-btn>
-      </li>
-      <li>
-        Post offer to exchange to sell tokens for Ethereum:<br> Bifost Only->
-        <v-btn small @click="manageOfferETH()">Manage Offer ETH</v-btn>
-        <v-btn small @click="manageOfferBTC()">Manage Offer BTC</v-btn>
-      </li>
-      <li>
-        Buyer needs to trust the Distributor:<br>
-        <v-btn small @click="setBuyerTrust()">Set Buyer Trust</v-btn>
-      </li>
-      <li>
-        Buy tokens:<br>
-        <v-btn small @click="buyLamboTokens()">Buy Tokens</v-btn>
-      </li>
-    </ol>
+  <div>Click each button in order, but wait for each to complete
+  </div>
+  <div class='expansion-contents'>
+    <v-expansion-panel class='custom-expansion-panel'>
+      <v-expansion-panel-content v-bind:value="true">
+        <div slot="header" class='expansion-title'>
+          1. Distributor needs to trust the Issuer
+        </div>
+        <div class='expansion-message'>
+          <v-btn small @click="setDistributorTrustToken()">Set Distributor Trust Token</v-btn>
+          <div>Bifost Only</div>
+          <v-btn small @click="setDistributorTrustETH()">Set Distributor Trust ETC</v-btn>
+          <v-btn small @click="setDistributorTrustBTC()">Set Distributor Trust BTC</v-btn>
+        </div>
+      </v-expansion-panel-content>
+      <v-expansion-panel-content>
+        <div slot="header" class='expansion-title'>
+          2. Create tokens by sending assets from Issuer to Distributor
+        </div>
+        <div class='expansion-message'>
+          <v-btn small @click="createTokens()">Create Tokens</v-btn>
+        </div>
+      </v-expansion-panel-content>
+      <v-expansion-panel-content>
+        <div slot="header" class='expansion-title'>
+          3. Lock Issuer so more tokens can be created
+        </div>
+        <div class='expansion-message'>
+          <div>Don't lock if using Bifrost, the current code fails when locked</div>
+          <v-btn small @click="lockIssuer()">Lock Issuer</v-btn>
+        </div>
+      </v-expansion-panel-content>
+      <v-expansion-panel-content>
+        <div slot="header" class='expansion-title'>
+          4. Post offer to exchange to sell tokens for XLM
+        </div>
+        <div class='expansion-message'>
+          <v-btn small @click="manageOffer()">Manage Offer</v-btn>
+        </div>
+      </v-expansion-panel-content>
+      <v-expansion-panel-content>
+        <div slot="header" class='expansion-title'>
+          5. Post offer to exchange to sell tokens for Ethereum
+        </div>
+        <div class='expansion-message'>
+          <div>Bifost Only</div>
+          <v-btn small @click="manageOfferETH()">Manage Offer ETH</v-btn>
+          <v-btn small @click="manageOfferBTC()">Manage Offer BTC</v-btn>
+        </div>
+      </v-expansion-panel-content>
+      <v-expansion-panel-content>
+        <div slot="header" class='expansion-title'>
+          6. Buyer needs to trust the Distributor
+        </div>
+        <div class='expansion-message'>
+          <v-btn small @click="setBuyerTrust()">Set Buyer Trust</v-btn>
+        </div>
+      </v-expansion-panel-content>
+      </v-expansion-panel-content>
+      <v-expansion-panel-content>
+        <div slot="header" class='expansion-title'>
+          7. Buy tokens
+        </div>
+        <div class='expansion-message'>
+          <v-btn small @click="buyLamboTokens()">Buy Tokens</v-btn>
+        </div>
+      </v-expansion-panel-content>
+    </v-expansion-panel>
   </div>
 
   <div>
@@ -350,5 +380,24 @@ export default {
 .token-steps {
     padding: 20px 40px;
     background: rgba(0,0,0,.04);
+}
+
+.expansion-contents {
+    padding: 10px 20px;
+    text-align: left;
+
+    overflow-y: auto;
+    font-size: 1em;
+
+    .custom-expansion-panel {
+        .expansion-title {
+            text-align: left;
+            font-weight: bold;
+        }
+        .expansion-message {
+            font-size: 0.9em;
+            padding: 0 26px 10px;
+        }
+    }
 }
 </style>
