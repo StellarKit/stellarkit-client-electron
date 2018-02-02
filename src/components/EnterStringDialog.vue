@@ -16,7 +16,7 @@
       <div class='button-holder'>
         <v-tooltip open-delay='200' bottom>
           <v-btn round color='primary' slot="activator" @click.native="lookup()" :loading="loadingLostLicense">Look up</v-btn>
-          <span>Look up your email address</span>
+          <span>Look up your federation address</span>
         </v-tooltip>
       </div>
     </div>

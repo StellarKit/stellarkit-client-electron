@@ -22,6 +22,7 @@
     <v-btn small @click="payWithSigners()">Pay with Signers</v-btn>
     <v-btn small @click="mergeSelected()">Merge Selected</v-btn>
     <v-btn small @click="testFederation()">Federation Lookup</v-btn>
+    <v-btn small @click="setDomain()">Set Domain</v-btn>
   </div>
 
   <div class='balances'>
@@ -59,6 +60,9 @@ export default {
   },
   methods: {
     testFederation() {
+      this.enterStringPing = !this.enterStringPing
+    },
+    setDomain() {
       this.enterStringPing = !this.enterStringPing
     },
     horizonMetrics() {
