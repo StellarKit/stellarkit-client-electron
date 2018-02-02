@@ -20,7 +20,7 @@
       </v-list-tile-content>
     </v-list-tile>
   </v-list>
-  <donate-dialog :ping='showDonatePing' :nodeEnv=true :destinationPublicKey='destinationPublicKey' />
+  <donate-dialog :ping='showDonatePing' :nodeEnv=true :donationPublicKey='donationPublicKey' />
 </v-navigation-drawer>
 </template>
 
@@ -43,7 +43,7 @@ export default {
     return {
       showDonatePing: false,
       drawer: false,
-      destinationPublicKey: 'GCYQSB3UQDSISB5LKAL2OEVLAYJNIR7LFVYDNKRMLWQKDCBX4PU3Z6JP',
+      donationPublicKey: 'GCYQSB3UQDSISB5LKAL2OEVLAYJNIR7LFVYDNKRMLWQKDCBX4PU3Z6JP',
       items: [{
           id: 'donate',
           title: 'Donate',
