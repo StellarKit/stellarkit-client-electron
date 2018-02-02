@@ -28,7 +28,7 @@
   </div>
 
   <div class='balances'>
-    <h2>Accounts</h2>
+    <h3>Accounts - click for info</h3>
     <account-list :items="accountsUI" v-on:click-item="clickAccount" v-on:delete-item="deleteAccount" />
   </div>
 

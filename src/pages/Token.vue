@@ -2,8 +2,9 @@
 <div>
   <div class="info-area">
     Start with three accounts: Issuer, Distributor and Buyer<br>
-    <!-- <v-btn small @click="createAccounts()">Create Accounts</v-btn> -->
-    <br><br>
+    <v-btn small @click="createAccounts()">Create Accounts</v-btn>
+    <br>
+    <h3>Accounts - click for info</h3>
     <account-list :items="tokensUI" v-on:click-item="clickAccount" v-on:delete-item="deleteAccount" />
   </div>
 
@@ -15,6 +16,7 @@
       <li>
         Distributor needs to trust the Issuer:<br>
         <v-btn small @click="setDistributorTrustToken()">Set Distributor Trust Token</v-btn>
+        Bifost Only->
         <v-btn small @click="setDistributorTrustETH()">Set Distributor Trust ETC</v-btn>
         <v-btn small @click="setDistributorTrustBTC()">Set Distributor Trust BTC</v-btn>
       </li>
@@ -31,7 +33,7 @@
         <v-btn small @click="manageOffer()">Manage Offer</v-btn>
       </li>
       <li>
-        Post offer to exchange to sell tokens for Ethereum:<br>
+        Post offer to exchange to sell tokens for Ethereum:<br> Bifost Only->
         <v-btn small @click="manageOfferETH()">Manage Offer ETH</v-btn>
         <v-btn small @click="manageOfferBTC()">Manage Offer BTC</v-btn>
       </li>
@@ -339,6 +341,10 @@ export default {
     padding: 20px;
     background: steelblue;
     color: white;
+
+    h3 {
+        text-align: center;
+    }
 }
 
 .token-steps {
