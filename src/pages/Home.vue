@@ -66,25 +66,24 @@ export default {
   },
   mounted() {
     this.su.updateBalances()
-    // this.listenForPayments()
   },
   methods: {
     testFederation() {
       this.enterStringPing = !this.enterStringPing
     },
-    sourcePrivateKey() {
-      const result = this.selectedSource ? this.selectedSource.secret : null
+    sourceValid() {
+      const result = this.selectedSource ? this.selectedSource.publicKey : null
 
       if (Helper.strlen(result) > 0) {
-        return result
+        return true
       }
-      return null
+      return false
     },
     setDomain() {
       // set variable to bind to dialogs props
-      this.sourceSecretKey = this.sourcePrivateKey()
+      if (this.sourceValid()) {
+        this.sourceSecretKey = this.selectedSource.secret
 
-      if (this.sourceSecretKey) {
         this.setDomainPing = !this.setDomainPing
       } else {
         this.debugLog('Error: no source account selected')
@@ -93,10 +92,8 @@ export default {
     setAuthRequiredFlag() {
       this.debugLog('setAuthRequiredFlag...')
 
-      const sourceSecret = this.sourcePrivateKey()
-
-      if (sourceSecret) {
-        this.su.setFlags(sourceSecret, StellarSdk.AuthRequiredFlag)
+      if (this.sourceValid()) {
+        this.su.setFlags(this.selectedSource.secret, StellarSdk.AuthRequiredFlag)
           .then((response) => {
             this.debugLog(response, 'Success')
           })
@@ -110,10 +107,8 @@ export default {
     setAuthRevocableFlag() {
       this.debugLog('setAuthRevocableFlag...')
 
-      const sourceSecret = this.sourcePrivateKey()
-
-      if (sourceSecret) {
-        this.su.setFlags(sourceSecret, StellarSdk.AuthRevocableFlag)
+      if (this.sourceValid()) {
+        this.su.setFlags(this.selectedSource.secret, StellarSdk.AuthRevocableFlag)
           .then((response) => {
             this.debugLog(response, 'Success')
           })
@@ -127,10 +122,8 @@ export default {
     clearFlags() {
       this.debugLog('clearing flags...')
 
-      const sourceSecret = this.sourcePrivateKey()
-
-      if (sourceSecret) {
-        this.su.clearFlags(sourceSecret, StellarSdk.AuthRequiredFlag | StellarSdk.AuthRevocableFlag)
+      if (this.sourceValid()) {
+        this.su.clearFlags(this.selectedSource.secret, StellarSdk.AuthRequiredFlag | StellarSdk.AuthRevocableFlag)
           .then((response) => {
             this.debugLog(response, 'Success')
           })
@@ -152,13 +145,6 @@ export default {
           this.debugLog(error, 'Error')
         })
     },
-    clickAccount(item) {
-      this.debugLog('account info...')
-
-      this.infoForPublicKey(item.publicKey)
-      this.debugLog(item.secret)
-      this.debugLog(item.name)
-    },
     swapSourceDest() {
       const tmp = this.selectedSource
       this.selectedSource = this.selectedDest
@@ -167,160 +153,126 @@ export default {
     mergeSelected() {
       this.debugLog('merging')
 
-      this.su.mergeAccount(this.selectedSource.secret, this.selectedDest.publicKey)
-        .then((response) => {
-          this.su.updateBalances()
+      if (this.sourceValid()) {
+        this.su.mergeAccount(this.selectedSource.secret, this.selectedDest.publicKey)
+          .then((response) => {
+            this.su.updateBalances()
 
-          this.debugLog(response, 'Success')
-        })
-        .catch((error) => {
-          this.debugLog(error, 'Error')
-        })
+            this.debugLog(response, 'Success')
+          })
+          .catch((error) => {
+            this.debugLog(error, 'Error')
+          })
+      } else {
+        this.debugLog('Error: no source account selected')
+      }
     },
     payWithSigners() {
       this.debugLog('path with signers')
 
-      this.su.sendAsset(this.selectedSource.secret, this.selectedDest.publicKey, '122', null, null, [this.selectedSigner.secret])
-        .then((response) => {
-          this.su.updateBalances()
+      if (this.sourceValid()) {
+        this.su.sendAsset(this.selectedSource.secret, this.selectedDest.publicKey, '122', null, null, [this.selectedSigner.secret])
+          .then((response) => {
+            this.su.updateBalances()
 
-          this.debugLog(response, 'Success')
-        })
-        .catch((error) => {
-          this.debugLog(error, 'Error')
-        })
+            this.debugLog(response, 'Success')
+          })
+          .catch((error) => {
+            this.debugLog(error, 'Error')
+          })
+      } else {
+        this.debugLog('Error: no source account selected')
+      }
     },
     setSignerForSelected() {
       this.debugLog('set signer')
 
-      this.su.makeMultiSig(this.selectedSource.secret, this.selectedSigner.publicKey)
-        .then((result) => {
-          this.debugLog('signed!')
-        })
-        .catch((error) => {
-          this.debugLog(error)
-        })
+      if (this.sourceValid()) {
+        this.su.makeMultiSig(this.selectedSource.secret, this.selectedSigner.publicKey)
+          .then((result) => {
+            this.debugLog('signed!')
+          })
+          .catch((error) => {
+            this.debugLog(error)
+          })
+      } else {
+        this.debugLog('Error: no source account selected')
+      }
     },
     operationsForSelectedSource() {
-      this.su.server().operations()
-        .forAccount(this.selectedSource.publicKey)
-        .call()
-        .then((response) => {
-          this.debugLog(response)
-        })
+      if (this.sourceValid()) {
+        this.su.server().operations()
+          .forAccount(this.selectedSource.publicKey)
+          .call()
+          .then((response) => {
+            this.debugLog(response)
+          })
+      } else {
+        this.debugLog('Error: no source account selected')
+      }
     },
     paymentsForSelectedSource() {
-      this.su.server().payments()
-        .forAccount(this.selectedSource.publicKey)
-        .call()
-        .then((response) => {
-          this.debugLog(response)
-        })
+      if (this.sourceValid()) {
+        this.su.server().payments()
+          .forAccount(this.selectedSource.publicKey)
+          .call()
+          .then((response) => {
+            this.debugLog(response)
+          })
+      } else {
+        this.debugLog('Error: no source account selected')
+      }
     },
     transactionsForSelectedSource() {
-      this.su.server().transactions()
-        .forAccount(this.selectedSource.publicKey)
-        .stream({
-          onmessage: (txResponse) => {
-            this.debugLog(txResponse)
-          },
-          onerror: (error) => {
-            this.debugLog(error)
-          }
-        })
+      if (this.sourceValid()) {
+        this.su.server().transactions()
+          .forAccount(this.selectedSource.publicKey)
+          .stream({
+            onmessage: (txResponse) => {
+              this.debugLog(txResponse)
+            },
+            onerror: (error) => {
+              this.debugLog(error)
+            }
+          })
+      } else {
+        this.debugLog('Error: no source account selected')
+      }
     },
     infoForSelectedSource() {
-      this.infoForPublicKey(this.selectedSource.publicKey)
-    },
-    infoForPublicKey(publicKey) {
-      this.su.accountInfo(publicKey)
-        .then((response) => {
-          this.debugLog(response)
-        })
-        .catch((error) => {
-          this.debugLog(error)
-        })
+      if (this.sourceValid()) {
+        this.infoForPublicKey(this.selectedSource.publicKey)
+      } else {
+        this.debugLog('Error: no source account selected')
+      }
     },
     deleteSelectedSource() {
-      StellarAccounts.deleteAccount(this.selectedSource.publicKey)
+      if (this.sourceValid()) {
+        StellarAccounts.deleteAccount(this.selectedSource.publicKey)
+      } else {
+        this.debugLog('Error: no source account selected')
+      }
     },
     makeSelectedPayment() {
       this.debugLog('paying')
 
-      this.su.sendAsset(this.selectedSource.secret, this.selectedDest.publicKey, '122')
-        .then((response) => {
-          this.su.updateBalances()
+      if (this.sourceValid()) {
+        this.su.sendAsset(this.selectedSource.secret, this.selectedDest.publicKey, '122')
+          .then((response) => {
+            this.su.updateBalances()
 
-          this.debugLog(response, 'Success')
-        })
-        .catch((error) => {
-          this.debugLog(error, 'Error')
-        })
+            this.debugLog(response, 'Success')
+          })
+          .catch((error) => {
+            this.debugLog(error, 'Error')
+          })
+      } else {
+        this.debugLog('Error: no source account selected')
+      }
     },
     refresh() {
       this.debugLog('refresh')
       this.su.updateBalances(this.debugLog)
-    },
-    listenForPayments() {
-      for (let i = 0; i < StellarAccounts.accounts().length; i++) {
-        this.listenForPayment(i)
-      }
-    },
-    createAccount() {
-      this.debugLog('create account:')
-
-      this.su.createTestAccount()
-        .then((result) => {
-          this.lowballerAcct = result
-        })
-        .catch((error) => {
-          this.debugLog(error)
-        })
-    },
-    listenForPayment(index) {
-      const accountID = StellarAccounts.publicKey(index)
-
-      // Create an API call to query payments involving the account.
-      const payments = this.su.server().payments()
-        .forAccount(accountID)
-        .cursor('now')
-
-      // If some payments have already been handled, start the results from the
-      // last seen payment. (See below in `handlePayment` where it gets saved.)
-      // const lastToken = this.loadLastPagingToken()
-      // if (lastToken) {
-      //   payments.cursor(lastToken)
-      // }
-
-      payments.stream({
-        onmessage: (payment) => {
-          // this.savePagingToken(payment.paging_token)
-
-          if (payment.to !== accountID) {
-            return
-          }
-
-          let asset
-          if (payment.asset_type === 'native') {
-            asset = 'lumens'
-          } else {
-            asset = payment.asset_code + ':' + payment.asset_issuer
-          }
-
-          this.debugLog(payment.amount + ' ' + asset + ' from ' + payment.from)
-        },
-        onerror: (error) => {
-          this.debugLog('listen err: ' + JSON.stringify(error))
-        }
-      })
-    },
-    savePagingToken(token) {
-      // In most cases, you should save this to a local database or file so that
-      // you can load it next time you stream new payments.
-    },
-    loadLastPagingToken() {
-      // Get the last paging token from a local database or file
-      return 0
     }
   }
 }

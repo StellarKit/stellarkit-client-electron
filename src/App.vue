@@ -51,6 +51,15 @@
               </v-tabs-item>
               <span>Create Token</span>
             </v-tooltip>
+            <v-tooltip open-delay='800' bottom>
+              <v-tabs-item slot='activator' to='/trust' exact class="custom-tab-item">
+                <div class='custom-tab-content'>
+                  <v-icon>&#xE86C;</v-icon>
+                  <div class='bottom-bar' />
+                </div>
+              </v-tabs-item>
+              <span>Allow Trust</span>
+            </v-tooltip>
           </v-tabs-bar>
         </v-toolbar>
       </v-tabs>
