@@ -18,7 +18,7 @@
         </div>
         <div class='expansion-message'>
           <v-btn small @click="setDistributorTrustToken()">Set Distributor Trust Token</v-btn>
-          <div>Bifost Only</div>
+          <div>Bifrost Only</div>
           <v-btn small @click="setDistributorTrustETH()">Set Distributor Trust ETC</v-btn>
           <v-btn small @click="setDistributorTrustBTC()">Set Distributor Trust BTC</v-btn>
         </div>
@@ -53,7 +53,7 @@
           5. Post offer to exchange to sell tokens for Ethereum
         </div>
         <div class='expansion-message'>
-          <div>Bifost Only</div>
+          <div>Bifrost Only</div>
           <v-btn small @click="manageOfferETH()">Manage Offer ETH</v-btn>
           <v-btn small @click="manageOfferBTC()">Manage Offer BTC</v-btn>
         </div>
