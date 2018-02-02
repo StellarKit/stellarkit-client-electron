@@ -23,6 +23,9 @@
     <v-btn small @click="mergeSelected()">Merge Selected</v-btn>
     <v-btn small @click="testFederation()">Federation Lookup</v-btn>
     <v-btn small @click="setDomain()">Set Domain</v-btn>
+    <v-btn small @click="setAuthRequiredFlag()">Set AuthRequiredFlag</v-btn>
+    <v-btn small @click="setAuthRevocableFlagFlag()">Set AuthRevocableFlag</v-btn>
+    <v-btn small @click="clearFlags()">Clear Flags</v-btn>
   </div>
 
   <div class='balances'>
@@ -42,6 +45,7 @@ import AccountList from '../components/AccountList.vue'
 import EnterStringDialog from '../components/EnterStringDialog.vue'
 import SetDomainDialog from '../components/SetDomainDialog.vue'
 import Helper from '../js/helper.js'
+const StellarSdk = require('stellar-sdk')
 
 export default {
   mixins: [StellarCommonMixin],
@@ -68,11 +72,65 @@ export default {
     testFederation() {
       this.enterStringPing = !this.enterStringPing
     },
-    setDomain() {
-      this.sourceSecretKey = this.selectedSource ? this.selectedSource.masterKey : ''
+    sourcePrivateKey() {
+      const result = this.selectedSource ? this.selectedSource.masterKey : null
 
-      if (Helper.strlen(this.sourceSecretKey) > 0) {
+      if (Helper.strlen(result) > 0) {
+        return result
+      }
+      return null
+    },
+    setDomain() {
+      // set variable to bind to dialogs props
+      this.sourceSecretKey = this.sourcePrivateKey()
+
+      if (this.sourceSecretKey) {
         this.setDomainPing = !this.setDomainPing
+      } else {
+        this.debugLog('Error: no source account selected')
+      }
+    },
+    setAuthRequiredFlag() {
+      const sourceSecret = this.sourcePrivateKey()
+
+      if (sourceSecret) {
+        this.su.setFlags(sourceSecret, StellarSdk.AuthRevocableFlag)
+          .then((response) => {
+            this.debugLog(response, 'Success')
+          })
+          .catch((error) => {
+            this.debugLog(error, 'Error')
+          })
+      } else {
+        this.debugLog('Error: no source account selected')
+      }
+    },
+    setAuthRevocableFlagFlag() {
+      const sourceSecret = this.sourcePrivateKey()
+
+      if (sourceSecret) {
+        this.su.setFlags(sourceSecret, StellarSdk.AuthRevocableFlag)
+          .then((response) => {
+            this.debugLog(response, 'Success')
+          })
+          .catch((error) => {
+            this.debugLog(error, 'Error')
+          })
+      } else {
+        this.debugLog('Error: no source account selected')
+      }
+    },
+    clearFlags() {
+      const sourceSecret = this.sourcePrivateKey()
+
+      if (sourceSecret) {
+        this.su.clearFlags(sourceSecret, StellarSdk.AuthRequiredFlag | StellarSdk.AuthRevocableFlag)
+          .then((response) => {
+            this.debugLog(response, 'Success')
+          })
+          .catch((error) => {
+            this.debugLog(error, 'Error')
+          })
       } else {
         this.debugLog('Error: no source account selected')
       }

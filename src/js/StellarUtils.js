@@ -104,6 +104,18 @@ export default class StellarUtils {
     return this.api().setOptions(sourceSecret, options)
   }
 
+  setFlags(sourceSecret, flags) {
+    return this.api().setFlags(sourceSecret, flags)
+  }
+
+  clearFlags(sourceSecret, flags) {
+    return this.api().clearFlags(sourceSecret, flags)
+  }
+
+  setInflationDestination(sourceSecret, inflationDest) {
+    return this.api().setInflationDestination(sourceSecret, inflationDest)
+  }
+
   createTestAccount(name = null) {
     return new Promise((resolve, reject) => {
       const keyPair = StellarSdk.Keypair.random()
