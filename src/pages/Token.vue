@@ -74,12 +74,16 @@
           <v-btn small @click="buyLamboTokens()">Buy Tokens</v-btn>
         </div>
       </v-expansion-panel-content>
+      <v-expansion-panel-content>
+        <div slot="header" class='expansion-title'>
+          8. Create new account from distributor, set trust, send tokens
+        </div>
+        <div class='expansion-message'>
+          <div>Issues mulitiple operations. Wait for it to complete.</div>
+          <v-btn small @click="newAccountWithTokens()">Create New Account</v-btn>
+        </div>
+      </v-expansion-panel-content>
     </v-expansion-panel>
-  </div>
-
-  <div>
-    Create new account from distributor, set trust, send tokens
-    <v-btn small @click="newAccountWithTokens()">Create New Account</v-btn>
   </div>
 
   <v-btn small @click="showOffers()">Show Token Offers</v-btn>
