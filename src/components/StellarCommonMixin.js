@@ -53,7 +53,7 @@
 
        this.su.createTestAccount()
          .then((result) => {
-           this.lowballerAcct = result
+           this.debugLog(result)
          })
          .catch((error) => {
            this.debugLog(error)

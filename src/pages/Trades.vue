@@ -1,8 +1,8 @@
 <template>
 <div>
   <v-btn small @click="orderbook()">order book</v-btn>
-  <v-btn small @click="setLowballerTrust()">Low Ball Trust</v-btn>
-  <v-btn small @click="makeLowballOffer()">Low Ball Offer</v-btn>
+  <!-- <v-btn small @click="setLowballerTrust()">Low Ball Trust</v-btn>
+  <v-btn small @click="makeLowballOffer()">Low Ball Offer</v-btn> -->
   <v-btn small @click="streamPayments()">Payments</v-btn>
   <v-btn small @click="stopPaymentStream()">Stop Payments</v-btn>
   <v-btn small @click="streamOperations()">Operations</v-btn>
@@ -41,16 +41,16 @@ export default {
     }
   },
   mounted() {
-    this.lowballerAcct = StellarAccounts.accountWithName('Low Baller')
-    if (!this.lowballerAcct) {
-      this.su.createTestAccount('Low Baller')
-        .then((result) => {
-          this.lowballerAcct = result
-        })
-        .catch((error) => {
-          this.debugLog(error)
-        })
-    }
+    // this.lowballerAcct = StellarAccounts.accountWithName('Low Baller')
+    // if (!this.lowballerAcct) {
+    //   this.su.createTestAccount('Low Baller')
+    //     .then((result) => {
+    //       this.lowballerAcct = result
+    //     })
+    //     .catch((error) => {
+    //       this.debugLog(error)
+    //     })
+    // }
 
     this.distributorAcct = StellarAccounts.accountWithName('Distributor')
   },
