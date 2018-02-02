@@ -10,9 +10,12 @@
   <div class='token-steps'>
     <ol>
       <li>
+        Click each button in order, but wait for each to complete
+      </li>
+      <li>
         Distributor needs to trust the Issuer:<br>
         <v-btn small @click="setDistributorTrustToken()">Set Distributor Trust Token</v-btn>
-        <v-btn small @click="setDistributorTrustETC()">Set Distributor Trust ETC</v-btn>
+        <v-btn small @click="setDistributorTrustETH()">Set Distributor Trust ETC</v-btn>
         <v-btn small @click="setDistributorTrustBTC()">Set Distributor Trust BTC</v-btn>
       </li>
       <li>
@@ -21,7 +24,7 @@
       </li>
       <li>
         Lock Issuer so more tokens can be created:<br> Don't lock if using Bifrost, the current code fails when locked:<br>
-        <v-btn small @click="lockIssuer()">Lock Issuer</v-btn>
+        <v-btn small :disabled='true' @click="lockIssuer()">Lock Issuer</v-btn> Disabled for now
       </li>
       <li>
         Post offer to exchange to sell tokens for XLM:<br>
@@ -29,7 +32,8 @@
       </li>
       <li>
         Post offer to exchange to sell tokens for Ethereum:<br>
-        <v-btn small @click="manageOfferEth()">Manage Offer Eth</v-btn>
+        <v-btn small @click="manageOfferETH()">Manage Offer ETH</v-btn>
+        <v-btn small @click="manageOfferBTC()">Manage Offer BTC</v-btn>
       </li>
       <li>
         Buyer needs to trust the Distributor:<br>
@@ -111,7 +115,7 @@ export default {
         })
     },
     buyLamboTokens() {
-      this.debugLog('Buying tokens')
+      this.debugLog('Buying tokens..')
 
       this.su.buyTokens(this.tokenBuyerAcct.secret, this.su.lumins(), StellarAccounts.lamboTokenAsset(), '1000', '2.22')
         .then((response) => {
@@ -141,7 +145,7 @@ export default {
         })
     },
     manageOffer() {
-      this.debugLog('Managing Offer')
+      this.debugLog('Managing Offer...')
 
       const price = {
         n: 225,
@@ -156,8 +160,8 @@ export default {
           this.debugLog(error, 'Error')
         })
     },
-    manageOfferEth() {
-      this.debugLog('Managing offer Ethereum:')
+    manageOfferETH() {
+      this.debugLog('Managing offer Ethereum...')
 
       const price = {
         n: 1,
@@ -172,8 +176,24 @@ export default {
           this.debugLog(error, 'Error')
         })
     },
+    manageOfferBTC() {
+      this.debugLog('Managing offer Bitcoin...')
+
+      const price = {
+        n: 1,
+        d: 10
+      }
+
+      this.su.manageOffer(this.distributorAcct.secret, StellarAccounts.bitcoinAsset(), StellarAccounts.lamboTokenAsset(), '5000', price)
+        .then((result) => {
+          this.debugLog(result, 'Success')
+        })
+        .catch((error) => {
+          this.debugLog(error, 'Error')
+        })
+    },
     lockIssuer() {
-      this.debugLog('Locking issuer:')
+      this.debugLog('Locking issuer...')
 
       this.su.lockAccount(this.issuerAcct.secret)
         .then((result) => {
@@ -185,7 +205,7 @@ export default {
         })
     },
     createTokens() {
-      this.debugLog('Creating tokens:')
+      this.debugLog('Creating tokens...')
 
       this.su.sendAsset(this.issuerAcct.secret, this.distributorAcct.publicKey, '10000', StellarAccounts.lamboTokenAsset(), 'Created Tokens')
         .then((response) => {
@@ -198,7 +218,7 @@ export default {
         })
     },
     setDistributorTrust(asset) {
-      this.debugLog('Setting distributor trust:')
+      this.debugLog('Setting distributor trust...')
 
       this.su.changeTrust(this.distributorAcct.secret, asset, '10000')
         .then((result) => {
@@ -218,7 +238,7 @@ export default {
       this.setDistributorTrust(StellarAccounts.btcAsset())
     },
     setBuyerTrust() {
-      this.debugLog('Setting buyer trust:')
+      this.debugLog('Setting buyer trust...')
 
       // buyer must trust the distributor
       this.su.changeTrust(this.tokenBuyerAcct.secret, StellarAccounts.lamboTokenAsset(), '10000')
@@ -230,7 +250,7 @@ export default {
         })
     },
     showOffers() {
-      this.debugLog('Offers:')
+      this.debugLog('Offers...')
 
       this.su.server().offers('accounts', this.distributorAcct.publicKey)
         .call()
@@ -258,7 +278,7 @@ export default {
       }
     },
     deleteOffers() {
-      this.debugLog('Deleting Offers')
+      this.debugLog('Deleting Offers...')
 
       this.su.server().offers('accounts', this.distributorAcct.publicKey)
         .call()
@@ -273,7 +293,7 @@ export default {
         })
     },
     createAccounts() {
-      this.debugLog('Create Accounts')
+      this.debugLog('Creating Accounts...')
 
       this.issuerAcct = StellarAccounts.accountWithName('Issuer')
       if (!this.issuerAcct) {

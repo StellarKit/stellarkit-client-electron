@@ -29,6 +29,10 @@ class StellarAccounts {
     return new StellarSdk.Asset('ETH', this.accountWithName('Issuer').publicKey)
   }
 
+  bitcoinAsset() {
+    return new StellarSdk.Asset('BTC', this.accountWithName('Issuer').publicKey)
+  }
+
   btcAsset() {
     return new StellarSdk.Asset('BTC', this.accountWithName('Issuer').publicKey)
   }
