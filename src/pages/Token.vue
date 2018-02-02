@@ -4,7 +4,7 @@
     Start with three accounts: Issuer, Distributor and Buyer<br>
     <!-- <v-btn small @click="createAccounts()">Create Accounts</v-btn> -->
     <br><br>
-    <account-list :items="tokensUI" v-on:click-item="clickAccount" />
+    <account-list :items="tokensUI" v-on:click-item="clickAccount" v-on:delete-item="deleteAccount" />
   </div>
 
   <div class='token-steps'>

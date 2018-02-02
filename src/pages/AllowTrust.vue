@@ -13,15 +13,18 @@
     <v-btn small @click="setAuthRevocableFlag()">Set AuthRevocableFlag</v-btn>
     <v-btn small @click="clearFlags()">Clear Flags</v-btn>
 
-    <div>Set Source account to any account, Click Set Trust, and try to buy Token. It will fail if AuthRequiredFlag set unless you allow trust.</div>
-    <v-btn small @click="allowTrust()">Allow Trust</v-btn>
-    <v-btn small @click="setTrust()">Set Trust</v-btn>
-    <v-btn small @click="makeSelectedPayment()">Buy Token</v-btn>
+    <div>Set Source account to a new account, Click Set Trust, and try to buy Token. It will fail if AuthRequiredFlag set unless you allow trust.</div>
+    <v-btn small @click="allowTrust(true)">Enable Trust</v-btn>
+    <v-btn small @click="allowTrust(false)">Disable Trust</v-btn>
+
+    <div>Set Source account, trust asset, try to buy.</div>
+    <v-btn small @click="changeTrust()">Trust Asset</v-btn>
+    <v-btn small @click="buyToken()">Buy Token</v-btn>
   </div>
 
   <div class='balances'>
     <h2>Accounts</h2>
-    <account-list :items="accountsUI" v-on:click-item="clickAccount" />
+    <account-list :items="accountsUI" v-on:click-item="clickAccount" v-on:delete-item="deleteAccount" />
   </div>
 </div>
 </template>
@@ -31,6 +34,7 @@ import StellarCommonMixin from '../components/StellarCommonMixin.js'
 import AccountList from '../components/AccountList.vue'
 const StellarSdk = require('stellar-sdk')
 import Helper from '../js/helper.js'
+import StellarAccounts from '../js/StellarAccounts.js'
 
 export default {
   mixins: [StellarCommonMixin],
@@ -46,21 +50,50 @@ export default {
     this.su.updateBalances()
   },
   methods: {
-    sourcePrivateKey() {
-      const result = this.selectedSource ? this.selectedSource.secret : null
+    sourceValid() {
+      const result = this.selectedSource ? this.selectedSource.publicKey : null
 
       if (Helper.strlen(result) > 0) {
-        return result
+        return true
       }
-      return null
+      return false
+    },
+    allowTrust(authorize) {
+      if (this.sourceValid()) {
+        const issuerAcct = StellarAccounts.accountWithName('Issuer')
+        if (issuerAcct) {
+          this.su.allowTrust(issuerAcct.secret, this.selectedSource.publicKey, StellarAccounts.lamboTokenAsset(), authorize)
+            .then((response) => {
+              this.debugLog(response, 'Success')
+            })
+            .catch((error) => {
+              this.debugLog(error, 'Error')
+            })
+        } else {
+          this.debugLog('Error: no issuer account')
+        }
+      } else {
+        this.debugLog('Error: no source account selected')
+      }
+    },
+    changeTrust() {
+      if (this.sourceValid()) {
+        this.su.changeTrust(this.selectedSource.secret, StellarAccounts.lamboTokenAsset(), '10000')
+          .then((response) => {
+            this.debugLog(response, 'Success')
+          })
+          .catch((error) => {
+            this.debugLog(error, 'Error')
+          })
+      } else {
+        this.debugLog('Error: no source account selected')
+      }
     },
     setAuthRequiredFlag() {
       this.debugLog('setAuthRequiredFlag...')
 
-      const sourceSecret = this.sourcePrivateKey()
-
-      if (sourceSecret) {
-        this.su.setFlags(sourceSecret, StellarSdk.AuthRequiredFlag)
+      if (this.sourceValid()) {
+        this.su.setFlags(this.selectedSource.secret, StellarSdk.AuthRequiredFlag)
           .then((response) => {
             this.debugLog(response, 'Success')
           })
@@ -74,10 +107,8 @@ export default {
     setAuthRevocableFlag() {
       this.debugLog('setAuthRevocableFlag...')
 
-      const sourceSecret = this.sourcePrivateKey()
-
-      if (sourceSecret) {
-        this.su.setFlags(sourceSecret, StellarSdk.AuthRevocableFlag)
+      if (this.sourceValid()) {
+        this.su.setFlags(this.selectedSource.secret, StellarSdk.AuthRevocableFlag)
           .then((response) => {
             this.debugLog(response, 'Success')
           })
@@ -91,10 +122,8 @@ export default {
     clearFlags() {
       this.debugLog('clearing flags...')
 
-      const sourceSecret = this.sourcePrivateKey()
-
-      if (sourceSecret) {
-        this.su.clearFlags(sourceSecret, StellarSdk.AuthRequiredFlag | StellarSdk.AuthRevocableFlag)
+      if (this.sourceValid()) {
+        this.su.clearFlags(this.selectedSource.secret, StellarSdk.AuthRequiredFlag | StellarSdk.AuthRevocableFlag)
           .then((response) => {
             this.debugLog(response, 'Success')
           })
@@ -105,21 +134,22 @@ export default {
         this.debugLog('Error: no source account selected')
       }
     },
-    infoForSelectedSource() {
-      this.infoForPublicKey(this.selectedSource.publicKey)
-    },
-    makeSelectedPayment() {
-      this.debugLog('paying')
+    buyToken() {
+      this.debugLog('Buying tokens...')
 
-      this.su.sendAsset(this.selectedSource.secret, this.selectedDest.publicKey, '122')
-        .then((response) => {
-          this.su.updateBalances()
+      if (this.sourceValid()) {
+        this.su.buyTokens(this.selectedSource.secret, this.su.lumins(), StellarAccounts.lamboTokenAsset(), '1000', '2.22')
+          .then((response) => {
+            this.debugLog(response)
 
-          this.debugLog(response, 'Success')
-        })
-        .catch((error) => {
-          this.debugLog(error, 'Error')
-        })
+            this.su.updateBalances()
+          })
+          .catch((error) => {
+            this.debugLog(error)
+          })
+      } else {
+        this.debugLog('Error: no source account selected')
+      }
     }
   }
 }

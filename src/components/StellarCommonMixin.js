@@ -38,6 +38,9 @@
            this.debugLog(error)
          })
      },
+     deleteAccount(item) {
+       StellarAccounts.deleteAccount(item.publicKey)
+     },
      clickAccount(item) {
        this.debugLog('account info...')
 

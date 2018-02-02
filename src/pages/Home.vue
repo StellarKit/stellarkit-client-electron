@@ -13,7 +13,6 @@
 
     <v-select :items="accountsUI" item-text='name' v-model="selectedSigner" label="Add signer to source" autocomplete return-object max-height="600"></v-select>
     <v-btn small @click="makeSelectedPayment()">Pay</v-btn>
-    <v-btn small @click="deleteSelectedSource()">Delete</v-btn>
     <v-btn small @click="infoForSelectedSource()">Info</v-btn>
     <v-btn small @click="transactionsForSelectedSource()">Transactions</v-btn>
     <v-btn small @click="paymentsForSelectedSource()">Payments</v-btn>
@@ -30,7 +29,7 @@
 
   <div class='balances'>
     <h2>Accounts</h2>
-    <account-list :items="accountsUI" v-on:click-item="clickAccount" />
+    <account-list :items="accountsUI" v-on:click-item="clickAccount" v-on:delete-item="deleteAccount" />
   </div>
 
   <enter-string-dialog :ping='enterStringPing' />
@@ -40,7 +39,6 @@
 
 <script>
 import StellarCommonMixin from '../components/StellarCommonMixin.js'
-import StellarAccounts from '../js/StellarAccounts.js'
 import AccountList from '../components/AccountList.vue'
 import EnterStringDialog from '../components/EnterStringDialog.vue'
 import SetDomainDialog from '../components/SetDomainDialog.vue'
@@ -242,13 +240,6 @@ export default {
     infoForSelectedSource() {
       if (this.sourceValid()) {
         this.infoForPublicKey(this.selectedSource.publicKey)
-      } else {
-        this.debugLog('Error: no source account selected')
-      }
-    },
-    deleteSelectedSource() {
-      if (this.sourceValid()) {
-        StellarAccounts.deleteAccount(this.selectedSource.publicKey)
       } else {
         this.debugLog('Error: no source account selected')
       }
