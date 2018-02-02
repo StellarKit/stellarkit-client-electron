@@ -31,6 +31,7 @@
   </div>
 
   <enter-string-dialog :ping='enterStringPing' />
+  <set-domain-dialog :ping='setDomainPing' :secretKey='sourceSecretKey' />
 </div>
 </template>
 
@@ -39,19 +40,24 @@ import StellarCommonMixin from '../components/StellarCommonMixin.js'
 import StellarAccounts from '../js/StellarAccounts.js'
 import AccountList from '../components/AccountList.vue'
 import EnterStringDialog from '../components/EnterStringDialog.vue'
+import SetDomainDialog from '../components/SetDomainDialog.vue'
+import Helper from '../js/helper.js'
 
 export default {
   mixins: [StellarCommonMixin],
   components: {
     'account-list': AccountList,
-    'enter-string-dialog': EnterStringDialog
+    'enter-string-dialog': EnterStringDialog,
+    'set-domain-dialog': SetDomainDialog
   },
   data() {
     return {
       enterStringPing: false,
+      setDomainPing: false,
       selectedSource: null,
       selectedDest: null,
-      selectedSigner: null
+      selectedSigner: null,
+      sourceSecretKey: null
     }
   },
   mounted() {
@@ -63,7 +69,13 @@ export default {
       this.enterStringPing = !this.enterStringPing
     },
     setDomain() {
-      this.enterStringPing = !this.enterStringPing
+      this.sourceSecretKey = this.selectedSource ? this.selectedSource.masterKey : ''
+
+      if (Helper.strlen(this.sourceSecretKey) > 0) {
+        this.setDomainPing = !this.setDomainPing
+      } else {
+        this.debugLog('Error: no source account selected')
+      }
     },
     horizonMetrics() {
       this.su.horizonMetrics()
