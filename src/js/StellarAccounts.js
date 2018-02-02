@@ -9,13 +9,14 @@ class StellarAccounts {
     this.loadAccounts()
   }
 
-  addAccount(keyPair, balances, name = null) {
+  addAccount(keyPair, balances, name = null, page = null) {
     const acct = {
       name: name !== null ? name : generateName(),
       XLM: balances.XLM,
       LMB: balances.LMB,
       secret: keyPair.secret(),
-      publicKey: keyPair.publicKey()
+      publicKey: keyPair.publicKey(),
+      page: page
     }
 
     this._accounts.push(acct)
@@ -109,10 +110,6 @@ class StellarAccounts {
     Helper.set('accounts', this._accounts)
 
     Helper.emit('stellar-accounts-updated')
-  }
-
-  logResult(result, sucess = true) {
-    console.log((sucess ? 'Success: ' : 'Error: ') + JSON.stringify(result))
   }
 }
 

@@ -124,7 +124,7 @@ export default class StellarUtils {
     return this.api().setInflationDestination(sourceSecret, inflationDest)
   }
 
-  createTestAccount(name = null) {
+  createTestAccount(name = null, page = null) {
     return new Promise((resolve, reject) => {
       const keyPair = StellarSdk.Keypair.random()
 
@@ -144,7 +144,7 @@ export default class StellarUtils {
               }
             })
 
-            resolve(StellarAccounts.addAccount(keyPair, balances, name))
+            resolve(StellarAccounts.addAccount(keyPair, balances, name, page))
           })
           .catch((error) => {
             this.log(data)

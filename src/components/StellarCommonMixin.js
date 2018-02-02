@@ -36,10 +36,8 @@
        // for tokens page
        this.tokensUI = []
        this.accountsUI.forEach((acct) => {
-         switch (acct.name) {
-           case 'Issuer':
-           case 'Distributor':
-           case 'Token buyer':
+         switch (acct.page) {
+           case 'token':
              this.tokensUI.push(acct)
              break
            default:

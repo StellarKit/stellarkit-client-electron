@@ -93,11 +93,10 @@ export default {
 
               this.su.sendAsset(this.distributorAcct.secret, keypair.publicKey(), '12', StellarAccounts.lamboTokenAsset())
                 .then((response) => {
-                  const balances = {}
-
-                  StellarAccounts.addAccount(keypair, balances)
+                  StellarAccounts.addAccount(keypair, {}, null, 'token')
 
                   this.debugLog(response, 'Success')
+                  this.su.updateBalances()
                 })
                 .catch((error) => {
                   this.debugLog(error, 'Error')
@@ -112,7 +111,6 @@ export default {
         })
     },
     clickAccount(item) {
-      console.log(item)
       this.infoForPublicKey(item.publicKey)
       this.debugLog(item.secret)
       this.debugLog(item.name)
@@ -167,7 +165,6 @@ export default {
       this.su.manageOffer(this.distributorAcct.secret, this.su.lumins(), StellarAccounts.lamboTokenAsset(), '5000', price)
         .then((result) => {
           this.debugLog(result, 'Success')
-          // this.debugLog(result)
         })
         .catch((error) => {
           this.debugLog(error, 'Error')
@@ -184,7 +181,6 @@ export default {
       this.su.manageOffer(this.distributorAcct.secret, StellarAccounts.ethereumAsset(), StellarAccounts.lamboTokenAsset(), '5000', price)
         .then((result) => {
           this.debugLog(result, 'Success')
-          // this.debugLog(result)
         })
         .catch((error) => {
           this.debugLog(error, 'Error')
@@ -196,7 +192,7 @@ export default {
       this.su.lockAccount(this.issuerAcct.secret)
         .then((result) => {
           this.debugLog('locked!')
-          // this.debugLog(result)
+          this.debugLog(result)
         })
         .catch((error) => {
           this.debugLog(error)
@@ -208,6 +204,8 @@ export default {
       this.su.sendAsset(this.issuerAcct.secret, this.distributorAcct.publicKey, '10000', StellarAccounts.lamboTokenAsset(), 'Created Tokens')
         .then((response) => {
           this.debugLog(response, 'Success')
+
+          this.su.updateBalances()
         })
         .catch((error) => {
           this.debugLog(error, 'Error')
@@ -265,7 +263,6 @@ export default {
         this.su.manageOffer(this.distributorAcct.secret, buying, selling, '0', offer.price_r, offer.id)
           .then((result) => {
             this.debugLog(result, 'Success')
-            // this.debugLog(result)
 
             this.deleteOffersFromArray(offers)
           })
@@ -294,7 +291,7 @@ export default {
 
       this.issuerAcct = StellarAccounts.accountWithName('Issuer')
       if (!this.issuerAcct) {
-        this.su.createTestAccount('Issuer')
+        this.su.createTestAccount('Issuer', 'token')
           .then((result) => {
             this.issuerAcct = result
           })
@@ -305,7 +302,7 @@ export default {
 
       this.distributorAcct = StellarAccounts.accountWithName('Distributor')
       if (!this.distributorAcct) {
-        this.su.createTestAccount('Distributor')
+        this.su.createTestAccount('Distributor', 'token')
           .then((result) => {
             this.distributorAcct = result
           })
@@ -316,7 +313,7 @@ export default {
 
       this.tokenBuyerAcct = StellarAccounts.accountWithName('Token buyer')
       if (!this.tokenBuyerAcct) {
-        this.su.createTestAccount('Token buyer')
+        this.su.createTestAccount('Token buyer', 'token')
           .then((result) => {
             this.tokenBuyerAcct = result
           })
@@ -324,20 +321,6 @@ export default {
             this.debugLog(error)
           })
       }
-    },
-    titleHTML(title, acct) {
-      let result = '<span>'
-      result += '<strong>' + title + '</strong>' + ':  '
-
-      if (acct) {
-        result += acct.publicKey + '  --  XML: ' + acct.XLM
-        result += '  --  LMB: ' + acct.LMB
-      } else {
-        result += '(none)'
-      }
-      result += '</span>'
-
-      return result
     }
   }
 }
