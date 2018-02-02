@@ -4,7 +4,7 @@
     Start with three accounts: Issuer, Distributor and Buyer<br>
     <v-btn small @click="createAccounts()">Create Accounts</v-btn>
     <br>
-    <h3>Accounts - click for info</h3>
+    <h3>Accounts - Click for info</h3>
     <account-list :items="tokensUI" v-on:click-item="clickAccount" v-on:delete-item="deleteAccount" />
   </div>
 
@@ -65,7 +65,6 @@
         <div class='expansion-message'>
           <v-btn small @click="setBuyerTrust()">Set Buyer Trust</v-btn>
         </div>
-      </v-expansion-panel-content>
       </v-expansion-panel-content>
       <v-expansion-panel-content>
         <div slot="header" class='expansion-title'>
