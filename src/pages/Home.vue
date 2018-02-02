@@ -24,7 +24,7 @@
     <v-btn small @click="testFederation()">Federation Lookup</v-btn>
     <v-btn small @click="setDomain()">Set Domain</v-btn>
     <v-btn small @click="setAuthRequiredFlag()">Set AuthRequiredFlag</v-btn>
-    <v-btn small @click="setAuthRevocableFlagFlag()">Set AuthRevocableFlag</v-btn>
+    <v-btn small @click="setAuthRevocableFlag()">Set AuthRevocableFlag</v-btn>
     <v-btn small @click="clearFlags()">Clear Flags</v-btn>
   </div>
 
@@ -91,6 +91,8 @@ export default {
       }
     },
     setAuthRequiredFlag() {
+      this.debugLog('setAuthRequiredFlag...')
+
       const sourceSecret = this.sourcePrivateKey()
 
       if (sourceSecret) {
@@ -105,7 +107,9 @@ export default {
         this.debugLog('Error: no source account selected')
       }
     },
-    setAuthRevocableFlagFlag() {
+    setAuthRevocableFlag() {
+      this.debugLog('setAuthRevocableFlag...')
+
       const sourceSecret = this.sourcePrivateKey()
 
       if (sourceSecret) {
@@ -121,6 +125,8 @@ export default {
       }
     },
     clearFlags() {
+      this.debugLog('clearing flags...')
+
       const sourceSecret = this.sourcePrivateKey()
 
       if (sourceSecret) {
@@ -136,6 +142,8 @@ export default {
       }
     },
     horizonMetrics() {
+      this.debugLog('horizon metrics...')
+
       this.su.horizonMetrics()
         .then((response) => {
           this.debugLog(response, 'Success')
@@ -145,6 +153,8 @@ export default {
         })
     },
     clickAccount(item) {
+      this.debugLog('account info...')
+
       this.infoForPublicKey(item.publicKey)
       this.debugLog(item.masterKey)
       this.debugLog(item.name)
@@ -155,6 +165,8 @@ export default {
       this.selectedDest = tmp
     },
     mergeSelected() {
+      this.debugLog('merging')
+
       this.su.mergeAccount(this.selectedSource.masterKey, this.selectedDest.publicKey)
         .then((response) => {
           this.su.updateBalances()
@@ -166,6 +178,8 @@ export default {
         })
     },
     payWithSigners() {
+      this.debugLog('path with signers')
+
       this.su.sendAsset(this.selectedSource.masterKey, this.selectedDest.publicKey, '122', null, null, [this.selectedSigner.masterKey])
         .then((response) => {
           this.su.updateBalances()

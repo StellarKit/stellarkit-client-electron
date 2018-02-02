@@ -216,7 +216,7 @@ export default {
     },
     setLowballerTrust() {
       // buyer must trust the distributor
-      this.su.setTrustForAsset(this.lowballerAcct.masterKey, StellarAccounts.lamboTokenAsset(), '10000')
+      this.su.changeTrust(this.lowballerAcct.masterKey, StellarAccounts.lamboTokenAsset(), '10000')
         .then((result) => {
           this.debugLog(result)
         })

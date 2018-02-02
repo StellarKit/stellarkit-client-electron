@@ -76,8 +76,12 @@ export default class StellarUtils {
     return this.api().manageOffer(sourceSecret, buying, selling, amount, price, offerID)
   }
 
-  setTrustForAsset(sourceSecret, asset, amount) {
-    return this.api().setTrustForAsset(sourceSecret, asset, amount)
+  changeTrust(sourceSecret, asset, amount) {
+    return this.api().changeTrust(sourceSecret, asset, amount)
+  }
+
+  allowTrust(sourceSecret, trustor, asset, authorize) {
+    return this.api().allowTrust(sourceSecret, trustor, asset, authorize)
   }
 
   setDomain(sourceSecret, domain) {
@@ -98,6 +102,10 @@ export default class StellarUtils {
 
   lockAccount(sourceSecret) {
     return this.api().lockAccount(sourceSecret)
+  }
+
+  createAccount(sourceSecret, destinationKey, startingBalance) {
+    return this.api().createAccount(sourceSecret, destinationKey, startingBalance)
   }
 
   setOptions(sourceSecret, options) {

@@ -6766,7 +6766,7 @@ stellar-base@^0.7.6:
 
 "stellar-js-utils@git://github.com/StellarKit/stellar-js-utils":
   version "1.0.1"
-  resolved "git://github.com/StellarKit/stellar-js-utils#7ed08f97374fdd3feabb8bd8c682b0b96bed384f"
+  resolved "git://github.com/StellarKit/stellar-js-utils#c6c4b9c6df7a62296d9f520aac4be1a1ef78789b"
   dependencies:
     axios "^0.17.1"
     jquery "^3.3.1"
@@ -7450,8 +7450,8 @@ vue-loader@^13.7.0:
     vue-template-es2015-compiler "^1.6.0"
 
 vue-loader@^14.0.1:
-  version "14.1.0"
-  resolved "https://registry.yarnpkg.com/vue-loader/-/vue-loader-14.1.0.tgz#ae31d62a11421061fca8bac30cbc15875df886d3"
+  version "14.1.1"
+  resolved "https://registry.yarnpkg.com/vue-loader/-/vue-loader-14.1.1.tgz#331f197fcea790d6b8662c29b850806e7eb29342"
   dependencies:
     consolidate "^0.14.0"
     hash-sum "^1.0.2"

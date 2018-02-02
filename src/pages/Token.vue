@@ -42,6 +42,11 @@
     </ol>
   </div>
 
+  <div>
+    Create new account from distributor, set trust, send tokens
+    <v-btn small @click="newAccountWithTokens()">Create New Account</v-btn>
+  </div>
+
   <v-btn small @click="showOffers()">Show Token Offers</v-btn>
   <v-btn small @click="deleteOffers()">Delete Token Offers</v-btn>
   <v-btn small @click="paymentPaths()">Payment Paths</v-btn>
@@ -54,6 +59,7 @@
 import StellarCommonMixin from '../components/StellarCommonMixin.js'
 import AccountList from '../components/AccountList.vue'
 import StellarAccounts from '../js/StellarAccounts.js'
+const StellarSdk = require('stellar-sdk')
 
 export default {
   mixins: [StellarCommonMixin],
@@ -71,6 +77,40 @@ export default {
     this.createAccounts()
   },
   methods: {
+    newAccountWithTokens() {
+      const keypair = StellarSdk.Keypair.random()
+
+      this.debugLog('New Account:')
+      this.debugLog(keypair.publicKey())
+      this.debugLog(keypair.secret())
+
+      this.su.createAccount(this.distributorAcct.masterKey, keypair.publicKey(), '3')
+        .then((newAccount) => {
+          this.debugLog(newAccount)
+          this.su.changeTrust(keypair.secret(), StellarAccounts.lamboTokenAsset(), '10000')
+            .then((result) => {
+              this.debugLog(result)
+
+              this.su.sendAsset(this.distributorAcct.masterKey, keypair.publicKey(), '12', StellarAccounts.lamboTokenAsset())
+                .then((response) => {
+                  const balances = {}
+
+                  StellarAccounts.addAccount(keypair, balances)
+
+                  this.debugLog(response, 'Success')
+                })
+                .catch((error) => {
+                  this.debugLog(error, 'Error')
+                })
+            })
+            .catch((error) => {
+              this.debugLog(error)
+            })
+        })
+        .catch((error) => {
+          this.debugLog(error)
+        })
+    },
     clickAccount(item) {
       console.log(item)
       this.infoForPublicKey(item.publicKey)
@@ -176,7 +216,7 @@ export default {
     setDistributorTrust(asset) {
       this.debugLog('Setting distributor trust:')
 
-      this.su.setTrustForAsset(this.distributorAcct.masterKey, asset, '10000')
+      this.su.changeTrust(this.distributorAcct.masterKey, asset, '10000')
         .then((result) => {
           this.debugLog(result)
         })
@@ -197,7 +237,7 @@ export default {
       this.debugLog('Setting buyer trust:')
 
       // buyer must trust the distributor
-      this.su.setTrustForAsset(this.tokenBuyerAcct.masterKey, StellarAccounts.lamboTokenAsset(), '10000')
+      this.su.changeTrust(this.tokenBuyerAcct.masterKey, StellarAccounts.lamboTokenAsset(), '10000')
         .then((result) => {
           this.debugLog(result)
         })
