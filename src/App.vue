@@ -110,7 +110,6 @@ import NetworkMenu from './components/NetworkMenu.vue'
 import Helper from './js/helper.js'
 import Storage from './js/storage.js'
 import $ from 'jquery'
-const shell = require('electron').shell
 
 export default {
   components: {
@@ -144,7 +143,7 @@ export default {
   },
   methods: {
     showGitHub() {
-      shell.openExternal('https://github.com/StellarKit')
+      Helper.openBrowser('https://github.com/StellarKit')
     },
     showDrawer() {
       this.showNavigation = !this.showNavigation

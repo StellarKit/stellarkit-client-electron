@@ -1,8 +1,6 @@
 import Vue from 'vue'
-// import {
-//   ipcRenderer
-// } from 'electron'
 import Storage from './storage.js'
+const shell = require('electron').shell
 
 export default class Helper {
   static vue() {
@@ -84,6 +82,11 @@ export default class Helper {
   }
 
   static isFederation(fedString) {
+    // modify the email regex
     return true
+  }
+
+  static openBrowser(url) {
+    shell.openExternal(url)
   }
 }
