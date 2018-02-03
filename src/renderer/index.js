@@ -3,6 +3,7 @@ import App from '../App.vue'
 import Home from '../pages/Home.vue'
 import BuyToken from '../pages/BuyToken.vue'
 import AllowTrust from '../pages/AllowTrust.vue'
+import LockedTokens from '../pages/LockedTokens.vue'
 import Token from '../pages/Token.vue'
 import Trades from '../pages/Trades.vue'
 import $ from 'jquery'
@@ -38,6 +39,10 @@ const router = new VueRouter({
       path: '/trust',
       component: AllowTrust,
       name: 'Allow Trust'
+    }, {
+      path: '/locked',
+      component: LockedTokens,
+      name: 'Locked Tokens'
     },
     {
       path: '*',

@@ -60,6 +60,15 @@
               </v-tabs-item>
               <span>Allow Trust</span>
             </v-tooltip>
+            <v-tooltip open-delay='800' bottom>
+              <v-tabs-item slot='activator' to='/locked' exact class="custom-tab-item">
+                <div class='custom-tab-content'>
+                  <v-icon>&#xE897;</v-icon>
+                  <div class='bottom-bar' />
+                </div>
+              </v-tabs-item>
+              <span>Locked Tokens</span>
+            </v-tooltip>
           </v-tabs-bar>
         </v-toolbar>
       </v-tabs>
