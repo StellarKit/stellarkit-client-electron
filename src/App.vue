@@ -1,102 +1,104 @@
 <template>
 <v-app>
-  <navivation-drawer :ping='showNavigation' />
-  <div class='main-container'>
-    <div class="top-bar">
-      <v-tabs centered>
-        <ticker-component />
+  <div v-if='!initializing'>
+    <navivation-drawer :ping='showNavigation' />
+    <div class='main-container'>
+      <div class="top-bar">
+        <v-tabs centered>
+          <ticker-component />
 
-        <v-toolbar dark class='top-toolbar'>
-          <v-toolbar-side-icon @click='showDrawer'></v-toolbar-side-icon>
-          <v-toolbar-title>{{pageTitle()}}</v-toolbar-title>
-          <v-spacer></v-spacer>
-          <v-btn icon @click="showGitHub">
-            <v-icon>fa-github</v-icon>
-          </v-btn>
-          <v-tabs-bar slot="extension">
-            <!-- <v-tabs-slider color="white"></v-tabs-slider> -->
-            <v-tooltip open-delay='800' bottom>
-              <v-tabs-item slot='activator' to='/' exact class="custom-tab-item">
-                <div class='custom-tab-content'>
-                  <v-icon>&#xE88A;</v-icon>
-                  <div class='bottom-bar' />
-                </div>
-              </v-tabs-item>
-              <span>Make Payments</span>
-            </v-tooltip>
-            <v-tooltip open-delay='800' bottom>
-              <v-tabs-item slot='activator' to='/buytoken' exact class="custom-tab-item">
-                <div class='custom-tab-content'>
-                  <v-icon>&#xE851;</v-icon>
-                  <div class='bottom-bar' />
-                </div>
-              </v-tabs-item>
-              <span>Buy token with Bifrost</span>
-            </v-tooltip>
-            <v-tooltip open-delay='800' bottom>
-              <v-tabs-item slot='activator' to='/trades' exact class="custom-tab-item">
-                <div class='custom-tab-content'>
-                  <v-icon>&#xE8C9;</v-icon>
-                  <div class='bottom-bar' />
-                </div>
-              </v-tabs-item>
-              <span>Live Trades</span>
-            </v-tooltip>
-            <v-tooltip open-delay='800' bottom>
-              <v-tabs-item slot='activator' to='/token' exact class="custom-tab-item">
-                <div class='custom-tab-content'>
-                  <v-icon>&#xE263;</v-icon>
-                  <div class='bottom-bar' />
-                </div>
-              </v-tabs-item>
-              <span>Create Token</span>
-            </v-tooltip>
-            <v-tooltip open-delay='800' bottom>
-              <v-tabs-item slot='activator' to='/trust' exact class="custom-tab-item">
-                <div class='custom-tab-content'>
-                  <v-icon>&#xE86C;</v-icon>
-                  <div class='bottom-bar' />
-                </div>
-              </v-tabs-item>
-              <span>Allow Trust</span>
-            </v-tooltip>
-            <v-tooltip open-delay='800' bottom>
-              <v-tabs-item slot='activator' to='/locked' exact class="custom-tab-item">
-                <div class='custom-tab-content'>
-                  <v-icon>&#xE897;</v-icon>
-                  <div class='bottom-bar' />
-                </div>
-              </v-tabs-item>
-              <span>Locked Tokens</span>
-            </v-tooltip>
-          </v-tabs-bar>
-        </v-toolbar>
-      </v-tabs>
-    </div>
-
-    <network-menu />
-    <div class='app-content'>
-      <div class='router-container '>
-        <keep-alive>
-          <router-view></router-view>
-        </keep-alive>
+          <v-toolbar dark class='top-toolbar'>
+            <v-toolbar-side-icon @click='showDrawer'></v-toolbar-side-icon>
+            <v-toolbar-title>{{pageTitle()}}</v-toolbar-title>
+            <v-spacer></v-spacer>
+            <v-btn icon @click="showGitHub">
+              <v-icon>fa-github</v-icon>
+            </v-btn>
+            <v-tabs-bar slot="extension">
+              <!-- <v-tabs-slider color="white"></v-tabs-slider> -->
+              <v-tooltip open-delay='800' bottom>
+                <v-tabs-item slot='activator' to='/' exact class="custom-tab-item">
+                  <div class='custom-tab-content'>
+                    <v-icon>&#xE88A;</v-icon>
+                    <div class='bottom-bar' />
+                  </div>
+                </v-tabs-item>
+                <span>Make Payments</span>
+              </v-tooltip>
+              <v-tooltip open-delay='800' bottom>
+                <v-tabs-item slot='activator' to='/buytoken' exact class="custom-tab-item">
+                  <div class='custom-tab-content'>
+                    <v-icon>&#xE851;</v-icon>
+                    <div class='bottom-bar' />
+                  </div>
+                </v-tabs-item>
+                <span>Buy token with Bifrost</span>
+              </v-tooltip>
+              <v-tooltip open-delay='800' bottom>
+                <v-tabs-item slot='activator' to='/trades' exact class="custom-tab-item">
+                  <div class='custom-tab-content'>
+                    <v-icon>&#xE8C9;</v-icon>
+                    <div class='bottom-bar' />
+                  </div>
+                </v-tabs-item>
+                <span>Live Trades</span>
+              </v-tooltip>
+              <v-tooltip open-delay='800' bottom>
+                <v-tabs-item slot='activator' to='/token' exact class="custom-tab-item">
+                  <div class='custom-tab-content'>
+                    <v-icon>&#xE263;</v-icon>
+                    <div class='bottom-bar' />
+                  </div>
+                </v-tabs-item>
+                <span>Create Token</span>
+              </v-tooltip>
+              <v-tooltip open-delay='800' bottom>
+                <v-tabs-item slot='activator' to='/trust' exact class="custom-tab-item">
+                  <div class='custom-tab-content'>
+                    <v-icon>&#xE86C;</v-icon>
+                    <div class='bottom-bar' />
+                  </div>
+                </v-tabs-item>
+                <span>Allow Trust</span>
+              </v-tooltip>
+              <v-tooltip open-delay='800' bottom>
+                <v-tabs-item slot='activator' to='/locked' exact class="custom-tab-item">
+                  <div class='custom-tab-content'>
+                    <v-icon>&#xE897;</v-icon>
+                    <div class='bottom-bar' />
+                  </div>
+                </v-tabs-item>
+                <span>Locked Tokens</span>
+              </v-tooltip>
+            </v-tabs-bar>
+          </v-toolbar>
+        </v-tabs>
       </div>
-      <div class='app-console'>
-        <div class='console-bar'>
-          <v-btn small @click='clearLog()'>Clear</v-btn>
+
+      <network-menu />
+      <div class='app-content'>
+        <div class='router-container '>
+          <keep-alive>
+            <router-view></router-view>
+          </keep-alive>
         </div>
-        <div class='output-container' v-html='consoleOutput'></div>
+        <div class='app-console'>
+          <div class='console-bar'>
+            <v-btn small @click='clearLog()'>Clear</v-btn>
+          </div>
+          <div class='output-container' v-html='consoleOutput'></div>
+        </div>
       </div>
+
+      <!-- <footer-component publicKey='GBRKGAEJ7NLGCSF66Q5HZIG7OCKUOKF3N2POSDDGS2VPIWZQCA5HGP3V' /> -->
+      <!-- <footer-component publicKey='GCYQSB3UQDSISB5LKAL2OEVLAYJNIR7LFVYDNKRMLWQKDCBX4PU3Z6JP' /> -->
     </div>
 
-    <!-- <footer-component publicKey='GBRKGAEJ7NLGCSF66Q5HZIG7OCKUOKF3N2POSDDGS2VPIWZQCA5HGP3V' /> -->
-    <!-- <footer-component publicKey='GCYQSB3UQDSISB5LKAL2OEVLAYJNIR7LFVYDNKRMLWQKDCBX4PU3Z6JP' /> -->
+    <v-snackbar :timeout="500" :multi-line=false :vertical=true v-model="snackbarModel">
+      {{snackbarText}}
+      <v-btn small dark flat @click.native="snackbarModel=false">Close</v-btn>
+    </v-snackbar>
   </div>
-
-  <v-snackbar :timeout="500" :multi-line=false :vertical=true v-model="snackbarModel">
-    {{snackbarText}}
-    <v-btn small dark flat @click.native="snackbarModel=false">Close</v-btn>
-  </v-snackbar>
 </v-app>
 </template>
 
@@ -106,6 +108,7 @@ import TickerComponent from './components/TickerComponent.vue'
 import FooterComponent from './components/FooterComponent.vue'
 import NetworkMenu from './components/NetworkMenu.vue'
 import Helper from './js/helper.js'
+import Storage from './js/storage.js'
 import $ from 'jquery'
 const shell = require('electron').shell
 
@@ -121,8 +124,20 @@ export default {
       showNavigation: false,
       consoleOutput: '',
       snackbarText: '',
-      snackbarModel: false
+      snackbarModel: false,
+      initializing: true
     }
+  },
+  created() {
+    console.log('initializing')
+    Storage.init()
+      .then(() => {
+        console.log('ready')
+        this.initializing = false
+      })
+      .catch((error) => {
+        console.log(error)
+      })
   },
   mounted() {
     Helper.vue().$on('console', this.log)

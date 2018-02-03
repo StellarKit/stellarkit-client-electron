@@ -6,7 +6,7 @@
       <span>{{item.publicKey}}</span>
     </v-tooltip>
     <v-btn class='delete-button' icon small @click.stop='deleteItem(item)'>
-      <v-icon>remove_circle</v-icon>
+      <v-icon>&#xE15C;</v-icon>
     </v-btn>
   </div>
 </div>

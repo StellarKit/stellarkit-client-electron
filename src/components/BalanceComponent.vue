@@ -6,7 +6,6 @@
 </template>
 
 <script>
-// const request = require('request-promise-native')
 import StellarUtils from '../js/StellarUtils.js'
 import Helper from '../js/helper.js'
 

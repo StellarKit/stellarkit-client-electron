@@ -7,7 +7,6 @@
 </template>
 
 <script>
-// const request = require('request-promise-native')
 const $ = require('jquery')
 
 export default {

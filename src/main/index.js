@@ -1,7 +1,6 @@
 import {
   app,
   BrowserWindow,
-  ipcMain,
   screen
 } from 'electron'
 
@@ -17,7 +16,6 @@ class MainApp {
 
     this.setupSettings()
     setupContextMenu({})
-    this.setupIPC()
 
     this.mainWindow = this.createMainWindow()
 
@@ -35,38 +33,6 @@ class MainApp {
       // even after all windows have been closed
       if (this.mainWindow === null) {
         this.mainWindow = this.createMainWindow()
-      }
-    })
-  }
-
-  setupIPC() {
-    ipcMain.on('get', (event, key) => {
-      const result = this.settings.get(key)
-
-      event.returnValue = result
-    })
-
-    // async, no event.returnValue needed
-    ipcMain.on('set', (event, key, newVal) => {
-      this.settings.set(key, newVal)
-    })
-
-    ipcMain.on('quit', (event) => {
-      app.quit()
-    })
-
-    // async, no event.returnValue needed
-    ipcMain.on('resizeWindow', (event, width, height, center) => {
-      // let rect = this.mainWindow.getBounds()
-      //
-      // rect.width = width
-      // rect.height = height
-      //
-      // this.mainWindow.setBounds(rect)
-      this.mainWindow.setSize(width, height)
-
-      if (center) {
-        this.mainWindow.center()
       }
     })
   }
@@ -132,9 +98,9 @@ class MainApp {
     // points to `index.html` in production
     const url = isDevelopment ? `http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}` : `file://${__dirname}/index.html`
 
-    // if (isDevelopment) {
-    //   window.webContents.openDevTools()
-    // }
+    if (isDevelopment) {
+      window.webContents.openDevTools()
+    }
 
     // prevent window name changes
     window.on('page-title-updated', (event) => {

@@ -2,11 +2,64 @@ const StellarSdk = require('stellar-sdk')
 const generateName = require('sillyname')
 import Helper from '../js/helper.js'
 
-class StellarAccounts {
+class SharedAccounts {
   constructor() {
     this._accounts = []
 
-    this.loadAccounts()
+    this.load()
+  }
+
+  add(acct) {
+    this._accounts.push(acct)
+    this.save()
+
+    return acct
+  }
+
+  accounts() {
+    return this._accounts.slice()
+  }
+
+  delete(index) {
+    if (index !== -1) {
+      this._accounts.splice(index, 1)
+
+      this.save()
+    } else {
+      console.log('index not found')
+    }
+  }
+
+  load() {
+    const accounts = Helper.get('accounts')
+
+    if (accounts && accounts.length > 0) {
+      this._accounts = accounts
+    } else {
+      console.log('no accounts')
+    }
+  }
+
+  save() {
+    Helper.set('accounts', this._accounts)
+
+    Helper.emit('stellar-accounts-updated')
+  }
+}
+
+// =============================================================
+// =============================================================
+
+class StellarAccounts {
+  static sharedAccounts() {
+    if (!this.shared) {
+      this.shared = new SharedAccounts()
+    }
+    return this.shared
+  }
+
+  shared() {
+    return StellarAccounts.sharedAccounts()
   }
 
   addAccount(keyPair, balances, name = null, page = null) {
@@ -19,8 +72,7 @@ class StellarAccounts {
       page: page
     }
 
-    this._accounts.push(acct)
-    this.saveAccounts()
+    this.shared().add(acct)
 
     return acct
   }
@@ -42,23 +94,23 @@ class StellarAccounts {
   }
 
   accounts() {
-    return this._accounts.slice()
+    return this.shared().accounts()
   }
 
   deleteAccount(publicKey) {
     const index = this.accountIndexWithPublicKey(publicKey)
 
     if (index !== -1) {
-      this._accounts.splice(index, 1)
-
-      this.saveAccounts()
+      this.shared().delete(index)
     } else {
       console.log('index not found')
     }
   }
 
   accountWithName(name) {
-    for (const val of this._accounts) {
+    const accounts = this.shared().accounts()
+
+    for (const val of accounts) {
       if (name === val.name) {
         return val
       }
@@ -67,7 +119,9 @@ class StellarAccounts {
   }
 
   accountIndexWithPublicKey(publicKey) {
-    for (const [index, val] of this._accounts.entries()) {
+    const accounts = this.shared().accounts()
+
+    for (const [index, val] of accounts.entries()) {
       if (publicKey === val.publicKey) {
         return index
       }
@@ -76,47 +130,39 @@ class StellarAccounts {
   }
 
   updateBalance(index, symbol, balance) {
-    const acct = this._accounts[index]
+    const accounts = this.shared().accounts()
+    const acct = accounts[index]
 
     acct[symbol] = balance
 
-    this.saveAccounts()
+    this.shared().save()
   }
 
   secret(index) {
-    const acct = this._accounts[index]
+    const accounts = this.shared().accounts()
+
+    const acct = accounts[index]
 
     return acct.secret
   }
 
   publicKey(index) {
-    const acct = this._accounts[index]
+    const accounts = this.shared().accounts()
+
+    const acct = accounts[index]
 
     return acct.publicKey
   }
 
   keyPair(index) {
-    const acct = this._accounts[index]
+    const accounts = this.shared().accounts()
+
+    const acct = accounts[index]
     return StellarSdk.Keypair.fromSecret(acct.secret)
-  }
-
-  loadAccounts() {
-    const accounts = Helper.get('accounts')
-
-    if (accounts && accounts.length > 0) {
-      this._accounts = accounts
-    } else {
-      console.log('no accounts')
-    }
-  }
-
-  saveAccounts() {
-    Helper.set('accounts', this._accounts)
-
-    Helper.emit('stellar-accounts-updated')
   }
 }
 
-const singleton = new StellarAccounts()
+const instance = new StellarAccounts()
+Object.freeze(instance)
 
-export default singleton
+export default instance

@@ -1,6 +1,6 @@
 <template>
 <div class='main-container'>
-  <v-btn small @click="showDialogPing = !showDialogPing">Buy Token</v-btn>
+  <v-btn small @click="showDialog">Buy Token</v-btn>
 
   <buy-token-dialog :ping='showDialogPing' :params='params' :allowHTTP=true />
 </div>
@@ -11,36 +11,37 @@ import {
   BuyTokenDialog
 } from 'stellar-js-utils'
 import StellarAccounts from '../js/StellarAccounts.js'
+import StellarCommonMixin from '../components/StellarCommonMixin.js'
 
 export default {
+  mixins: [StellarCommonMixin],
   data() {
     return {
-      showDialogPing: false
+      showDialogPing: false,
+      params: null
     }
   },
   components: {
     'buy-token-dialog': BuyTokenDialog
   },
-  computed: {
-    params: function () {
-      const issuerAcct = StellarAccounts.accountWithName('Issuer')
-
-      const params = {
-        network: 'test',
-        horizonURL: 'http://192.168.1.82:8000',
-        bifrostURL: 'http://192.168.1.82:8800',
-        assetCode: 'LMB',
-        price: '1',
-        issuingPublicKey: issuerAcct.publicKey,
-        preSaleMode: false
-      }
-
-      return params
-    }
-  },
   methods: {
-    hello() {
-      // nothing
+    showDialog() {
+      const issuerAcct = StellarAccounts.accountWithName('Issuer')
+      if (issuerAcct) {
+        this.params = {
+          network: 'test',
+          horizonURL: 'http://192.168.1.82:8000',
+          bifrostURL: 'http://192.168.1.82:8800',
+          assetCode: 'LMB',
+          price: '1',
+          issuingPublicKey: issuerAcct.publicKey,
+          preSaleMode: false
+        }
+
+        this.showDialogPing = !this.showDialogPing
+      } else {
+        this.debugLog('Create a token first')
+      }
     }
   }
 }

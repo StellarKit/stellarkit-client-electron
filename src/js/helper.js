@@ -1,7 +1,8 @@
 import Vue from 'vue'
-import {
-  ipcRenderer
-} from 'electron'
+// import {
+//   ipcRenderer
+// } from 'electron'
+import Storage from './storage.js'
 
 export default class Helper {
   static vue() {
@@ -30,7 +31,7 @@ export default class Helper {
   }
 
   static get(key) {
-    let result = ipcRenderer.sendSync('get', this.keyForKey(key))
+    let result = Storage.get(this.keyForKey(key))
 
     // some defaults
     if (!result) {
@@ -47,15 +48,7 @@ export default class Helper {
   }
 
   static set(key, value) {
-    ipcRenderer.send('set', this.keyForKey(key), value)
-  }
-
-  static setWindowSize(width, height, center = false) {
-    ipcRenderer.send('resizeWindow', width, height, center)
-  }
-
-  static quitApp() {
-    ipcRenderer.send('quit')
+    Storage.set(this.keyForKey(key), value)
   }
 
   static toStr(object) {
