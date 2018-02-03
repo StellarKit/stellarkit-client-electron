@@ -12,6 +12,8 @@ To build installer
 yarn dist
 ```
 
+If things don't build right, try deleting yarn.lock, then yarn install to get everything fresh
+
 ### Donations
 If you like the code, a donation would be appreciated. Even a single XLM!
 
