@@ -3,7 +3,7 @@
   <v-menu offset-y>
     <v-btn small slot="activator">
       <v-icon left>fa-server</v-icon>Network
-      <v-icon right>arrow_drop_down</v-icon>
+      <v-icon right>&#xE5C5;</v-icon>
     </v-btn>
     <v-list>
       <v-list-tile v-for="item in items" :key="item.title" @click="menuSelected(item)">
