@@ -2,7 +2,9 @@
 
 A destop app that wraps much of the js-stellar-sdk
 
-This is just an Electron wrapper, all the code is in [`stellar-client-web`](https://github.com/StellarKit/stellar-client-web).  
+This is just an Electron wrapper around the [`stellar-client-web`](https://github.com/StellarKit/stellar-client-web).  
+
+Electron creates a desktop application and installer around a javascript project. Creates apps that run on win/mac/linux.
 
 To build and run:
 ```
