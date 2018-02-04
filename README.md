@@ -2,6 +2,8 @@
 
 A destop app that wraps much of the js-stellar-sdk
 
+This is just an Electron wrapper, all the code is in [`stellar-client-web`](https://github.com/StellarKit/stellar-client-web).  
+
 To build and run:
 ```
 yarn install
