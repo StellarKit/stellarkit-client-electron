@@ -98,9 +98,9 @@ class MainApp {
     // points to `index.html` in production
     const url = isDevelopment ? `http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}` : `file://${__dirname}/index.html`
 
-    if (isDevelopment) {
-      window.webContents.openDevTools()
-    }
+    // if (isDevelopment) {
+    //   window.webContents.openDevTools()
+    // }
 
     // prevent window name changes
     window.on('page-title-updated', (event) => {
