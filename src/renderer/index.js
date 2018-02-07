@@ -1,4 +1,6 @@
-const shell = require('electron').shell
+import {
+  shell
+} from 'electron'
 
 // app contents are in this package
 import {
