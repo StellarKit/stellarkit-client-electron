@@ -5,15 +5,15 @@ import {
 // app contents are in this package
 import {
   start,
-  HelperImplementation
+  HelperImplementation,
+  LedgerAPITransport
 } from 'stellar-client-web'
+
+const StellarTransportNode = require('@ledgerhq/hw-transport-node-hid').default
 
 const implementation = {
   openBrowser: function(url) {
     shell.openExternal(url)
-  },
-  nodeEnv: function() {
-    return true
   },
   applicationName: function() {
     return 'Stellar Client'
@@ -21,5 +21,6 @@ const implementation = {
 }
 
 HelperImplementation.setImplementation(implementation)
+LedgerAPITransport.setupForNode(StellarTransportNode)
 
 start()
