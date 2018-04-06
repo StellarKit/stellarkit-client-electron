@@ -1,4 +1,4 @@
-# Stellar Client
+# StellarKit Client
 
 A destop app that wraps much of the [`js-stellar-sdk`](https://github.com/stellar/js-stellar-sdk). Apps can be built for win/macos/linux
 
@@ -12,6 +12,8 @@ To build and run:
 To build installer
 
     npm run dist
+
+Disclaimer: We not affiliated with, or sponsored or endorsed by, the Stellar Development Foundation.
 
 ### Donations
 
